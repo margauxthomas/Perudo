@@ -20,7 +20,7 @@ import java.util.Vector;
 public class RMIClient {
        private static Vector classes = new Vector();
     
-        public static RMIClient getInstance() throws RemoteException {
+        public static RMIClient getInstance(){
             
 		RMIClient tmp = new RMIClient();
 		if (classes.contains(tmp)) {
@@ -39,10 +39,12 @@ public class RMIClient {
                     return null;
 	}
     public static void main(String args[]){
-        /*RMIClient client = new RMIClient();
+        RMIClient client = new RMIClient();
+        for(int i = 1; i <= 3; i++)
+        {
+        client.getInstance().connectServer(" margx");
+        }
         
-        client.connectServer(" margx");
-  */
     }
 
     public void connectServer(String nom) {
