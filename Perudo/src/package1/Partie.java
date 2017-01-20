@@ -23,8 +23,36 @@ public class Partie extends RMIServer{
     private String nom;
     private String desc;
     
-    HashMap<Joueur, Couleur> partie=new HashMap<>();
+    ArrayList<Joueur> joueurs= new ArrayList<>();
+   
+    public void addjoueur(Joueur j)
+    {
+       joueurs.add(j);
+     }
+    
+    ArrayList<Dés> des= new ArrayList<>();
+   
+    public void addDés(Dés d)
+    {
+       des.add(d);
+     }
+    
+    HashMap<Joueur, String> partie=new HashMap<>();
     private static Vector classes = new Vector();
+    
+        public void addés()
+    {
+        int i = 0;
+     for(Joueur J : joueurs){
+         while(i<5){
+            for(Dés D :des){
+                partie.put(J, D.getValeur());
+                }
+            }
+         i++;
+     }
+     
+    }
     
     public Partie(String n, String d) throws RemoteException {
         super();
@@ -40,10 +68,6 @@ public class Partie extends RMIServer{
         return desc;
     }
 
-    public HashMap<Joueur, Couleur> getPartie() {
-        return partie;
-    }
-
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -52,9 +76,6 @@ public class Partie extends RMIServer{
         this.desc = desc;
     }
 
-    public void setPartie(HashMap<Joueur, Couleur> partie) {
-        this.partie = partie;
-    }
     
     public static Partie getInstance(String attribut1, String attribut2) throws RemoteException {
             

@@ -13,7 +13,34 @@ import java.util.*;
  * @author stri
  */
 public class Joueur extends RMIClient{
-    //declaration variable utilisateur
+    
+       public Joueur() {
+    }
+    
+    ArrayList<User> users= new ArrayList<>();
    
+    public void addUsers(User u)
+    {
+       users.add(u);
+     }
+    
+    ArrayList<Couleur> col= new ArrayList<>();
+   
+    public void addCouleur(Couleur c)
+    {
+       col.add(c);
+     }
+    
+    public HashMap<String, String> getJoueurs()
+     {
+        
+        HashMap<String, String> h = new HashMap<>(); 
+        for(User R : users){
+            for(Couleur C :col){
+                h.put(R.getPseudo(), C.getCouleur());
+                }
+            }       
+    return h;
+    } 
 
 }
