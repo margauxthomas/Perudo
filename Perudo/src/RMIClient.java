@@ -15,15 +15,17 @@ import java.rmi.registry.Registry;
 public class RMIClient {
     public static void main(String args[]){
         RMIClient client = new RMIClient();
-        client.connectServer();
+        
+        client.connectServer(" margx");
+  
     }
 
-    private void connectServer() {
+    public void connectServer(String nom) {
         try{
             Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
             RMI rmi = (RMI) reg.lookup("server");
             System.out.println("Connected to Server");
-            String text = rmi.getData(" Margx");
+            String text = rmi.getData("Bienvenue dans la partie, le jeu va bientôt commencer "+nom);
             System.out.println(text);
         }catch(Exception e){
             System.out.println(e);
