@@ -1,8 +1,11 @@
 package package1;
 
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,11 +18,31 @@ import java.rmi.registry.Registry;
  * @author stri
  */
 public class RMIClient {
+       private static Vector classes = new Vector();
+    
+        public static RMIClient getInstance() throws RemoteException {
+            
+		RMIClient tmp = new RMIClient();
+		if (classes.contains(tmp)) {
+			Enumeration enume = classes.elements();
+			while (enume.hasMoreElements()) {
+				RMIClient element = (RMIClient) enume.nextElement();
+				if (element.equals(tmp)) {
+					return element;
+				}
+			}
+		}
+		else {
+			classes.add(tmp);
+			return tmp;
+		}
+                    return null;
+	}
     public static void main(String args[]){
-        RMIClient client = new RMIClient();
+        /*RMIClient client = new RMIClient();
         
         client.connectServer(" margx");
-  
+  */
     }
 
     public void connectServer(String nom) {
