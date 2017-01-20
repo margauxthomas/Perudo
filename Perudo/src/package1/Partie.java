@@ -1,4 +1,8 @@
+package package1;
 
+
+import package1.Couleur;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -14,16 +18,16 @@ import java.util.Enumeration;
  *
  * @author stri
  */
-public class Partie {
+public class Partie extends RMIServer{
    
     private String nom;
     private String desc;
     
-    HashMap<Joueur, Couleur> partie=new HashMap<>();// Les auteurs et msg dans la room
+    HashMap<Joueur, Couleur> partie=new HashMap<>();
     private static Vector classes = new Vector();
     
-    public Partie(String n, String d) {
-         
+    public Partie(String n, String d) throws RemoteException {
+        super();
         this.nom=n;
          this.desc=d;
     }
@@ -52,7 +56,7 @@ public class Partie {
         this.partie = partie;
     }
     
-    public static Partie getInstance(String attribut1, String attribut2) {
+    public static Partie getInstance(String attribut1, String attribut2) throws RemoteException {
             
 		Partie tmp = new Partie(attribut1, attribut2);
 		if (classes.contains(tmp)) {

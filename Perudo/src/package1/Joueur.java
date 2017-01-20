@@ -1,7 +1,7 @@
+package package1;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
+import java.util.Scanner;
+import java.util.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
  *
  * @author stri
  */
-public interface RMI extends Remote{
-    public String getData(String text) throws RemoteException;
+public class Joueur extends RMIClient{
+    //declaration variable utilisateur
+   
+
 }
