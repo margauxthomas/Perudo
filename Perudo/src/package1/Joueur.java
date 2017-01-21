@@ -12,17 +12,38 @@ import java.util.*;
  *
  * @author stri
  */
-public class Joueur extends RMIClient{
+public class Joueur {
     
        public Joueur() {
     }
-    
+     private static Vector classes = new Vector();
+     
+     public static Joueur getInstanceJ(){
+            
+		Joueur tmp = new Joueur();
+		if (classes.contains(tmp)) {
+			Enumeration enume = classes.elements();
+			while (enume.hasMoreElements()) {
+				Joueur element = (Joueur) enume.nextElement();
+				if (element.equals(tmp)) {
+					return element;
+				}
+			}
+		}
+		else {
+			classes.add(tmp);
+			return tmp;
+		}
+                    return null;
+	}   
+       
     ArrayList<User> users= new ArrayList<>();
    
     public void addUsers(User u)
     {
        users.add(u);
      }
+ 
     
     ArrayList<Couleur> col= new ArrayList<>();
    
@@ -31,12 +52,12 @@ public class Joueur extends RMIClient{
        col.add(c);
      }
     
-    public HashMap<String, String> getJoueurs()
+    public HashMap<String, String> getJoueurs(ArrayList<User> u, ArrayList<Couleur> c)
      {
         
         HashMap<String, String> h = new HashMap<>(); 
-        for(User R : users){
-            for(Couleur C :col){
+        for(User R : u){
+            for(Couleur C :c){
                 h.put(R.getPseudo(), C.getCouleur());
                 }
             }       

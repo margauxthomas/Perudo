@@ -18,7 +18,7 @@ import java.util.Enumeration;
  *
  * @author stri
  */
-public class Partie extends RMIServer{
+public class Partie{
    
     private String nom;
     private String desc;
@@ -54,7 +54,7 @@ public class Partie extends RMIServer{
      
     }
     
-    public Partie(String n, String d) throws RemoteException {
+    public Partie(String n, String d)  {
         super();
         this.nom=n;
          this.desc=d;
@@ -77,7 +77,7 @@ public class Partie extends RMIServer{
     }
 
     
-    public static Partie getInstance(String attribut1, String attribut2) throws RemoteException {
+    public static Partie getInstance(String attribut1, String attribut2) {
             
 		Partie tmp = new Partie(attribut1, attribut2);
 		if (classes.contains(tmp)) {
