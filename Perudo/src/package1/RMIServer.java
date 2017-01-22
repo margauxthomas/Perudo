@@ -8,7 +8,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
 
 /*
@@ -48,7 +50,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     
     ArrayList<User> users= new ArrayList<>();
      ArrayList<Couleur> cols= new ArrayList<>();
-     
+     ArrayList<Joueur> joueurs= new ArrayList<>();
     public HashMap<String, String> CreerJoueur(String pseu, String col){
         User u = new User(pseu);
         User us= u.getInstanceU(pseu);
@@ -65,17 +67,30 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          users.add(us);
        
          cols.add(co);
-          
-         Joueur j = new Joueur();
-        HashMap<String, String> h = new HashMap<>(); 
-        h=j.getJoueurs(users, cols);
+         
+         Joueur j = new Joueur(co,us);
+         Joueur nj=j.getInstanceJ(co,us);
+         
+         joueurs.add(nj);
+        HashMap<String, String> h1 = new HashMap<>(); 
+        //h=j.getJoueurs(users, cols);
+        h1=j.getJoueurs(joueurs);
+                    
+           Set cles = h1.keySet();
+           Iterator it = cles.iterator();
+           while (it.hasNext()){
+           Object cle = it.next(); // tu peux typer plus finement ici
+           Object valeur = h1.get(cle); // tu peux typer plus finement ici
+           System.out.println(cle+ " "+valeur);
+        
+           }
               for (Couleur C : cols) {
 			System.out.println(C.getCouleur());
             }
               for (User U : users) {
 		System.out.println(U.getPseudo());
             }
-        return h;
+        return h1;
     }
         
     public ArrayList<Couleur> AfficherCouleur(){
