@@ -36,13 +36,18 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
        return text;
     }
     
-    public String getAnnonce(int nbDé,int faceDé) throws RemoteException {
+    public String getEnchere(int nbDé,int faceDé) throws RemoteException {
      String Dé = Integer.toString(nbDé);
       String faceduDé =Integer.toString(faceDé);
       return "Vous avez annoncé " + Dé+" dés " +faceduDé;
       
     }
     
+    public String getAnnonce(int choix) throws RemoteException {
+        String choice =Integer.toString(choix);
+     return "Vous avez annoncé "+choice;
+             
+    }
     public String setPseudo(String pseu) throws RemoteException {
         
         pseu="Bienvenue dans le jeu du Perudo "+pseu;

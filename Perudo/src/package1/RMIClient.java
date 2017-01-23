@@ -99,22 +99,49 @@ public class RMIClient {
         }*/
            
            
+           // Décision surenchere, menteur, tout pile
+             int choix=0;
+           System.out.println("Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
-             int nbDé=0;
-              int faceDé=0;
-            System.out.println("Veuillez entrez votre annonce : ");
-            System.out.println("Nombre de dés sur la table :  ");
-             nbDé = sc.nextInt();
-             
+             while(choix <1 || choix>3){
+                System.out.println("Tapez 1 pour surenchérir, 2 pour le menteur, trois pour le tout-pile !"); 
+                choix = sc.nextInt();
+             }
+                if(choix==1){
+                 // Surenchere 
+                int nbDé=0;
+                int faceDé=0;
+                
+                System.out.println("Veuillez entrez votre annonce : ");
+                System.out.println("Nombre de dés sur la table :  ");
+                 nbDé = sc.nextInt();
            
-            while(faceDé>6 || faceDé<2){
-                System.out.println("face des dés :  (compris entre 2 & 6)");
-                System.out.println(faceDé);
-            faceDé = sc.nextInt();
-           }
+                    while(faceDé>6 || faceDé<2){
+                        System.out.println("face des dés :  (compris entre 2 & 6)");
+                        System.out.println(faceDé);
+                    faceDé = sc.nextInt();
+                   }
           
-            System.out.println(rmi.getAnnonce(nbDé, faceDé));
+            System.out.println(rmi.getEnchere(nbDé, faceDé));
             
+                }
+                
+                if(choix==2){
+                 // Menteur
+                System.out.println("Vous avez choisi menteur");
+                }
+                
+                else{
+                 // Tout pile
+                System.out.println("Vous avez tenté le tout pile !");
+                }
+           
+            
+            
+          
+                
+           
+
             
         }catch(Exception e){
             System.out.println(e);
