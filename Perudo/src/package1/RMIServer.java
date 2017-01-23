@@ -35,6 +35,14 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
        text = "Hi "+text;
        return text;
     }
+    
+    public String getAnnonce(int nbDé,int faceDé) throws RemoteException {
+     String Dé = Integer.toString(nbDé);
+      String faceduDé =Integer.toString(faceDé);
+      return "Vous avez annoncé " + Dé+" dés " +faceduDé;
+      
+    }
+    
     public String setPseudo(String pseu) throws RemoteException {
         
         pseu="Bienvenue dans le jeu du Perudo "+pseu;
@@ -52,15 +60,16 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<User> users= new ArrayList<>();
      ArrayList<Couleur> cols= new ArrayList<>();
      ArrayList<Joueur> joueurs= new ArrayList<>();
+      private ArrayList<String> valeurdesj;
      Partie  p= new Partie("prems","test");
      
     public HashMap<String, String> CreerJoueur(String pseu, String col){
-        
+        System.err.println("je suis ici");
         User u = new User(pseu);
         User us= u.getInstanceU(pseu);
         Couleur c = new Couleur(col);
         Couleur co = c.getInstanceC(col);
-        
+         System.err.println("je suis apres les instances");
   
         /*
         Joueur j1 = j.getInstanceJ();
@@ -71,12 +80,20 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          users.add(us);
        
          cols.add(co);
-         
+         System.err.println("je suis apre les add arraylist");
          Joueur j = new Joueur(co,us);
          Joueur nj=j.getInstanceJ(co,us);
+          System.err.println("je suis avant remplir des ");
          nj.RemplirDes();
          
          joueurs.add(nj);
+         
+         System.err.println("je suis av le afficher des");
+         valeurdesj=nj.AfficherDés();
+         for (String val : valeurdesj) {
+			System.out.println(val);
+	}
+         System.err.println("je suis apres le afficher des");
          
         HashMap<String, String> h1 = new HashMap<>(); 
         //h=j.getJoueurs(users, cols);

@@ -16,24 +16,19 @@ public class Joueur {
     
     private Couleur pions;
     private User dude;
-    private ArrayList<Dés> dd;
-    private ArrayList<String> valeurdes;
+  //private ArrayList<Dés> dd;
+    private ArrayList<String> valeurdes=new ArrayList<>();
 
-    public ArrayList<Dés> getDd() {
-        return dd;
-    }
-
-    public void setDd(ArrayList<Dés> dd) {
-        this.dd = dd;
-    }
+     private ArrayList<Dés> dd= new ArrayList<>();
     public void RemplirDes(){
-        for(int i = 0; i <=5; i++){
+        for(int i = 0; i <5; i++){
         Dés d= new Dés();
         Dés d1 = d.getInstanceD();
         dd.add(d1);
+        //int i=0;
         }
     }
-    public ArrayList<String> AfficherDés(Joueur j){
+    public ArrayList<String> AfficherDés(){
         for (Dés D : dd) {
 		String valtmp=D.getValeur();
                 valeurdes.add(valtmp);

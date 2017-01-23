@@ -66,7 +66,7 @@ public class RMIClient {
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
             System.out.println(lancement);
             
-            System.out.println("c'est partie");
+            System.out.println("c'est parti !");
             
             
             HashMap<String, String> h = new HashMap<>(); 
@@ -85,7 +85,7 @@ public class RMIClient {
            System.out.println(cle+ " "+valeur);
             }
            
-           HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
+           //HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
            /*h2=rmi.CreerPartie();
           
            System.out.println("hmap de la partie ");
@@ -97,6 +97,24 @@ public class RMIClient {
             Object valeur2 = h2.get(cle2);
             System.out.println(cle2+" "+valeur2);
         }*/
+           
+           
+           
+             int nbDé=0;
+              int faceDé=0;
+            System.out.println("Veuillez entrez votre annonce : ");
+            System.out.println("Nombre de dés sur la table :  ");
+             nbDé = sc.nextInt();
+             
+           
+            while(faceDé>6 || faceDé<2){
+                System.out.println("face des dés :  (compris entre 2 & 6)");
+                System.out.println(faceDé);
+            faceDé = sc.nextInt();
+           }
+          
+            System.out.println(rmi.getAnnonce(nbDé, faceDé));
+            
             
         }catch(Exception e){
             System.out.println(e);
@@ -108,12 +126,12 @@ public class RMIClient {
         public static void main(String args[]){
         RMIClient client = new RMIClient();
         int j=0;
-        for(int i = 1; i <= 3; i++)
-        {
+        //for(int i = 1; i <= 3; i++)
+        //{
         client.getInstance().connectServer("margx");
             
                 
-        }
+        //}
         
         
         
