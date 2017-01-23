@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -23,6 +24,7 @@ import java.util.Vector;
  * @author stri
  */
 public class RMIClient {
+ 
        private static Vector classes = new Vector();
     
         public static RMIClient getInstance(){
@@ -75,26 +77,45 @@ public class RMIClient {
             for (Couleur C : names) {
 			System.out.println(C);
 		}*/
-            
            Set cles = h.keySet();
            Iterator it = cles.iterator();
            while (it.hasNext()){
-           Object cle = it.next(); // tu peux typer plus finement ici
-           Object valeur = h.get(cle); // tu peux typer plus finement ici
+           Object cle = it.next(); 
+           Object valeur = h.get(cle); 
            System.out.println(cle+ " "+valeur);
+            }
+           
+           HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
+           h2=rmi.CreerPartie();
+          
+           System.out.println("hmap de la partie ");
+           
+           Set cles2=h2.keySet();
+           Iterator it2 = cles2.iterator();
+           while(it2.hasNext()){
+            Object cle2 =it2.next();
+            Object valeur2 = h2.get(cle2);
+            System.out.println(cle2+" "+valeur2);
         }
             
         }catch(Exception e){
             System.out.println(e);
         }
     }
+           public void CreationPartie(){
+           
+        }
         public static void main(String args[]){
         RMIClient client = new RMIClient();
+        int j=0;
         for(int i = 1; i <= 3; i++)
         {
         client.getInstance().connectServer("margx");
-        
+            
+                
         }
+        
+        
         
     }
 }

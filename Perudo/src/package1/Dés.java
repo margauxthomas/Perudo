@@ -5,7 +5,9 @@
  */
 package package1;
    
+import java.util.Enumeration;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  *
@@ -25,6 +27,25 @@ public class Dés {
         }
         return valeur;
     }
+    private static Vector classes = new Vector();
+    public static Dés getInstanceD(){
+            
+		Dés tmp = new Dés();
+		if (classes.contains(tmp)) {
+			Enumeration enume = classes.elements();
+			while (enume.hasMoreElements()) {
+				Dés element = (Dés) enume.nextElement();
+				if (element.equals(tmp)) {
+					return element;
+				}
+			}
+		}
+		else {
+			classes.add(tmp);
+			return tmp;
+		}
+                    return null;
+	}
     
     public static void main(String args[]){
             Dés d=new Dés();

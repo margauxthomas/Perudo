@@ -5,6 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,4 +24,5 @@ public interface RMI extends Remote{
     public HashMap<String, String> CreerJoueur(String pseu, String col) throws RemoteException;
     public ArrayList<Couleur> AfficherCouleur() throws RemoteException;
     public ArrayList<User> AfficherUser() throws RemoteException;
+     public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 }

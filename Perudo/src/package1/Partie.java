@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.Enumeration;
+import java.util.HashSet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,22 +37,32 @@ public class Partie{
     {
        des.add(d);
      }
-    
-    HashMap<Joueur, String> partie=new HashMap<>();
+    HashSet<String> hset = new HashSet<String>();
+    HashMap<String,HashSet<String>> partie=new HashMap<>();
     private static Vector classes = new Vector();
     
-        public void addés()
+        public HashMap<String, HashSet<String>> RemplirPartie(ArrayList<Joueur> jj)
     {
-        int i = 0;
-     for(Joueur J : joueurs){
-         while(i<5){
-            for(Dés D :des){
-                partie.put(J, D.getValeur());
+       
+     for(Joueur J : jj){
+          User utmp=J.getDude();
+        
+         
+              hset.clear();
+             
+            for(int i = 0; i <= 6; i++){
+                Dés d= new Dés();
+             Dés d1 = d.getInstanceD();
+             hset.add(d1.getValeur());
+            //for(Dés D :des){
+                    
                 }
-            }
-         i++;
-     }
+            partie.put(utmp.getPseudo(), hset);
+              //  }
+
      
+    }
+     return partie;
     }
     
     public Partie(String n, String d)  {
@@ -77,7 +88,7 @@ public class Partie{
     }
 
     
-    public static Partie getInstance(String attribut1, String attribut2) {
+    public static Partie getInstanceP(String attribut1, String attribut2) {
             
 		Partie tmp = new Partie(attribut1, attribut2);
 		if (classes.contains(tmp)) {

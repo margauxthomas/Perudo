@@ -8,6 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -52,6 +53,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
      ArrayList<Couleur> cols= new ArrayList<>();
      ArrayList<Joueur> joueurs= new ArrayList<>();
     public HashMap<String, String> CreerJoueur(String pseu, String col){
+        
         User u = new User(pseu);
         User us= u.getInstanceU(pseu);
         Couleur c = new Couleur(col);
@@ -74,6 +76,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          joueurs.add(nj);
         HashMap<String, String> h1 = new HashMap<>(); 
         //h=j.getJoueurs(users, cols);
+        
         h1=j.getJoueurs(joueurs);
                     
            Set cles = h1.keySet();
@@ -92,7 +95,32 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         return h1;
     }
+    public HashMap<String, HashSet<String>> CreerPartie(){
         
+        HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
+        Partie  p= new Partie("prems","test");
+        Partie p1 = p.getInstanceP("prems","test");
+        System.out.println(p1.getNom());
+        
+        h2=p1.RemplirPartie(joueurs);
+        
+          System.out.println("hmap de la partie ");
+           
+           Set cles2=h2.keySet();
+           Iterator it2 = cles2.iterator();
+           while(it2.hasNext()){
+            Object cle2 =it2.next();
+            Object valeur2 = h2.get(cle2);
+            System.out.println(cle2+" "+valeur2);
+           }
+           
+           for (Joueur J : joueurs) {
+               User tmp=J.getDude();
+		System.out.println(tmp.getPseudo());
+            }
+        return h2;
+        
+    }
     public ArrayList<Couleur> AfficherCouleur(){
         return cols;
     }
