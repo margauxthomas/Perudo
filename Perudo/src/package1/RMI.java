@@ -19,6 +19,7 @@ import java.util.HashSet;
  */
 public interface RMI extends Remote{
     public String getData(String text) throws RemoteException;
+     public String getAnnonce(int Dé,int faceduDé) throws RemoteException;
     public String setPseudo(String pseu) throws RemoteException;
     public String setCouleur(String col) throws RemoteException;
     public HashMap<String, String> CreerJoueur(String pseu, String col) throws RemoteException;
