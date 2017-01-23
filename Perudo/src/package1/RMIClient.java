@@ -86,7 +86,7 @@ public class RMIClient {
             }
            
            HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
-           h2=rmi.CreerPartie();
+           /*h2=rmi.CreerPartie();
           
            System.out.println("hmap de la partie ");
            
@@ -96,7 +96,7 @@ public class RMIClient {
             Object cle2 =it2.next();
             Object valeur2 = h2.get(cle2);
             System.out.println(cle2+" "+valeur2);
-        }
+        }*/
             
         }catch(Exception e){
             System.out.println(e);

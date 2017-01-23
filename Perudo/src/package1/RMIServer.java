@@ -52,6 +52,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<User> users= new ArrayList<>();
      ArrayList<Couleur> cols= new ArrayList<>();
      ArrayList<Joueur> joueurs= new ArrayList<>();
+     Partie  p= new Partie("prems","test");
+     
     public HashMap<String, String> CreerJoueur(String pseu, String col){
         
         User u = new User(pseu);
@@ -72,8 +74,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          
          Joueur j = new Joueur(co,us);
          Joueur nj=j.getInstanceJ(co,us);
+         nj.RemplirDes();
          
          joueurs.add(nj);
+         
         HashMap<String, String> h1 = new HashMap<>(); 
         //h=j.getJoueurs(users, cols);
         
@@ -93,18 +97,23 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
               for (User U : users) {
 		System.out.println(U.getPseudo());
             }
+            
+            p.addjoueur(nj);
+              
+             
         return h1;
     }
-    public HashMap<String, HashSet<String>> CreerPartie(){
+    
+       // HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
+       
+      
+       // Partie p1 = p.getInstanceP("prems","test");
+        //System.out.println(p1.getNom());
         
-        HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
-        Partie  p= new Partie("prems","test");
-        Partie p1 = p.getInstanceP("prems","test");
-        System.out.println(p1.getNom());
+       
+        //h2=p1.RemplirPartie(joueurs);
         
-        h2=p1.RemplirPartie(joueurs);
-        
-          System.out.println("hmap de la partie ");
+          /*System.out.println("hmap de la partie ");
            
            Set cles2=h2.keySet();
            Iterator it2 = cles2.iterator();
@@ -119,8 +128,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
 		System.out.println(tmp.getPseudo());
             }
         return h2;
-        
-    }
+        */
+    
     public ArrayList<Couleur> AfficherCouleur(){
         return cols;
     }

@@ -24,11 +24,11 @@ public class Partie{
     private String nom;
     private String desc;
     
-    ArrayList<Joueur> joueurs= new ArrayList<>();
+    ArrayList<Joueur> partie= new ArrayList<>();
    
     public void addjoueur(Joueur j)
     {
-       joueurs.add(j);
+       partie.add(j);
      }
     
     ArrayList<Dés> des= new ArrayList<>();
@@ -37,34 +37,31 @@ public class Partie{
     {
        des.add(d);
      }
-    HashSet<String> hset = new HashSet<String>();
-    HashMap<String,HashSet<String>> partie=new HashMap<>();
-    private static Vector classes = new Vector();
+    //HashSet<String> hset = new HashSet<String>();
+    //HashMap<String,HashSet<String>> partie=new HashMap<>();
     
-        public HashMap<String, HashSet<String>> RemplirPartie(ArrayList<Joueur> jj)
+    private static Vector classes = new Vector();
+    /*
+        public void RemplirPartie(ArrayList<Joueur> jj)
     {
-       
+      
      for(Joueur J : jj){
           User utmp=J.getDude();
-        
-         
-              hset.clear();
-             
+               //hset.clear();
+               
             for(int i = 0; i <= 6; i++){
-                Dés d= new Dés();
-             Dés d1 = d.getInstanceD();
-             hset.add(d1.getValeur());
+             //   Dés d= new Dés();
+            
+            //Dés d1 = d.getInstanceD();
+             //hset.add(d1.getValeur());
             //for(Dés D :des){
-                    
-                }
-            partie.put(utmp.getPseudo(), hset);
+            //partie.put(utmp.getPseudo(), hset);
               //  }
-
-     
+              //hset.clear();
+              //HashSet<String> hset = new HashSet<String>();
     }
-     return partie;
     }
-    
+    */
     public Partie(String n, String d)  {
         super();
         this.nom=n;
