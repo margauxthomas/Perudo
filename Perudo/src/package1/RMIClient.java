@@ -25,11 +25,12 @@ import java.util.Vector;
  */
 public class RMIClient {
  
-       private static Vector classes = new Vector();
+           private static Vector classes = new Vector();
        public  ArrayList<String> pseudo = new ArrayList<>();
        public  ArrayList<String> flag = new ArrayList<>();
        public  static ArrayList<String> flag2 = new ArrayList<>();
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
+       ArrayList<String> valeurdesj = new ArrayList<>();
        //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
@@ -84,8 +85,8 @@ public class RMIClient {
             if(u.contains(pseu)){
             return null;
                 }else return pseu;
-             
         }
+        
         public String saisieCouleur(RMI rmi, String pseu, ArrayList<String> c) throws RemoteException{
             //Saisier du choix de dés
                 //Manque afficher couleur déja choisit
@@ -94,8 +95,6 @@ public class RMIClient {
             String col = sc1.nextLine();
             
             //Creation des User et des objets couleur
-            
-            
             if(c.contains(col)){
                 return null;
             }else{
@@ -110,10 +109,9 @@ public class RMIClient {
              System.out.println("c'est parti !");
             
             rmi.CreerJoueur(pseu, col);
-          
-       //return jc;
         }
-              //methode affichage des joueurss
+        
+        //methode affichage des joueurss
         public void AfficherJoueur(RMI rmi) throws RemoteException{
             
             System.out.println("Voici les joueurs présent à cet instant");
@@ -135,11 +133,17 @@ public class RMIClient {
             int element=rmi.CompteJoueur();
             return element;
         }
-           
-           //Affichage des des en fonction des joueurs:
-           
-           
-           
+        
+        //Affichage des des en fonction des joueurs:
+        public void AfficherDesJoueur(RMI rmi ,String pseu, String col) throws RemoteException{
+            valeurdesj=rmi.AfficherDesJoueur(pseu,col);
+            int count=valeurdesj.size();
+            System.out.println("Voici vos " +count+ " dés");
+            for (String val : valeurdesj) {
+			System.out.print(val+",");
+                }
+        }
+
         public void FaireChoix(RMI rmi) throws RemoteException{
            // Décision surenchere, menteur, tout pile
            Scanner sc = new Scanner(System.in);
@@ -222,6 +226,7 @@ public class RMIClient {
            go=client.NbJoueurPresent(rmi2);
        }
        client.AfficherJoueur(rmi2);
+       client.AfficherDesJoueur(rmi2, pseu, col);
         
         
         

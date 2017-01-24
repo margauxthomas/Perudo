@@ -68,8 +68,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<String> flag= new ArrayList<>();
     ArrayList<Couleur> cols= new ArrayList<>();
     ArrayList<Joueur> joueurs= new ArrayList<>();
-    private ArrayList<String> valeurdesj;
-    private ArrayList<String> valdesworld;
+    ArrayList<String> valeurdesj = new ArrayList<>();
+    ArrayList<String> valdesworld = new ArrayList<>();
     Partie  p= new Partie("prems","test");
     //Joueur jtest;
     
@@ -98,6 +98,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          Joueur j = new Joueur(c,u);
          //Joueur nj= Joueur.getInstanceJ(co,us);
          joueurs.add(j);
+         p.addjoueur(j);
         
     }
     public Integer CompteJoueur(){
@@ -107,16 +108,20 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          //faire une methode appeler atttribution des qui en fonction parcour l'arraylist
          //des joueurs et attribut à chacun des des
     
-    public void RemplirDesJoueur(Joueur nj){
-         nj.RemplirDes();
-    }
+ 
         
          //methode affichant les des de tt les joueurs 
-    public void AfficherDesJoueur(Joueur nj )throws RemoteException{
+    public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);
+                
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        nj.RemplirDes();
          valeurdesj=nj.AfficherDés();
-         for (String val : valeurdesj) {
+        for (String val : valeurdesj) {
 			System.out.println(val);
 	}
+        return valeurdesj;
     }
     public void AfficherToutDes(){
         for(Joueur J : joueurs){
@@ -164,16 +169,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
 		System.out.println(U.getPseudo());
             }
         }
-         //methode ajout des joueurs dans la partie 
-        public void CreationPartie(Joueur nj){
-       
-            p.addjoueur(nj);
-        }
-             
-        
-    
-    
-    
+
     public ArrayList<Couleur> AfficherCouleur(){
         return cols;
     }

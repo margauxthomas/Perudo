@@ -30,5 +30,6 @@ public interface RMI extends Remote{
     public ArrayList<String> getUser() throws RemoteException;
     public ArrayList<String> getCouleurs() throws RemoteException;
     public Integer CompteJoueur() throws RemoteException;
+    public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException;
     // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 }
