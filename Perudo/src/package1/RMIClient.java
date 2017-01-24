@@ -26,7 +26,8 @@ import java.util.Vector;
 public class RMIClient {
  
        private static Vector classes = new Vector();
-    
+
+  
         public static RMIClient getInstance(){
             
 		RMIClient tmp = new RMIClient();
@@ -45,58 +46,54 @@ public class RMIClient {
 		}
                     return null;
 	}
+        
     public void connectServer(String nom) {
         try{
             Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
             RMI rmi = (RMI) reg.lookup("server");
             System.out.println("Connected to Server");
             
-            //appel de methode sur le server
+        //ARRANGEMENT EN METHODE A FAIRE
             
+        //Début du jeu, enregistrement des joueurs 
+                    
+            //Saisie du pseudo
             String text = rmi.getData("Lets the game begin "+nom);
             System.out.println(text);
             Scanner sc = new Scanner(System.in);
             System.out.println("Veuillez saisir votre pseudo :");
             String pseu = sc.nextLine();
-          
+            
+            //Saisier du choix de dés
+                //Manque afficher couleur déja choisit
             Scanner sc1 = new Scanner(System.in);
             System.out.println("Choisissez une couleur de dés : ");
             String col = sc.nextLine();
             
+            //Creation des User et des objets couleur
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
             System.out.println(lancement);
             
             System.out.println("c'est parti !");
             
-            
+            //Creation du joueur 
             HashMap<String, String> h = new HashMap<>(); 
             h=rmi.CreerJoueur(pseu, col);
-            /*
-            ArrayList<Couleur> names = new ArrayList<Couleur>();
-            names=rmi.AfficherCouleur();
-            for (Couleur C : names) {
-			System.out.println(C);
-		}*/
-           Set cles = h.keySet();
-           Iterator it = cles.iterator();
-           while (it.hasNext()){
-           Object cle = it.next(); 
-           Object valeur = h.get(cle); 
-           System.out.println(cle+ " "+valeur);
-            }
-           
-           //HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
-           /*h2=rmi.CreerPartie();
           
-           System.out.println("hmap de la partie ");
+              Set cles = h.keySet();
+              Iterator it = cles.iterator();
+              while (it.hasNext()){
+              Object cle = it.next(); 
+              Object valeur = h.get(cle); 
+              System.out.println(cle+ " "+valeur);
+                }
            
-           Set cles2=h2.keySet();
-           Iterator it2 = cles2.iterator();
-           while(it2.hasNext()){
-            Object cle2 =it2.next();
-            Object valeur2 = h2.get(cle2);
-            System.out.println(cle2+" "+valeur2);
-        }*/
+              //methode affichage des joueurss
+    
+           
+           //Affichage des des en fonction des joueurs:
+           
+           
            
            
            // Décision surenchere, menteur, tout pile
@@ -156,7 +153,8 @@ public class RMIClient {
         //for(int i = 1; i <= 3; i++)
         //{
         client.getInstance().connectServer("margx");
-            
+        //recupérer le nombre de joueur inscrit
+        //tant que pas egal a 6 ne pas faire la suite
                 
         //}
         

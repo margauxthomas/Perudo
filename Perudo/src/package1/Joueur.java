@@ -20,6 +20,7 @@ public class Joueur {
     private ArrayList<String> valeurdes=new ArrayList<>();
 
      private ArrayList<Dés> dd= new ArrayList<>();
+     
     public void RemplirDes(){
         for(int i = 0; i <5; i++){
         Dés d= new Dés();
