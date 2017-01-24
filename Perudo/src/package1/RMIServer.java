@@ -43,11 +43,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
       
     }
     
-    public String getAnnonce(int choix) throws RemoteException {
+  /*  public String getChoixJ(int choix) throws RemoteException {
         String choice =Integer.toString(choix);
      return "Vous avez annoncé "+choice;
              
-    }
+    }*/
     public String setPseudo(String pseu) throws RemoteException {
         
         pseu="Bienvenue dans le jeu du Perudo "+pseu;

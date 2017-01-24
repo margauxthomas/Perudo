@@ -99,27 +99,55 @@ public class RMIClient {
         }*/
            
            
+           
+            
+                
            // Décision surenchere, menteur, tout pile
+           boolean isNumber = true;
              int choix=0;
+            
            System.out.println("Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
-             while(choix <1 || choix>3){
+             do{
                 System.out.println("Tapez 1 pour surenchérir, 2 pour le menteur, trois pour le tout-pile !"); 
-                choix = sc.nextInt();
-             }
-                if(choix==1){
-                 // Surenchere 
-                int nbDé=0;
-                int faceDé=0;
                 
-                System.out.println("Veuillez entrez votre annonce : ");
-                System.out.println("Nombre de dés sur la table :  ");
-                 nbDé = sc.nextInt();
-           
-                    while(faceDé>6 || faceDé<2){
+                    try{
+                    choix = (int) Integer.parseInt(sc.next());
+                    isNumber = false; // execute que si parseInt ne lance pas d'exception
+                    System.out.println("Vous avez entré " + choix);
+                        } catch(NumberFormatException e){
+                            System.out.println("Vous devez entrer les chiffres 1, 2 ou 3.");
+                        } 
+                } while(choix !=1 && choix!=2 && choix!=3);
+                    if(choix==1){
+                     // Surenchere 
+                    int nbDé=0;
+                    int faceDé=0;
+                    
+                   
+                    do {
+                         System.out.println("Veuillez entrer votre annonce : ");
+                        System.out.println("Nombre de dés sur la table :  ");
+                        
+                    
+                     try{
+                    nbDé = (int) Integer.parseInt(sc.next());
+                    isNumber = false; // execute que si parseInt ne lance pas d'exception
+                        } catch(NumberFormatException e){
+                            System.out.println("Vous devez entrer des chiffres.");
+                        }
+                    } while(nbDé ==0);
+                             
+                    while(faceDé !=2 && faceDé !=3 && faceDé !=4 && faceDé !=5 && faceDé !=6){
                         System.out.println("face des dés :  (compris entre 2 & 6)");
                         System.out.println(faceDé);
-                    faceDé = sc.nextInt();
+                        try{
+                    faceDé = (int) Integer.parseInt(sc.next());
+                    isNumber = false; // execute que si parseInt ne lance pas d'exception
+                        } catch(NumberFormatException e){
+                            System.out.println("Vous devez entrer des chiffres.");
+                        } 
+                    
                    }
           
             System.out.println(rmi.getEnchere(nbDé, faceDé));
@@ -130,9 +158,10 @@ public class RMIClient {
                  // Menteur
                 System.out.println("Vous avez choisi menteur");
                 }
-                
-                else{
+                //System.out.println("avant le else = " + choix);
+                else if(choix==3){
                  // Tout pile
+                 System.out.println("Dans le else j'ai une valeur de " + choix);
                 System.out.println("Vous avez tenté le tout pile !");
                 }
            

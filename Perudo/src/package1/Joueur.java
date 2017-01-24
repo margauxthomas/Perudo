@@ -16,8 +16,10 @@ public class Joueur {
     
     private Couleur pions;
     private User dude;
+    private Annonce val;
   //private ArrayList<Dés> dd;
     private ArrayList<String> valeurdes=new ArrayList<>();
+    private ArrayList<Annonce> ann= new ArrayList<>();
 
      private ArrayList<Dés> dd= new ArrayList<>();
     public void RemplirDes(){
@@ -60,7 +62,14 @@ public class Joueur {
     public ArrayList<Couleur> getCol() {
         return col;
     }
-
+    
+    public ArrayList<Annonce> getAnn() {
+        return ann;
+    }
+    
+     public void setAnn(Annonce val) {
+        this.val = val;
+    }
     public void setPions(Couleur pions) {
         this.pions = pions;
     }
@@ -105,6 +114,7 @@ public class Joueur {
  
     
     ArrayList<Couleur> col= new ArrayList<>();
+    
    
     public void addCouleur(Couleur c)
     {

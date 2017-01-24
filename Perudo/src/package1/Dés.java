@@ -13,7 +13,8 @@ import java.util.Vector;
  *
  * @author stri
  */
-public class Dés {
+public class Dés
+{
    private String valeur;
 
     public String getValeur() {
