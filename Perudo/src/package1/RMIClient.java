@@ -26,8 +26,11 @@ import java.util.Vector;
 public class RMIClient {
  
        private static Vector classes = new Vector();
-       
-  
+       public  ArrayList<String> pseudo = new ArrayList<>();
+       public  ArrayList<String> flag = new ArrayList<>();
+       public  static ArrayList<String> flag2 = new ArrayList<>();
+       public  static ArrayList<String> pseudo2 = new ArrayList<>();
+       //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
 		RMIClient tmp = new RMIClient();
@@ -62,17 +65,28 @@ public class RMIClient {
         //ARRANGEMENT EN METHODE A FAIRE
             
         //Début du jeu, enregistrement des joueurs 
-        public String saisiePseudo(RMI rmi) throws RemoteException{
+        public ArrayList<String> getPseudo(RMI rmi) throws RemoteException {
+              pseudo=rmi.getUser();
+              return pseudo;
+        }
+        public ArrayList<String> getCool(RMI rmi) throws RemoteException {
+              flag=rmi.getCouleurs();
+              return flag;
+        }
+        public String saisiePseudo(RMI rmi, ArrayList<String> u) throws RemoteException{
             //Saisie du pseudo
             String text = rmi.getData("Lets the game begin ");
             System.out.println(text);
             Scanner sc = new Scanner(System.in);
             System.out.println("Veuillez saisir votre pseudo :");
             String pseu = sc.nextLine();
-            
-            return pseu;
+           
+            if(u.contains(pseu)){
+            return null;
+                }else return pseu;
+             
         }
-        public String saisieCouleur(RMI rmi, String pseu) throws RemoteException{
+        public String saisieCouleur(RMI rmi, String pseu, ArrayList<String> c) throws RemoteException{
             //Saisier du choix de dés
                 //Manque afficher couleur déja choisit
             Scanner sc1 = new Scanner(System.in);
@@ -80,10 +94,15 @@ public class RMIClient {
             String col = sc1.nextLine();
             
             //Creation des User et des objets couleur
+            
+            
+            if(c.contains(col)){
+                return null;
+            }else{
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
             System.out.println(lancement);
-            
-            return col;
+                return col;
+            }
         }
            
         public void CreationJoueur(RMI rmi, String pseu, String col) throws RemoteException{
@@ -91,22 +110,30 @@ public class RMIClient {
              System.out.println("c'est parti !");
             
             rmi.CreerJoueur(pseu, col);
-          System.out.println("Je suis apres creerjoueur");
+          
        //return jc;
         }
               //methode affichage des joueurss
         public void AfficherJoueur(RMI rmi) throws RemoteException{
+            
+            System.out.println("Voici les joueurs présent à cet instant");
+            System.out.println("On va attendre que tout le monde soit présent avant de commencer");
               HashMap<String, String> h = new HashMap<>(); 
               
-            h=rmi.AfficherJoueur();
+              h=rmi.AfficherJoueur();
           
               Set cles = h.keySet();
               Iterator it = cles.iterator();
               while (it.hasNext()){
               Object cle = it.next(); 
               Object valeur = h.get(cle); 
-              System.out.println(cle+ " "+valeur);
+              System.out.println("Pseudo : " +cle+ " avec les dés "+valeur);
                 }
+        }
+        
+        public Integer NbJoueurPresent(RMI rmi) throws RemoteException{
+            int element=rmi.CompteJoueur();
+            return element;
         }
            
            //Affichage des des en fonction des joueurs:
@@ -161,7 +188,7 @@ public class RMIClient {
         
     
            
-        public static void main(String args[]) throws RemoteException{
+        public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         int j=0;
         String pseu;
@@ -170,13 +197,30 @@ public class RMIClient {
         if(rmi2==null){
             System.out.println("Erreur de connexion");
         }
-        pseu=client.saisiePseudo(rmi2);
-        col=client.saisieCouleur(rmi2, pseu);
+        pseudo2=client.getPseudo(rmi2);
+        flag2=client.getCool(rmi2);
+        pseu=client.saisiePseudo(rmi2,pseudo2);
+            while(pseu==null){
+             System.out.println("Pseudo deja utilisé, choisissez en un autre");
+             pseu=client.saisiePseudo(rmi2,pseudo2);
+        }
+       
+        col=client.saisieCouleur(rmi2, pseu, flag2);
+        while(col==null){
+             System.out.println("Couleur déja prise !");
+             col=client.saisieCouleur(rmi2,pseu, flag2);
+        }
         client.CreationJoueur(rmi2, pseu, col);
-        
+        client.AfficherJoueur(rmi2);
         //recupérer le nombre de joueur inscrit
         //tant que pas egal a 6 ne pas faire la suite
-                
+       int go;
+       go=client.NbJoueurPresent(rmi2);
+       while(go!=2){
+           System.out.println("On attend le nombre suffisant de joueur");
+           Thread.sleep(4000);
+           go=client.NbJoueurPresent(rmi2);
+       }
        client.AfficherJoueur(rmi2);
         
         

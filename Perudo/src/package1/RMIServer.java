@@ -64,15 +64,27 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     //déclaration de tout les trucs 
     
     ArrayList<User> users= new ArrayList<>();
+    ArrayList<String> pseudo= new ArrayList<>();
+    ArrayList<String> flag= new ArrayList<>();
     ArrayList<Couleur> cols= new ArrayList<>();
     ArrayList<Joueur> joueurs= new ArrayList<>();
     private ArrayList<String> valeurdesj;
     private ArrayList<String> valdesworld;
     Partie  p= new Partie("prems","test");
-    Joueur jtest;
+    //Joueur jtest;
+    
+    public ArrayList<String> getUser(){
+        return pseudo;
+    }
+    
+    public ArrayList<String> getCouleurs(){
+        return flag;
+    }
      
     public void CreerJoueur(String pseu, String col) throws RemoteException{
-        System.out.println("je suis dans creer joueur");
+        
+        pseudo.add(pseu);
+        flag.add(col);
         User u = new User(pseu);
         //User us= User.getInstanceU(pseu);
         Couleur c = new Couleur(col);
@@ -86,8 +98,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          Joueur j = new Joueur(c,u);
          //Joueur nj= Joueur.getInstanceJ(co,us);
          joueurs.add(j);
-         System.out.println("je suis a la fin de creer joueur");
         
+    }
+    public Integer CompteJoueur(){
+        int element=joueurs.size();
+        return element;
     }
          //faire une methode appeler atttribution des qui en fonction parcour l'arraylist
          //des joueurs et attribut à chacun des des
@@ -117,11 +132,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
       
     //methode affichant tous le joueurs
          public HashMap<String, String> AfficherJoueur(){
-          System.out.println("je suis avant l'appel");
+          
           HashMap<String, String> h1 = new HashMap<>(); 
           //h1=jtest.getJoueurs(joueurs);
-          System.out.println("je suis apres l'appel");
-          
+         
           for(Joueur J:joueurs){
                 Couleur ctmp=J.getPions();
                 User utmp=J.getDude();
