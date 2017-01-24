@@ -67,43 +67,66 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<Couleur> cols= new ArrayList<>();
     ArrayList<Joueur> joueurs= new ArrayList<>();
     private ArrayList<String> valeurdesj;
+    private ArrayList<String> valdesworld;
     Partie  p= new Partie("prems","test");
+    Joueur jtest;
      
-    public HashMap<String, String> CreerJoueur(String pseu, String col){
-        
+    public void CreerJoueur(String pseu, String col) throws RemoteException{
+        System.out.println("je suis dans creer joueur");
         User u = new User(pseu);
-        User us= u.getInstanceU(pseu);
+        //User us= User.getInstanceU(pseu);
         Couleur c = new Couleur(col);
-        Couleur co = c.getInstanceC(col);
+        //Couleur co = Couleur.getInstanceC(col);
 
         //ajout dans l'arret liste
-         users.add(us);
-         cols.add(co);
+         users.add(u);
+         cols.add(c);
          
         //creation joueur avec les attributs declaré 
-         Joueur j = new Joueur(co,us);
-         Joueur nj=j.getInstanceJ(co,us);
-         joueurs.add(nj);
-         
+         Joueur j = new Joueur(c,u);
+         //Joueur nj= Joueur.getInstanceJ(co,us);
+         joueurs.add(j);
+         System.out.println("je suis a la fin de creer joueur");
+        
+    }
          //faire une methode appeler atttribution des qui en fonction parcour l'arraylist
          //des joueurs et attribut à chacun des des
+    
+    public void RemplirDesJoueur(Joueur nj){
          nj.RemplirDes();
-         
+    }
+        
          //methode affichant les des de tt les joueurs 
-         
+    public void AfficherDesJoueur(Joueur nj )throws RemoteException{
          valeurdesj=nj.AfficherDés();
          for (String val : valeurdesj) {
 			System.out.println(val);
 	}
+    }
+    public void AfficherToutDes(){
+        for(Joueur J : joueurs){
+            valdesworld=J.AfficherDés();
+                for(String val: valdesworld){
+                    System.out.println(val);
+                }
+        }
+    }
         
         //methode affichant les des en fonction d'un joueur en particulier
          
-        HashMap<String, String> h1 = new HashMap<>(); 
-        //h=j.getJoueurs(users, cols);
-        
-        //methode affichant tous le joueurs 
-        h1=j.getJoueurs(joueurs);
-                    
+      
+    //methode affichant tous le joueurs
+         public HashMap<String, String> AfficherJoueur(){
+          System.out.println("je suis avant l'appel");
+          HashMap<String, String> h1 = new HashMap<>(); 
+          //h1=jtest.getJoueurs(joueurs);
+          System.out.println("je suis apres l'appel");
+          
+          for(Joueur J:joueurs){
+                Couleur ctmp=J.getPions();
+                User utmp=J.getDude();
+                 h1.put(utmp.getPseudo(), ctmp.getCouleur());
+            }
            Set cles = h1.keySet();
            Iterator it = cles.iterator();
            while (it.hasNext()){
@@ -112,23 +135,29 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
            System.out.println(cle+ " "+valeur);
         
            }
-           
+          return h1; 
+         }
+        public void AfficherCouleurlist(){
         //methode affichant les couleurs
               for (Couleur C : cols) {
 			System.out.println(C.getCouleur());
             }
-              
+        }
         //methode affichant les utilisateurs
+        
+        public void AfficherPseudo(){
               for (User U : users) {
 		System.out.println(U.getPseudo());
             }
-        
-        //methide ajout des joueurs dans la partie 
+        }
+         //methode ajout des joueurs dans la partie 
+        public void CreationPartie(Joueur nj){
+       
             p.addjoueur(nj);
-              
+        }
              
-        return h1;
-    }
+        
+    
     
     
     public ArrayList<Couleur> AfficherCouleur(){

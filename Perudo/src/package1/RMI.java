@@ -23,8 +23,9 @@ public interface RMI extends Remote{
      public String getAnnonce(int choix) throws RemoteException;    
     public String setPseudo(String pseu) throws RemoteException;
     public String setCouleur(String col) throws RemoteException;
-    public HashMap<String, String> CreerJoueur(String pseu, String col) throws RemoteException;
+    public void CreerJoueur(String pseu, String col) throws RemoteException;
     public ArrayList<Couleur> AfficherCouleur() throws RemoteException;
     public ArrayList<User> AfficherUser() throws RemoteException;
+    public HashMap<String, String> AfficherJoueur()  throws RemoteException ;
     // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 }

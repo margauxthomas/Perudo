@@ -26,7 +26,7 @@ import java.util.Vector;
 public class RMIClient {
  
        private static Vector classes = new Vector();
-
+       
   
         public static RMIClient getInstance(){
             
@@ -47,38 +47,58 @@ public class RMIClient {
                     return null;
 	}
         
-    public void connectServer(String nom) {
+    public RMI connectServer() {
         try{
             Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
             RMI rmi = (RMI) reg.lookup("server");
             System.out.println("Connected to Server");
-            
+            return rmi;
+        }catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
+    }
+        
         //ARRANGEMENT EN METHODE A FAIRE
             
         //Début du jeu, enregistrement des joueurs 
-                    
+        public String saisiePseudo(RMI rmi) throws RemoteException{
             //Saisie du pseudo
-            String text = rmi.getData("Lets the game begin "+nom);
+            String text = rmi.getData("Lets the game begin ");
             System.out.println(text);
             Scanner sc = new Scanner(System.in);
             System.out.println("Veuillez saisir votre pseudo :");
             String pseu = sc.nextLine();
             
+            return pseu;
+        }
+        public String saisieCouleur(RMI rmi, String pseu) throws RemoteException{
             //Saisier du choix de dés
                 //Manque afficher couleur déja choisit
             Scanner sc1 = new Scanner(System.in);
             System.out.println("Choisissez une couleur de dés : ");
-            String col = sc.nextLine();
+            String col = sc1.nextLine();
             
             //Creation des User et des objets couleur
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
             System.out.println(lancement);
             
-            System.out.println("c'est parti !");
-            
+            return col;
+        }
+           
+        public void CreationJoueur(RMI rmi, String pseu, String col) throws RemoteException{
             //Creation du joueur 
-            HashMap<String, String> h = new HashMap<>(); 
-            h=rmi.CreerJoueur(pseu, col);
+             System.out.println("c'est parti !");
+            
+            rmi.CreerJoueur(pseu, col);
+          System.out.println("Je suis apres creerjoueur");
+       //return jc;
+        }
+              //methode affichage des joueurss
+        public void AfficherJoueur(RMI rmi) throws RemoteException{
+              HashMap<String, String> h = new HashMap<>(); 
+              
+            h=rmi.AfficherJoueur();
           
               Set cles = h.keySet();
               Iterator it = cles.iterator();
@@ -87,16 +107,15 @@ public class RMIClient {
               Object valeur = h.get(cle); 
               System.out.println(cle+ " "+valeur);
                 }
-           
-              //methode affichage des joueurss
-    
+        }
            
            //Affichage des des en fonction des joueurs:
            
            
            
-           
+        public void FaireChoix(RMI rmi) throws RemoteException{
            // Décision surenchere, menteur, tout pile
+           Scanner sc = new Scanner(System.in);
              int choix=0;
            System.out.println("Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
@@ -133,30 +152,34 @@ public class RMIClient {
                 System.out.println("Vous avez tenté le tout pile !");
                 }
            
-            
+        }
             
           
                 
            
 
-            
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-           public void CreationPartie(){
+        
+    
            
-        }
-        public static void main(String args[]){
+        public static void main(String args[]) throws RemoteException{
         RMIClient client = new RMIClient();
         int j=0;
-        //for(int i = 1; i <= 3; i++)
-        //{
-        client.getInstance().connectServer("margx");
+        String pseu;
+        String col;
+        RMI rmi2=client.getInstance().connectServer();
+        if(rmi2==null){
+            System.out.println("Erreur de connexion");
+        }
+        pseu=client.saisiePseudo(rmi2);
+        col=client.saisieCouleur(rmi2, pseu);
+        client.CreationJoueur(rmi2, pseu, col);
+        
         //recupérer le nombre de joueur inscrit
         //tant que pas egal a 6 ne pas faire la suite
                 
-        //}
+       client.AfficherJoueur(rmi2);
+        
+        
         
         
         
