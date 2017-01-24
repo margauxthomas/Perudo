@@ -31,6 +31,7 @@ public class RMIClient {
        public  static ArrayList<String> flag2 = new ArrayList<>();
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
        ArrayList<String> valeurdesj = new ArrayList<>();
+       ArrayList<String> valdesworld = new ArrayList<>();
        //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
@@ -143,12 +144,27 @@ public class RMIClient {
 			System.out.print(val+",");
                 }
         }
+        public void AfficherDesPartie(RMI rmi) throws RemoteException{
+            valdesworld=rmi.AfficherToutDes();
+            System.out.println("\n Dés de tout le monde :" );
+            for(String vald: valdesworld){
+            System.out.print(vald+",");
+            }
+        }
+        public void ResultatCompterDes(Integer nb, Integer val, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.Comparaison(nb, val);
+            if(resultat){
+                System.out.println("\n Il y a bien le nombre de dés annoncé à cette valeur");
+            }else{
+                System.out.println("\n Menteur !! ");
+            }
+        }
 
         public void FaireChoix(RMI rmi) throws RemoteException{
            // Décision surenchere, menteur, tout pile
            Scanner sc = new Scanner(System.in);
              int choix=0;
-           System.out.println("Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
+           System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
              while(choix <1 || choix>3){
                 System.out.println("Tapez 1 pour surenchérir, 2 pour le menteur, trois pour le tout-pile !"); 
@@ -184,7 +200,7 @@ public class RMIClient {
                 }
            
         }
-            
+        
           
                 
            
@@ -197,7 +213,7 @@ public class RMIClient {
         int j=0;
         String pseu;
         String col;
-        RMI rmi2=client.getInstance().connectServer();
+        RMI rmi2=client.connectServer();
         if(rmi2==null){
             System.out.println("Erreur de connexion");
         }
@@ -222,13 +238,18 @@ public class RMIClient {
        go=client.NbJoueurPresent(rmi2);
        while(go!=2){
            System.out.println("On attend le nombre suffisant de joueur");
-           Thread.sleep(4000);
+           Thread.sleep(2000);
            go=client.NbJoueurPresent(rmi2);
        }
        client.AfficherJoueur(rmi2);
+      
        client.AfficherDesJoueur(rmi2, pseu, col);
-        
-        
+       
+       //client.FaireChoix(rmi2);
+       client.AfficherDesPartie(rmi2);
+       //client.ResultatCompterDes(3, 2, rmi2);
+       
+       
         
         
         

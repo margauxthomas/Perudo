@@ -109,8 +109,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
          //des joueurs et attribut à chacun des des
     
  
+        //methode affichant les des en fonction d'un joueur en particulier
         
-         //methode affichant les des de tt les joueurs 
     public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException{
         Couleur cattri1=Couleur.getInstanceC(attri1);
         User uattri2=User.getInstanceU(attri2);
@@ -119,20 +119,44 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         nj.RemplirDes();
          valeurdesj=nj.AfficherDés();
         for (String val : valeurdesj) {
+                        valdesworld.add(val);
 			System.out.println(val);
 	}
+        
         return valeurdesj;
     }
-    public void AfficherToutDes(){
-        for(Joueur J : joueurs){
-            valdesworld=J.AfficherDés();
-                for(String val: valdesworld){
-                    System.out.println(val);
+    
+     //methode affichant les des de tt les joueurs 
+    
+    public ArrayList<String> AfficherToutDes(){
+        
+        for(String vald: valdesworld){
+            System.out.println("des tt le monde :" +vald);
                 }
-        }
+        return valdesworld;
+    }
+    public Boolean Comparaison(Integer nb, Integer val){
+        String v =Integer.toString(val);
+        int c=0;
+        Boolean resultat=null;
+        for(String vald: valdesworld){
+            if(vald.equals("perudo")){
+                vald=v;
+                if (vald.equals(v)){
+                c++;
+                }
+            }else if(vald.equals(v)){
+                c++;
+                }
+            }
+        System.out.println("nombre "+c);
+        if(c<nb){
+            resultat=false;
+        }else resultat=true;
+    return resultat;
     }
         
-        //methode affichant les des en fonction d'un joueur en particulier
+        
          
       
     //methode affichant tous le joueurs
