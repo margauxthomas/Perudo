@@ -25,7 +25,7 @@ import java.util.Vector;
  */
 public class RMIClient {
  
-           private static Vector classes = new Vector();
+       private static Vector classes = new Vector();
        public  ArrayList<String> pseudo = new ArrayList<>();
        public  ArrayList<String> flag = new ArrayList<>();
        public  static ArrayList<String> flag2 = new ArrayList<>();
