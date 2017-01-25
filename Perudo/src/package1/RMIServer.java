@@ -37,18 +37,14 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
        return text;
     }
     
-    public String getEnchere(int nbDé,int faceDé) throws RemoteException {
+  /*  public String getEnchere(int nbDé,int faceDé) throws RemoteException {
      String Dé = Integer.toString(nbDé);
       String faceduDé =Integer.toString(faceDé);
       return "Vous avez annoncé " + Dé+" dés " +faceduDé;
       
-    }
-    
-  /*  public String getChoixJ(int choix) throws RemoteException {
-        String choice =Integer.toString(choix);
-     return "Vous avez annoncé "+choice;
-             
     }*/
+    
+    
     public String setPseudo(String pseu) throws RemoteException {
         
         pseu="Bienvenue dans le jeu du Perudo "+pseu;
@@ -221,6 +217,19 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         nj.setPassage(1);
     }
+    
+    public String RecuperationAnn(int nombreDé, int faceduDé, String attri1, String attri2) throws RemoteException {
+        
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);
+                
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        Annonce a = new Annonce(nombreDé,faceduDé);
+         nj.setVal(a);
+        
+         return "Vous avez annoncé "+nombreDé+" dés "+faceduDé;
+
+        }
     
     //methode affichant tous le joueurs
          public HashMap<String, String> AfficherJoueur(){

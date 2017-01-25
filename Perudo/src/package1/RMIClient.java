@@ -173,6 +173,11 @@ public class RMIClient {
             }
         }
 
+        
+        public void EnvoiEnchere(RMI rmi,Integer nbDé ,Integer valDé ,String pseu,String col) throws RemoteException{
+            rmi.RecuperationAnn(nbDé,valDé,pseu,col);
+        }
+        
         public void FaireChoix(RMI rmi) throws RemoteException{
             
            // Décision surenchere, menteur, tout pile
@@ -223,9 +228,9 @@ public class RMIClient {
                         } 
                     
                    }
-          
+          /*
             System.out.println(rmi.getEnchere(nbDé, faceDé));
-            
+            */
                 }
                 
                 if(choix==2){
