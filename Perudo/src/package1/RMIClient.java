@@ -32,11 +32,15 @@ public class RMIClient {
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
        ArrayList<String> valeurdesj = new ArrayList<>();
        ArrayList<String> valdesworld = new ArrayList<>();
+
        int choix=0;
        boolean isNumber = true;
        Scanner scanch = new Scanner(System.in);
        int nbDé =0;
        int faceDé =0;
+
+       ArrayList<Annonce> ttlesann = new ArrayList<>();
+
        //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
@@ -169,8 +173,8 @@ public class RMIClient {
             System.out.print(vald+",");
             }
         }
-        public void ResultatCompterDes(Integer nb, Integer val, RMI rmi) throws RemoteException{
-            Boolean resultat=rmi.Comparaison(nb, val);
+        public void ResultatCompterDes(Integer numj, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.OnCompte(numj);
             if(resultat){
                 System.out.println("\n Il y a bien le nombre de dés annoncé à cette valeur");
             }else{
@@ -181,6 +185,13 @@ public class RMIClient {
         
         public void EnvoiEnchere(RMI rmi,Integer nbDé ,Integer valDé ,String pseu,String col) throws RemoteException{
             rmi.RecuperationAnn(nbDé,valDé,pseu,col);
+        }
+        
+        public void AfficherAnnonce(RMI rmi) throws RemoteException{
+            ttlesann=rmi.AfficherTouteAnnonces();
+            for(Annonce A:ttlesann){
+                System.out.println("Nombre de dés :"+A.getDé()+ " ayant une valeur de "+A.getAnnValDé());
+            }
         }
         
         
@@ -312,6 +323,7 @@ public class RMIClient {
        System.out.println("A votre tour");
        client.FaireChoix(rmi2);
        
+       client.ResultatCompterDes(num, rmi2);
        client.AfficherDesPartie(rmi2);
        //client.ResultatCompterDes(3, 2, rmi2);
        

@@ -67,10 +67,12 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<Joueur> joueurs= new ArrayList<>();
     ArrayList<String> valeurdesj = new ArrayList<>();
     ArrayList<String> valdesworld = new ArrayList<>();
+    ArrayList<Annonce> ttlesann = new ArrayList<>();
     Partie  p= new Partie("prems","test");
     Integer passage=1;
     Integer compteur=1;
-  //  RMIServer rmiserver = new RMIServer();
+    Boolean resultat;
+    //RMIServer rmiserver = new RMIServer();
     //Joueur jtest;
     
     public ArrayList<String> getUser(){
@@ -157,6 +159,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     
     
     
+    
      //methode affichant les des de tt les joueurs 
     
     public ArrayList<String> AfficherToutDes(){
@@ -166,6 +169,47 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 }
         
         return valdesworld;
+    }
+    public boolean OnCompte(Integer numj) throws RemoteException{
+        RecupererLastJoueur(numj);
+        return resultat;
+    }
+    
+    public void RecupererLastJoueur(Integer numj) throws RemoteException{
+        String pseulj=null;
+        String collj=null;
+        
+        String pseujec=null;
+        String coljec=null;
+        
+            for(Joueur J :joueurs){
+                if(J.getPassage().equals(numj-1)){
+                    pseulj=J.getDude().getPseudo();
+                    collj=J.getPions().getCouleur();
+                    RecupererAnnonce(pseulj,collj);
+                }
+                if(J.getPassage().equals(numj)){
+                    pseujec=J.getDude().getPseudo();
+                    coljec=J.getPions().getCouleur();
+                }
+                }
+            if(resultat){
+                EnleverDes(pseujec, coljec);
+            }else EnleverDes(pseulj,collj );
+    }
+    
+    public void RecupererAnnonce(String attri1, String attri2){
+        int nb;
+        int val;
+        
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);
+                
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        nb=nj.getVal().getDé();
+        val=nj.getVal().getAnnValDé();
+        resultat=Comparaison(nb,val);
+  
     }
     
     
@@ -225,12 +269,18 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
         Annonce a = new Annonce(nombreDé,faceduDé);
-         nj.setVal(a);
-        
+        ttlesann.add(a);
+        nj.setVal(a);
+        compteur++;
+        //int test;
+        //test=nj.getVal().getAnnValDé();
          return "Vous avez annoncé "+nombreDé+" dés "+faceduDé;
-
+         
         }
-    
+    public ArrayList<Annonce> AfficherTouteAnnonces() throws RemoteException{
+      
+        return ttlesann;
+    }
     //methode affichant tous le joueurs
          public HashMap<String, String> AfficherJoueur(){
           
