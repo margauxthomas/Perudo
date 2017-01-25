@@ -63,16 +63,6 @@ public class Joueur {
    
     
 
-    public Annonce getVal() {
-        return val;
-    }
-
-    public void setVal(Annonce val) {
-        this.val = val;
-    }
-   
-    
-
     public void setDude(User dude) {
         this.dude = dude;
     }
