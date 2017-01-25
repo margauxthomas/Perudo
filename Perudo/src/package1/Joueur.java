@@ -44,6 +44,16 @@ public class Joueur {
            this.dude=dude;
     }
 
+    public Annonce getVal() {
+        return val;
+    }
+
+    public void setVal(Annonce val) {
+        this.val = val;
+    }
+   
+    
+
     public void setDude(User dude) {
         this.dude = dude;
     }
@@ -63,14 +73,7 @@ public class Joueur {
     public ArrayList<Couleur> getCol() {
         return col;
     }
-    
-    public ArrayList<Annonce> getAnn() {
-        return ann;
-    }
-    
-     public void setAnn(Annonce val) {
-        this.val = val;
-    }
+
     public void setPions(Couleur pions) {
         this.pions = pions;
     }

@@ -13,19 +13,22 @@ import java.util.*;
  */
 public class Annonce {
     
-   private ArrayList<String> annonce1=new ArrayList<>();
-    private int nbDé;
+      private int nbDé;
     private int valDé;
-    private String valeur;
-    String nombreDé = Integer.toString(nbDé);
-    String valeurDé = Integer.toString(valDé);
-    String annonce = nombreDé+"dés"+valeurDé;
-
-    public String getAnn() {
-        return annonce;
-    }    
     
-     public void setAnn(String val) {
-        this.valeur = val;
+    //Constructeur
+   public Annonce (int nbDé, int valDé) {
+    this.nbDé= nbDé;
+    this.valDé = valDé;
+   }  
+   public int getDé() {
+        return nbDé;
+    }    
+    public int getAnnValDé() {
+        return valDé;
+    }    
+     public void setAnnonce(int nbDé, int valDé) {
+        this.nbDé = nbDé;
+        this.valDé = valDé;
     }
 }
