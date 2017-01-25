@@ -32,6 +32,11 @@ public class RMIClient {
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
        ArrayList<String> valeurdesj = new ArrayList<>();
        ArrayList<String> valdesworld = new ArrayList<>();
+       int choix=0;
+       boolean isNumber = true;
+       Scanner scanch = new Scanner(System.in);
+       int nbDé =0;
+       int faceDé =0;
        //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
@@ -178,13 +183,10 @@ public class RMIClient {
             rmi.RecuperationAnn(nbDé,valDé,pseu,col);
         }
         
-        public void FaireChoix(RMI rmi) throws RemoteException{
-            
-           // Décision surenchere, menteur, tout pile
+        
+        // Décision surenchere, menteur, tout pile
+        public int FaireChoix(RMI rmi) throws RemoteException{
           
-           boolean isNumber = true;
-           Scanner scanch = new Scanner(System.in);
-             int choix=0;
            System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
              do{
@@ -198,12 +200,25 @@ public class RMIClient {
                             System.out.println("Vous devez entrer les chiffres 1, 2 ou 3.");
                         } 
                 } while(choix !=1 && choix!=2 && choix!=3);
-                    if(choix==1){
-                     // Surenchere 
-                    int nbDé=0;
-                    int faceDé=0;
-                    
-                   
+             
+             if(choix==1){
+                SurenchereDé();
+                SurenchereFaceDé();
+             }
+              if(choix==2){
+                 Menteur();
+             }
+               if(choix==3){
+                 ToutPile();
+             }
+             
+             return choix;
+        }
+        
+        // Methode surenchere rajout de dés
+            public void SurenchereDé() throws RemoteException{
+                          
+ 
                     do {
                          System.out.println("Veuillez entrer votre annonce : ");
                         System.out.println("Nombre de dés sur la table :  ");
@@ -217,7 +232,12 @@ public class RMIClient {
                             System.out.println("Vous devez entrer des chiffres.");
                         }
                     } while(nbDé ==0);
-                             
+                   
+                   
+            }  
+            
+            // Methode surenchere face de dés
+             public void SurenchereFaceDé() throws RemoteException{                                   
                     while(faceDé !=2 && faceDé !=3 && faceDé !=4 && faceDé !=5 && faceDé !=6){
                         System.out.println("face des dés :  (compris entre 2 & 6)");
                         try{
@@ -226,33 +246,24 @@ public class RMIClient {
                         } catch(NumberFormatException e){
                             System.out.println("Vous devez entrer des chiffres.");
                         } 
-                    
                    }
-          /*
-            System.out.println(rmi.getEnchere(nbDé, faceDé));
-            */
-                }
+             }
+             
+             public void Menteur() throws RemoteException{
                 
-                if(choix==2){
-                 // Menteur
+                 
                 System.out.println("Vous avez choisi menteur");
                 }
-                //System.out.println("avant le else = " + choix);
-                else if(choix==3){
-                 // Tout pile
-                 System.out.println("Dans le else j'ai une valeur de " + choix);
-                System.out.println("Vous avez tenté le tout pile !");
-                }
-           
-        }
-        
-          
-                
-           
 
+
+                public void ToutPile() throws RemoteException{
+                 
+                System.out.println("Vous avez tenté le tout pile !");
+                }  
+            
         
-    
-           
+        
+
         public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         int j=0;

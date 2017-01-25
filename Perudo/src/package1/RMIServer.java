@@ -70,7 +70,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     Partie  p= new Partie("prems","test");
     Integer passage=1;
     Integer compteur=1;
-    RMIServer rmiserver = new RMIServer();
+  //  RMIServer rmiserver = new RMIServer();
     //Joueur jtest;
     
     public ArrayList<String> getUser(){

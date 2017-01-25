@@ -23,8 +23,7 @@ public interface RMI extends Remote{
     public String setPseudo(String pseu) throws RemoteException;
     public String setCouleur(String col) throws RemoteException;
     public void CreerJoueur(String pseu, String col) throws RemoteException;
-    public String RecuperationAnn(int nombreDé, int faceduDé, String attri1, String attri2) throws RemoteException;
-    
+    public String RecuperationAnn(int nombreDé, int faceduDé, String attri1, String attri2) throws RemoteException; 
     public ArrayList<Couleur> AfficherCouleur() throws RemoteException;
     public ArrayList<User> AfficherUser() throws RemoteException;
     public HashMap<String, String> AfficherJoueur()  throws RemoteException ;
