@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
@@ -71,6 +72,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<String> valeurdesj = new ArrayList<>();
     ArrayList<String> valdesworld = new ArrayList<>();
     Partie  p= new Partie("prems","test");
+    Integer passage=1;
+    Integer compteur=1;
+    RMIServer rmiserver = new RMIServer();
     //Joueur jtest;
     
     public ArrayList<String> getUser(){
@@ -126,6 +130,37 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return valeurdesj;
     }
     
+    public Integer SetOrdre(String attri1, String attri2)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);        
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        System.out.println("Attributiion numéro de passage "+passage);
+        nj.setPassage(passage);
+        passage++;
+        Integer numero;
+        numero=nj.getPassage();
+        System.out.println("num du joueur"+numero);
+        return numero;
+    }
+    
+    public Boolean RetrouverOrdreJoueur(Integer numero)throws RemoteException{
+       
+        
+        Boolean ordre;
+        
+        System.out.println("numero de passage "+numero);
+        System.out.println("jeton :"+compteur);
+        if(Objects.equals(numero, compteur)){
+            ordre=true;
+        }else ordre=false;
+        System.out.println("Resultat ordre: "+ordre);
+         
+        return ordre;
+    }
+    
+    
+    
+    
      //methode affichant les des de tt les joueurs 
     
     public ArrayList<String> AfficherToutDes(){
@@ -133,8 +168,12 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         for(String vald: valdesworld){
             System.out.println("des tt le monde :" +vald);
                 }
+        
         return valdesworld;
     }
+    
+    
+    
     public Boolean Comparaison(Integer nb, Integer val){
         String v =Integer.toString(val);
         int c=0;
@@ -155,10 +194,34 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }else resultat=true;
     return resultat;
     }
+    
+    public void EnleverDes(String attri1, String attri2)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);        
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        nj.EnleverDes();
         
-        
-         
-      
+        for(int i=0;i<nj.getPassage();i++){
+            int tmp;
+            tmp= joueurs.get(i).getPassage();
+            joueurs.get(i).setPassage(tmp+1);
+        }
+        nj.setPassage(1);
+    }
+    
+    public void AjouterDes(String attri1, String attri2)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);        
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        nj.AjouterDes();
+            for(int i=0;i<nj.getPassage();i++){
+            int tmp;
+            tmp= joueurs.get(i).getPassage();
+            joueurs.get(i).setPassage(tmp+1);
+        }
+        nj.setPassage(1);
+    }
+    
     //methode affichant tous le joueurs
          public HashMap<String, String> AfficherJoueur(){
           

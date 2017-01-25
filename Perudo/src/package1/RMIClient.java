@@ -144,6 +144,19 @@ public class RMIClient {
 			System.out.print(val+",");
                 }
         }
+        public Integer AttribuerOrdre(String pseu, String col, RMI rmi) throws RemoteException{
+            Integer numero;
+            numero=rmi.SetOrdre(pseu, col);
+            return numero;
+        }
+        
+        public Boolean AQuiDeJouer(Integer num, RMI rmi) throws RemoteException{
+            Boolean ordre;
+            ordre=rmi.RetrouverOrdreJoueur(num);
+            System.out.println(ordre);
+            return ordre;
+        }
+        
         public void AfficherDesPartie(RMI rmi) throws RemoteException{
             valdesworld=rmi.AfficherToutDes();
             System.out.println("\n Dés de tout le monde :" );
@@ -240,6 +253,8 @@ public class RMIClient {
         int j=0;
         String pseu;
         String col;
+        Boolean ordre;
+        Integer num;
         RMI rmi2=client.connectServer();
         if(rmi2==null){
             System.out.println("Erreur de connexion");
@@ -272,7 +287,15 @@ public class RMIClient {
       
        client.AfficherDesJoueur(rmi2, pseu, col);
        
+       num=client.AttribuerOrdre(pseu, col, rmi2);
+       ordre=client.AQuiDeJouer(num, rmi2);
+       while(!ordre){
+           System.out.println("Attendez votre tour");
+           Thread.sleep(8000);
+       }
+       System.out.println("A votre tour");
        client.FaireChoix(rmi2);
+       
        client.AfficherDesPartie(rmi2);
        //client.ResultatCompterDes(3, 2, rmi2);
        
