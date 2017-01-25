@@ -1,5 +1,5 @@
 package package1;
-
+import java.rmi.RemoteException;
 import java.util.Enumeration;
 import java.util.Vector;
 

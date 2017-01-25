@@ -65,10 +65,13 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<String> flag= new ArrayList<>();
     ArrayList<Couleur> cols= new ArrayList<>();
     ArrayList<Joueur> joueurs= new ArrayList<>();
+    ArrayList<Joueur> joueurspa= new ArrayList<>();
+    ArrayList<Joueur> joueursann= new ArrayList<>();
     ArrayList<String> valeurdesj = new ArrayList<>();
     ArrayList<String> valdesworld = new ArrayList<>();
     ArrayList<Annonce> ttlesann = new ArrayList<>();
     Partie  p= new Partie("prems","test");
+    
     Integer passage=1;
     Integer compteur=1;
     Boolean resultat;
@@ -129,15 +132,20 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     }
     
     public Integer SetOrdre(String attri1, String attri2)throws RemoteException{
-        Couleur cattri1=Couleur.getInstanceC(attri1);
-        User uattri2=User.getInstanceU(attri2);        
+        Couleur cattri1=Couleur.getInstanceC(attri2);
+        User uattri2=User.getInstanceU(attri1);        
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
         System.out.println("Attributiion numéro de passage "+passage);
         nj.setPassage(passage);
         passage++;
         Integer numero;
         numero=nj.getPassage();
+        joueurspa.add(nj);
         System.out.println("num du joueur"+numero);
+        for(Joueur J:joueurspa){
+            System.out.println("dans setordre");
+            System.out.println(J.getPassage());
+        }
         return numero;
     }
     
@@ -174,41 +182,81 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         RecupererLastJoueur(numj);
         return resultat;
     }
-    
+    public void AfficherNumPassage(){
+        for(Joueur J:joueurs){
+            System.out.println(J.getPassage());
+        }
+    }
     public void RecupererLastJoueur(Integer numj) throws RemoteException{
         String pseulj=null;
         String collj=null;
         
         String pseujec=null;
         String coljec=null;
-        
-            for(Joueur J :joueurs){
-                if(J.getPassage().equals(numj-1)){
+        System.out.println("je suis dans recuperer lasjoueur");
+        AfficherNumPassage();
+            for(Joueur J :joueurspa){
+                System.out.println("je suis dans la boucle for");
+                int p=0;
+                p=J.getPassage();
+                if(p==(numj)){
+                pseujec=J.getDude().getPseudo();
+                coljec=J.getPions().getCouleur();
+                }
+                //System.out.println(J.getDude().getPseudo());
+                if(p==(numj-1)){
+                   System.out.println("recuperation du joueur precedent");
                     pseulj=J.getDude().getPseudo();
+                    System.out.println("le pseudo recupérer"+pseulj);
                     collj=J.getPions().getCouleur();
+                    System.out.println("la couleur recuperer"+collj);
                     RecupererAnnonce(pseulj,collj);
+                    TraitementResultat(pseujec, coljec,pseulj, collj);
                 }
-                if(J.getPassage().equals(numj)){
-                    pseujec=J.getDude().getPseudo();
-                    coljec=J.getPions().getCouleur();
+
+                
                 }
-                }
-            if(resultat){
-                EnleverDes(pseujec, coljec);
-            }else EnleverDes(pseulj,collj );
+
     }
-    
+    public void TraitementResultat(String pseujec, String coljec, String pseulj, String collj) throws RemoteException{
+                    if(resultat){
+                System.out.println("je suis dans le cas ou le resultat est bon");
+                EnleverDes(pseujec, coljec);
+            }else {
+                        System.out.println("je suis dans le cas ou le resultat est pas bon");
+                        EnleverDes(pseulj,collj);
+                    }
+    }
     public void RecupererAnnonce(String attri1, String attri2){
-        int nb;
-        int val;
+        int nb=0;
+        int val=0;
         
+        System.out.println("attribut transmit : "+attri1);
+        System.out.println("attribut transmit : "+attri2);
         Couleur cattri1=Couleur.getInstanceC(attri1);
         User uattri2=User.getInstanceU(attri2);
                 
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
-        nb=nj.getVal().getDé();
-        val=nj.getVal().getAnnValDé();
+        System.out.println(nj.getDude().getPseudo());
+        //System.out.println(nb);
+        
+        for(Joueur J:joueursann){
+            
+                nb=J.getVal().getDé();
+                val=J.getVal().getAnnValDé();
+            
+            
+        }
+        //nb=nj.getVal().getDé();
+        System.out.println(nb);
+        System.out.println(val);
+        //Annonce a;
+        //a=nj.getVal();
+        //val=a.getAnnValDé();
+        //val=nj.getVal().getAnnValDé();
+        //System.out.println(val);
         resultat=Comparaison(nb,val);
+        System.out.println(resultat);
   
     }
     
@@ -232,21 +280,44 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         if(c<nb){
             resultat=false;
         }else resultat=true;
+        System.out.println(resultat);
     return resultat;
     }
     
     public void EnleverDes(String attri1, String attri2)throws RemoteException{
-        Couleur cattri1=Couleur.getInstanceC(attri1);
-        User uattri2=User.getInstanceU(attri2);        
-        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
-        nj.EnleverDes();
         
-        for(int i=0;i<nj.getPassage();i++){
-            int tmp;
-            tmp= joueurs.get(i).getPassage();
-            joueurs.get(i).setPassage(tmp+1);
+        Couleur cattri1=Couleur.getInstanceC(attri2);
+        User uattri2=User.getInstanceU(attri1);        
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        //nj.EnleverDes();
+        String test=nj.getDude().getPseudo();
+        //System.out.println("numero de passage du perdant"+nj.getPassage());
+        int rang=0;
+        System.out.println("je suis avant le for");
+        for(Joueur J:joueurspa){
+            String test2=J.getDude().getPseudo();
+            System.out.println("je suis dans le for");
+             System.out.println("yen a marre"+test);
+             System.out.println("putain de java de merde"+test2);
+            //if(test2.equals(test)){
+            if(J.getDude().getPseudo().equals(test)){
+                nj=J;
+                rang=J.getPassage();
+                System.out.println(rang);
+                J.setPassage(1);
+            }
         }
-        nj.setPassage(1);
+        for(int i=0;i<rang-1;i++){
+            int tmp;
+            System.out.println("je suis avant le get(i)");
+            tmp= joueurspa.get(i).getPassage();
+            System.out.println("get(i) suivant"+tmp);
+            joueurspa.get(i).setPassage(tmp+1);
+            System.out.println("je vais passer dans le 1");
+            
+        }
+        //nj.setPassage(1);
+        //joueurspa.add(nj);
     }
     
     public void AjouterDes(String attri1, String attri2)throws RemoteException{
@@ -269,16 +340,36 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
         Annonce a = new Annonce(nombreDé,faceduDé);
+        a=Annonce.getInstanceA(nombreDé, faceduDé);
+        a.setAnnonce(nombreDé, faceduDé);
         ttlesann.add(a);
         nj.setVal(a);
         compteur++;
-        //int test;
-        //test=nj.getVal().getAnnValDé();
+        int test;
+        int test2;
+        test=nj.getVal().getAnnValDé();
+        test2=nj.getVal().getDé();
+        System.out.println("recuperation annon zfrez"+test2);
+        System.out.println("recuperation annon"+test);
+        joueursann.clear();
+        joueursann.add(nj);
+        
          return "Vous avez annoncé "+nombreDé+" dés "+faceduDé;
          
         }
+    public void Afficherannjou(){
+        for(Joueur J:joueursann){
+            System.out.println(J.getVal().getAnnValDé());
+            System.out.println(J.getVal().getDé());
+            
+        }
+    }
+    
     public ArrayList<Annonce> AfficherTouteAnnonces() throws RemoteException{
-      
+            System.out.println("je suis avnat l'affichage des annonces");
+            for(Annonce A:ttlesann){
+            System.out.println("Nombre de dés :"+A.getDé()+ " ayant une valeur de "+A.getAnnValDé());
+            }
         return ttlesann;
     }
     //methode affichant tous le joueurs

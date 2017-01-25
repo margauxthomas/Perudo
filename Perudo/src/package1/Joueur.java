@@ -1,5 +1,5 @@
 package package1;
-
+import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.*;
 /*
@@ -51,6 +51,7 @@ public class Joueur {
        public Joueur(Couleur pions, User dude) {
            this.pions=pions;
            this.dude=dude;
+           //this.passage=passage;
     }
 
     public Annonce getVal() {
@@ -102,6 +103,8 @@ public class Joueur {
     public void setPassage(Integer passage) {
         this.passage = passage;
     }
+
+   
     
        
        

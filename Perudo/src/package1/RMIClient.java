@@ -32,14 +32,12 @@ public class RMIClient {
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
        ArrayList<String> valeurdesj = new ArrayList<>();
        ArrayList<String> valdesworld = new ArrayList<>();
-
-       int choix=0;
+       
+       
        boolean isNumber = true;
        Scanner scanch = new Scanner(System.in);
        int nbDé =0;
        int faceDé =0;
-
-       ArrayList<Annonce> ttlesann = new ArrayList<>();
 
        //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
@@ -162,7 +160,7 @@ public class RMIClient {
         public Boolean AQuiDeJouer(Integer num, RMI rmi) throws RemoteException{
             Boolean ordre;
             ordre=rmi.RetrouverOrdreJoueur(num);
-            System.out.println(ordre);
+            //ystem.out.println(ordre);
             return ordre;
         }
         
@@ -188,15 +186,18 @@ public class RMIClient {
         }
         
         public void AfficherAnnonce(RMI rmi) throws RemoteException{
-            ttlesann=rmi.AfficherTouteAnnonces();
-            for(Annonce A:ttlesann){
+            ArrayList<Annonce> annonces = new ArrayList<>();
+            System.out.println("je suis avant la recuperation de ttlesann");
+            annonces=rmi.AfficherTouteAnnonces();
+            System.out.println("je suis apres la recuperation de ttlesann");
+            for(Annonce A:annonces){
                 System.out.println("Nombre de dés :"+A.getDé()+ " ayant une valeur de "+A.getAnnValDé());
             }
         }
   
         // Décision surenchere, menteur, tout pile
-        public int FaireChoix(RMI rmi) throws RemoteException{
-          
+        public Integer FaireChoix(RMI rmi) throws RemoteException{
+          int choix=0;
            System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
              do{
@@ -210,7 +211,7 @@ public class RMIClient {
                             System.out.println("Vous devez entrer les chiffres 1, 2 ou 3.");
                         } 
                 } while(choix !=1 && choix!=2 && choix!=3);
-             
+             /*
              if(choix==1){
                 SurenchereDé();
                 SurenchereFaceDé();
@@ -221,12 +222,12 @@ public class RMIClient {
                if(choix==3){
                  ToutPile();
              }
-             
+             */
              return choix;
         }
         
         // Methode surenchere rajout de dés
-            public void SurenchereDé() throws RemoteException{
+            public Integer SurenchereDé() throws RemoteException{
                           
  
                     do {
@@ -243,11 +244,11 @@ public class RMIClient {
                         }
                     } while(nbDé ==0);
                    
-                   
+                   return nbDé;
             }  
             
             // Methode surenchere face de dés
-             public void SurenchereFaceDé() throws RemoteException{                                   
+             public Integer SurenchereFaceDé() throws RemoteException{                                   
                     while(faceDé !=2 && faceDé !=3 && faceDé !=4 && faceDé !=5 && faceDé !=6){
                         System.out.println("face des dés :  (compris entre 2 & 6)");
                         try{
@@ -257,6 +258,7 @@ public class RMIClient {
                             System.out.println("Vous devez entrer des chiffres.");
                         } 
                    }
+                    return faceDé;
              }
              
              public void Menteur() throws RemoteException{
@@ -277,10 +279,13 @@ public class RMIClient {
         public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         int j=0;
+        int fd;
+        int nbd;
         String pseu;
         String col;
         Boolean ordre;
         Integer num;
+        int choix;
         RMI rmi2=client.connectServer();
         if(rmi2==null){
             System.out.println("Erreur de connexion");
@@ -314,16 +319,44 @@ public class RMIClient {
        client.AfficherDesJoueur(rmi2, pseu, col);
        
        num=client.AttribuerOrdre(pseu, col, rmi2);
+       System.out.println(num);
        ordre=client.AQuiDeJouer(num, rmi2);
        while(!ordre){
-           System.out.println("Attendez votre tour");
-           Thread.sleep(8000);
+           System.out.println("\n Attendez votre tour");
+           Thread.sleep(4000);
+           ordre=client.AQuiDeJouer(num, rmi2);
        }
        System.out.println("A votre tour");
-       client.FaireChoix(rmi2);
+       client.AfficherAnnonce(rmi2);
+       System.out.println("je suis apres afficher annonce");
+       choix=client.FaireChoix(rmi2);
+       System.out.println(choix);
+       switch(choix)
+       {
+            case 1:
+                System.out.println("je suis dans le case 1");
+                nbd=client.SurenchereDé();
+                fd=client.SurenchereFaceDé();
+                client.EnvoiEnchere(rmi2, nbd, fd, pseu, col);
+                System.out.println("je suis apres le envoie enchere");
+                //Thread.sleep(30000);
+                break;
+            case 2:
+                System.out.println("je suis dans le case 2 ");
+                client.AfficherDesPartie(rmi2);
+                System.out.println("je suis apres afficher des partie ");
+                client.ResultatCompterDes(num, rmi2);
+                break;
+            
+            case 3:
+                System.out.println("je suis dans le case 2 ");
+                client.AfficherDesPartie(rmi2);
+                break;
+       }
        
-       client.ResultatCompterDes(num, rmi2);
-       client.AfficherDesPartie(rmi2);
+       
+       //client.ResultatCompterDes(num, rmi2);
+       
        //client.ResultatCompterDes(3, 2, rmi2);
        
        

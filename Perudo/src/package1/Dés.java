@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package package1;
-   
+import java.rmi.RemoteException;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
