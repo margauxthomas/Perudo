@@ -25,8 +25,14 @@ import java.util.Vector;
  */
 public class RMIClient {
  
-       private static Vector classes = new Vector();
-    
+           private static Vector classes = new Vector();
+       public  ArrayList<String> pseudo = new ArrayList<>();
+       public  ArrayList<String> flag = new ArrayList<>();
+       public  static ArrayList<String> flag2 = new ArrayList<>();
+       public  static ArrayList<String> pseudo2 = new ArrayList<>();
+       ArrayList<String> valeurdesj = new ArrayList<>();
+       ArrayList<String> valdesworld = new ArrayList<>();
+       //public  ArrayList<Joueur> joueurs = new ArrayList<>();
         public static RMIClient getInstance(){
             
 		RMIClient tmp = new RMIClient();
@@ -45,74 +51,129 @@ public class RMIClient {
 		}
                     return null;
 	}
-    public void connectServer(String nom) {
+        
+    public RMI connectServer() {
         try{
             Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
             RMI rmi = (RMI) reg.lookup("server");
             System.out.println("Connected to Server");
+            return rmi;
+        }catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
+    }
+        
+        //ARRANGEMENT EN METHODE A FAIRE
             
-            //appel de methode sur le server
-            
-            String text = rmi.getData("Lets the game begin "+nom);
+        //Début du jeu, enregistrement des joueurs 
+        public ArrayList<String> getPseudo(RMI rmi) throws RemoteException {
+              pseudo=rmi.getUser();
+              return pseudo;
+        }
+        public ArrayList<String> getCool(RMI rmi) throws RemoteException {
+              flag=rmi.getCouleurs();
+              return flag;
+        }
+        public String saisiePseudo(RMI rmi, ArrayList<String> u) throws RemoteException{
+            //Saisie du pseudo
+            String text = rmi.getData("Lets the game begin ");
             System.out.println(text);
             Scanner sc = new Scanner(System.in);
             System.out.println("Veuillez saisir votre pseudo :");
             String pseu = sc.nextLine();
-          
+           
+            if(u.contains(pseu)){
+            return null;
+                }else return pseu;
+        }
+        
+        public String saisieCouleur(RMI rmi, String pseu, ArrayList<String> c) throws RemoteException{
+            //Saisier du choix de dés
+                //Manque afficher couleur déja choisit
             Scanner sc1 = new Scanner(System.in);
             System.out.println("Choisissez une couleur de dés : ");
-            String col = sc.nextLine();
+            String col = sc1.nextLine();
             
+            //Creation des User et des objets couleur
+            if(c.contains(col)){
+                return null;
+            }else{
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
             System.out.println(lancement);
-            
-            System.out.println("c'est parti !");
-            
-            
-            HashMap<String, String> h = new HashMap<>(); 
-            h=rmi.CreerJoueur(pseu, col);
-            /*
-            ArrayList<Couleur> names = new ArrayList<Couleur>();
-            names=rmi.AfficherCouleur();
-            for (Couleur C : names) {
-			System.out.println(C);
-		}*/
-           Set cles = h.keySet();
-           Iterator it = cles.iterator();
-           while (it.hasNext()){
-           Object cle = it.next(); 
-           Object valeur = h.get(cle); 
-           System.out.println(cle+ " "+valeur);
+                return col;
             }
+        }
            
-           //HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
-           /*h2=rmi.CreerPartie();
+        public void CreationJoueur(RMI rmi, String pseu, String col) throws RemoteException{
+            //Creation du joueur 
+             System.out.println("c'est parti !");
+            
+            rmi.CreerJoueur(pseu, col);
+        }
+        
+        //methode affichage des joueurss
+        public void AfficherJoueur(RMI rmi) throws RemoteException{
+            
+            System.out.println("Voici les joueurs présent à cet instant");
+            System.out.println("On va attendre que tout le monde soit présent avant de commencer");
+              HashMap<String, String> h = new HashMap<>(); 
+              
+              h=rmi.AfficherJoueur();
           
-           System.out.println("hmap de la partie ");
-           
-           Set cles2=h2.keySet();
-           Iterator it2 = cles2.iterator();
-           while(it2.hasNext()){
-            Object cle2 =it2.next();
-            Object valeur2 = h2.get(cle2);
-            System.out.println(cle2+" "+valeur2);
-        }*/
-           
-           
-           
+              Set cles = h.keySet();
+              Iterator it = cles.iterator();
+              while (it.hasNext()){
+              Object cle = it.next(); 
+              Object valeur = h.get(cle); 
+              System.out.println("Pseudo : " +cle+ " avec les dés "+valeur);
+                }
+        }
+        
+        public Integer NbJoueurPresent(RMI rmi) throws RemoteException{
+            int element=rmi.CompteJoueur();
+            return element;
+        }
+        
+        //Affichage des des en fonction des joueurs:
+        public void AfficherDesJoueur(RMI rmi ,String pseu, String col) throws RemoteException{
+            valeurdesj=rmi.AfficherDesJoueur(pseu,col);
+            int count=valeurdesj.size();
+            System.out.println("Voici vos " +count+ " dés");
+            for (String val : valeurdesj) {
+			System.out.print(val+",");
+                }
+        }
+        public void AfficherDesPartie(RMI rmi) throws RemoteException{
+            valdesworld=rmi.AfficherToutDes();
+            System.out.println("\n Dés de tout le monde :" );
+            for(String vald: valdesworld){
+            System.out.print(vald+",");
+            }
+        }
+        public void ResultatCompterDes(Integer nb, Integer val, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.Comparaison(nb, val);
+            if(resultat){
+                System.out.println("\n Il y a bien le nombre de dés annoncé à cette valeur");
+            }else{
+                System.out.println("\n Menteur !! ");
+            }
+        }
+
+        public void FaireChoix(RMI rmi) throws RemoteException{
             
-                
            // Décision surenchere, menteur, tout pile
+          
            boolean isNumber = true;
+           Scanner scanch = new Scanner(System.in);
              int choix=0;
-            
-           System.out.println("Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
+           System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
              do{
                 System.out.println("Tapez 1 pour surenchérir, 2 pour le menteur, trois pour le tout-pile !"); 
                 
                     try{
-                    choix = (int) Integer.parseInt(sc.next());
+                    choix = (int) Integer.parseInt(scanch.next());
                     isNumber = false; // execute que si parseInt ne lance pas d'exception
                     System.out.println("Vous avez entré " + choix);
                         } catch(NumberFormatException e){
@@ -128,10 +189,11 @@ public class RMIClient {
                     do {
                          System.out.println("Veuillez entrer votre annonce : ");
                         System.out.println("Nombre de dés sur la table :  ");
-                        
+                                  
+           
                     
                      try{
-                    nbDé = (int) Integer.parseInt(sc.next());
+                    nbDé = (int) Integer.parseInt(scanch.next());
                     isNumber = false; // execute que si parseInt ne lance pas d'exception
                         } catch(NumberFormatException e){
                             System.out.println("Vous devez entrer des chiffres.");
@@ -140,9 +202,8 @@ public class RMIClient {
                              
                     while(faceDé !=2 && faceDé !=3 && faceDé !=4 && faceDé !=5 && faceDé !=6){
                         System.out.println("face des dés :  (compris entre 2 & 6)");
-                        System.out.println(faceDé);
                         try{
-                    faceDé = (int) Integer.parseInt(sc.next());
+                    faceDé = (int) Integer.parseInt(scanch.next());
                     isNumber = false; // execute que si parseInt ne lance pas d'exception
                         } catch(NumberFormatException e){
                             System.out.println("Vous devez entrer des chiffres.");
@@ -165,29 +226,57 @@ public class RMIClient {
                 System.out.println("Vous avez tenté le tout pile !");
                 }
            
-            
-            
+        }
+        
           
                 
            
 
-            
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-           public void CreationPartie(){
+        
+    
            
-        }
-        public static void main(String args[]){
+        public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         int j=0;
-        //for(int i = 1; i <= 3; i++)
-        //{
-        client.getInstance().connectServer("margx");
-            
-                
-        //}
+        String pseu;
+        String col;
+        RMI rmi2=client.connectServer();
+        if(rmi2==null){
+            System.out.println("Erreur de connexion");
+        }
+        pseudo2=client.getPseudo(rmi2);
+        flag2=client.getCool(rmi2);
+        pseu=client.saisiePseudo(rmi2,pseudo2);
+            while(pseu==null){
+             System.out.println("Pseudo deja utilisé, choisissez en un autre");
+             pseu=client.saisiePseudo(rmi2,pseudo2);
+        }
+       
+        col=client.saisieCouleur(rmi2, pseu, flag2);
+        while(col==null){
+             System.out.println("Couleur déja prise !");
+             col=client.saisieCouleur(rmi2,pseu, flag2);
+        }
+        client.CreationJoueur(rmi2, pseu, col);
+        client.AfficherJoueur(rmi2);
+        //recupérer le nombre de joueur inscrit
+        //tant que pas egal a 6 ne pas faire la suite
+       int go;
+       go=client.NbJoueurPresent(rmi2);
+       while(go!=2){
+           System.out.println("On attend le nombre suffisant de joueur");
+           Thread.sleep(4000);
+           go=client.NbJoueurPresent(rmi2);
+       }
+       client.AfficherJoueur(rmi2);
+      
+       client.AfficherDesJoueur(rmi2, pseu, col);
+       
+       client.FaireChoix(rmi2);
+       client.AfficherDesPartie(rmi2);
+       //client.ResultatCompterDes(3, 2, rmi2);
+       
+       
         
         
         

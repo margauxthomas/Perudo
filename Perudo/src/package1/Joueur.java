@@ -22,6 +22,7 @@ public class Joueur {
     private ArrayList<Annonce> ann= new ArrayList<>();
 
      private ArrayList<Dés> dd= new ArrayList<>();
+     
     public void RemplirDes(){
         for(int i = 0; i <5; i++){
         Dés d= new Dés();
@@ -88,22 +89,22 @@ public class Joueur {
      
      public static Joueur getInstanceJ(Couleur pions, User dude){
             
-		Joueur tmp = new Joueur(pions, dude);
-		if (classes.contains(tmp)) {
-			Enumeration enume = classes.elements();
-			while (enume.hasMoreElements()) {
-				Joueur element = (Joueur) enume.nextElement();
-				if (element.equals(tmp)) {
-					return element;
-				}
-			}
-		}
-		else {
-			classes.add(tmp);
-			return tmp;
-		}
-                    return null;
-	}   
+        Joueur tmp = new Joueur(pions, dude);
+        if (classes.contains(tmp)) {
+            Enumeration enume = classes.elements();
+            while (enume.hasMoreElements()) {
+                Joueur element = (Joueur) enume.nextElement();
+                if (element.equals(tmp)) {
+                        return element;
+                }
+            }
+        }
+        else {
+                classes.add(tmp);
+                return tmp;
+        }
+            return null;
+    }   
        
     ArrayList<User> users= new ArrayList<>();
    
@@ -123,7 +124,7 @@ public class Joueur {
      HashMap<String, String> h = new HashMap<>();
     //public HashMap<String, String> getJoueurs(ArrayList<User> u, ArrayList<Couleur> c)
     //public HashMap<String, String> getJoueurs(ArrayList<User> u, Joueur nj)
-    public HashMap<String, String> getJoueurs(ArrayList<Joueur> nj)
+    /*public HashMap<String, String> getJoueurs(ArrayList<Joueur> nj)
     {
 
         //for(User R : u){
@@ -138,6 +139,6 @@ public class Joueur {
               //  }
               // }       
     return h;
-    } 
+    } */
 
 }

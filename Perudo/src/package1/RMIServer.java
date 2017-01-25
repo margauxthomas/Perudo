@@ -53,58 +53,123 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         pseu="Bienvenue dans le jeu du Perudo "+pseu;
    
         return pseu;
-      
-        
     }
+    
     public String setCouleur(String col) throws RemoteException {
         col=". Vous jouez maintenant avec les "+col+" vous disposez de 5 dés au départ, ne les perdez pas, bonne chance !";
         
         return col;
     }
     
+    //déclaration de tout les trucs 
+    
     ArrayList<User> users= new ArrayList<>();
-     ArrayList<Couleur> cols= new ArrayList<>();
-     ArrayList<Joueur> joueurs= new ArrayList<>();
-      private ArrayList<String> valeurdesj;
-     Partie  p= new Partie("prems","test");
+    ArrayList<String> pseudo= new ArrayList<>();
+    ArrayList<String> flag= new ArrayList<>();
+    ArrayList<Couleur> cols= new ArrayList<>();
+    ArrayList<Joueur> joueurs= new ArrayList<>();
+    ArrayList<String> valeurdesj = new ArrayList<>();
+    ArrayList<String> valdesworld = new ArrayList<>();
+    Partie  p= new Partie("prems","test");
+    //Joueur jtest;
+    
+    public ArrayList<String> getUser(){
+        return pseudo;
+    }
+    
+    public ArrayList<String> getCouleurs(){
+        return flag;
+    }
      
-    public HashMap<String, String> CreerJoueur(String pseu, String col){
-        System.err.println("je suis ici");
-        User u = new User(pseu);
-        User us= u.getInstanceU(pseu);
-        Couleur c = new Couleur(col);
-        Couleur co = c.getInstanceC(col);
-         System.err.println("je suis apres les instances");
-  
-        /*
-        Joueur j1 = j.getInstanceJ();
-        j1.addCouleur(c);
-        j1.addUsers(u);
-        */
+    public void CreerJoueur(String pseu, String col) throws RemoteException{
         
-         users.add(us);
-       
-         cols.add(co);
-         System.err.println("je suis apre les add arraylist");
-         Joueur j = new Joueur(co,us);
-         Joueur nj=j.getInstanceJ(co,us);
-          System.err.println("je suis avant remplir des ");
-         nj.RemplirDes();
+        pseudo.add(pseu);
+        flag.add(col);
+        User u = new User(pseu);
+        //User us= User.getInstanceU(pseu);
+        Couleur c = new Couleur(col);
+        //Couleur co = Couleur.getInstanceC(col);
+
+        //ajout dans l'arret liste
+         users.add(u);
+         cols.add(c);
          
-         joueurs.add(nj);
-         
-         System.err.println("je suis av le afficher des");
+        //creation joueur avec les attributs declaré 
+         Joueur j = new Joueur(c,u);
+         //Joueur nj= Joueur.getInstanceJ(co,us);
+         joueurs.add(j);
+         p.addjoueur(j);
+        
+    }
+    public Integer CompteJoueur(){
+        int element=joueurs.size();
+        return element;
+    }
+         //faire une methode appeler atttribution des qui en fonction parcour l'arraylist
+         //des joueurs et attribut à chacun des des
+    
+ 
+        //methode affichant les des en fonction d'un joueur en particulier
+        
+    public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);
+                
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        nj.RemplirDes();
          valeurdesj=nj.AfficherDés();
-         for (String val : valeurdesj) {
+        for (String val : valeurdesj) {
+                        valdesworld.add(val);
 			System.out.println(val);
 	}
-         System.err.println("je suis apres le afficher des");
-         
-        HashMap<String, String> h1 = new HashMap<>(); 
-        //h=j.getJoueurs(users, cols);
         
-        h1=j.getJoueurs(joueurs);
-                    
+        return valeurdesj;
+    }
+    
+     //methode affichant les des de tt les joueurs 
+    
+    public ArrayList<String> AfficherToutDes(){
+        
+        for(String vald: valdesworld){
+            System.out.println("des tt le monde :" +vald);
+                }
+        return valdesworld;
+    }
+    public Boolean Comparaison(Integer nb, Integer val){
+        String v =Integer.toString(val);
+        int c=0;
+        Boolean resultat=null;
+        for(String vald: valdesworld){
+            if(vald.equals("perudo")){
+                vald=v;
+                if (vald.equals(v)){
+                c++;
+                }
+            }else if(vald.equals(v)){
+                c++;
+                }
+            }
+        System.out.println("nombre "+c);
+        if(c<nb){
+            resultat=false;
+        }else resultat=true;
+    return resultat;
+    }
+        
+        
+         
+      
+    //methode affichant tous le joueurs
+         public HashMap<String, String> AfficherJoueur(){
+          
+          HashMap<String, String> h1 = new HashMap<>(); 
+          //h1=jtest.getJoueurs(joueurs);
+         
+          for(Joueur J:joueurs){
+                Couleur ctmp=J.getPions();
+                User utmp=J.getDude();
+                 h1.put(utmp.getPseudo(), ctmp.getCouleur());
+            }
            Set cles = h1.keySet();
            Iterator it = cles.iterator();
            while (it.hasNext()){
@@ -113,45 +178,22 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
            System.out.println(cle+ " "+valeur);
         
            }
+          return h1; 
+         }
+        public void AfficherCouleurlist(){
+        //methode affichant les couleurs
               for (Couleur C : cols) {
 			System.out.println(C.getCouleur());
             }
+        }
+        //methode affichant les utilisateurs
+        
+        public void AfficherPseudo(){
               for (User U : users) {
 		System.out.println(U.getPseudo());
             }
-            
-            p.addjoueur(nj);
-              
-             
-        return h1;
-    }
-    
-       // HashMap<String, HashSet<String>> h2 = new HashMap<>(); 
-       
-      
-       // Partie p1 = p.getInstanceP("prems","test");
-        //System.out.println(p1.getNom());
-        
-       
-        //h2=p1.RemplirPartie(joueurs);
-        
-          /*System.out.println("hmap de la partie ");
-           
-           Set cles2=h2.keySet();
-           Iterator it2 = cles2.iterator();
-           while(it2.hasNext()){
-            Object cle2 =it2.next();
-            Object valeur2 = h2.get(cle2);
-            System.out.println(cle2+" "+valeur2);
-           }
-           
-           for (Joueur J : joueurs) {
-               User tmp=J.getDude();
-		System.out.println(tmp.getPseudo());
-            }
-        return h2;
-        */
-    
+        }
+
     public ArrayList<Couleur> AfficherCouleur(){
         return cols;
     }
