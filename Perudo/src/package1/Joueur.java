@@ -60,6 +60,8 @@ public class Joueur {
     public void setVal(Annonce val) {
         this.val = val;
     }
+   
+    
 
     public void setDude(User dude) {
         this.dude = dude;

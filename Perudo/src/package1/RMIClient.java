@@ -25,7 +25,7 @@ import java.util.Vector;
  */
 public class RMIClient {
  
-           private static Vector classes = new Vector();
+       private static Vector classes = new Vector();
        public  ArrayList<String> pseudo = new ArrayList<>();
        public  ArrayList<String> flag = new ArrayList<>();
        public  static ArrayList<String> flag2 = new ArrayList<>();
@@ -193,8 +193,7 @@ public class RMIClient {
                 System.out.println("Nombre de dés :"+A.getDé()+ " ayant une valeur de "+A.getAnnValDé());
             }
         }
-        
-        
+  
         // Décision surenchere, menteur, tout pile
         public int FaireChoix(RMI rmi) throws RemoteException{
           
