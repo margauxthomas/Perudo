@@ -181,7 +181,14 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public boolean OnCompte(Integer numj) throws RemoteException{
         RecupererLastJoueur(numj);
         return resultat;
+        
     }
+        public boolean OnCompteTtPile(Integer numj) throws RemoteException{
+        RecupererLastJoueurTtPile(numj);
+        return resultat;
+        
+    }
+    
     public void AfficherNumPassage(){
         for(Joueur J:joueurs){
             System.out.println(J.getPassage());
@@ -218,6 +225,39 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 }
 
     }
+    
+     public void RecupererLastJoueurTtPile(Integer numj) throws RemoteException{
+        String pseulj=null;
+        String collj=null;
+        
+        String pseujec=null;
+        String coljec=null;
+        System.out.println("je suis dans recuperer lasjoueur");
+        AfficherNumPassage();
+            for(Joueur J :joueurspa){
+                System.out.println("je suis dans la boucle for");
+                int p=0;
+                p=J.getPassage();
+                if(p==(numj)){
+                pseujec=J.getDude().getPseudo();
+                coljec=J.getPions().getCouleur();
+                TraitementResultatTtPile(pseujec, coljec);
+                }
+                //System.out.println(J.getDude().getPseudo());
+                if(p==(numj-1)){
+                   System.out.println("recuperation du joueur precedent");
+                    pseulj=J.getDude().getPseudo();
+                    System.out.println("le pseudo recupérer"+pseulj);
+                    collj=J.getPions().getCouleur();
+                    System.out.println("la couleur recuperer"+collj);
+                    RecupererAnnonce(pseulj,collj);
+                    
+                }
+
+                
+                }
+
+    }
     public void TraitementResultat(String pseujec, String coljec, String pseulj, String collj) throws RemoteException{
                     if(resultat){
                 System.out.println("je suis dans le cas ou le resultat est bon");
@@ -226,7 +266,22 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                         System.out.println("je suis dans le cas ou le resultat est pas bon");
                         EnleverDes(pseulj,collj);
                     }
+                    
+                    
     }
+    
+     public void TraitementResultatTtPile(String pseujec, String coljec) throws RemoteException{
+                    if(resultat){
+                System.out.println("je suis dans le cas ou le resultat est bon");
+                AjouterDes(pseujec, coljec);
+            }else {
+                        System.out.println("je suis dans le cas ou le resultat est pas bon");
+                        EnleverDes(pseujec,coljec);
+                    }
+                    
+                    
+    }
+     
     public void RecupererAnnonce(String attri1, String attri2){
         int nb=0;
         int val=0;
@@ -260,6 +315,39 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
   
     }
     
+    public void RecupererAnnonceTtPile(String attri1, String attri2){
+        int nb=0;
+        int val=0;
+        
+        System.out.println("attribut transmit : "+attri1);
+        System.out.println("attribut transmit : "+attri2);
+        Couleur cattri1=Couleur.getInstanceC(attri1);
+        User uattri2=User.getInstanceU(attri2);
+                
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        System.out.println(nj.getDude().getPseudo());
+        //System.out.println(nb);
+        
+        for(Joueur J:joueursann){
+            
+                nb=J.getVal().getDé();
+                val=J.getVal().getAnnValDé();
+            
+            
+        }
+        //nb=nj.getVal().getDé();
+        System.out.println(nb);
+        System.out.println(val);
+        //Annonce a;
+        //a=nj.getVal();
+        //val=a.getAnnValDé();
+        //val=nj.getVal().getAnnValDé();
+        //System.out.println(val);
+        resultat=ComparaisonTtPile(nb,val);
+        System.out.println(resultat);
+  
+    }
+    
     
     
     public Boolean Comparaison(Integer nb, Integer val){
@@ -278,6 +366,28 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         System.out.println("nombre "+c);
         if(c<nb){
+            resultat=false;
+        }else resultat=true;
+        System.out.println(resultat);
+    return resultat;
+    }
+    
+     public Boolean ComparaisonTtPile(Integer nb, Integer val){
+        String v =Integer.toString(val);
+        int c=0;
+        Boolean resultat=null;
+        for(String vald: valdesworld){
+            if(vald.equals("perudo")){
+                vald=v;
+                if (vald.equals(v)){
+                c++;
+                }
+            }else if(vald.equals(v)){
+                c++;
+                }
+            }
+        System.out.println("nombre "+c);
+        if(c!=nb){
             resultat=false;
         }else resultat=true;
         System.out.println(resultat);

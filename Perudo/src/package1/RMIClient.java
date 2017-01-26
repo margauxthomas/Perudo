@@ -179,6 +179,15 @@ public class RMIClient {
                 System.out.println("\n Menteur !! ");
             }
         }
+        
+        public void ResultatCompterDesTPile(Integer numj, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.OnCompteTtPile(numj);
+            if(resultat){
+                System.out.println("\n Il y a bien le tout-pile !");
+            }else{
+                System.out.println("\n Désolé, vous vous êtes trompé ! Vous perdez un dé ! ");
+            }
+        }
 
         
         public void EnvoiEnchere(RMI rmi,Integer nbDé ,Integer valDé ,String pseu,String col) throws RemoteException{
@@ -349,8 +358,9 @@ public class RMIClient {
                 break;
             
             case 3:
-                System.out.println("je suis dans le case 2 ");
+                System.out.println("je suis dans le case 3 ");
                 client.AfficherDesPartie(rmi2);
+                System.out.println("je suis apres afficher des partie ");
                 break;
        }
        
