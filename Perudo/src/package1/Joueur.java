@@ -32,6 +32,8 @@ public class Joueur {
         dd.add(d);
         //int i=0;
         }
+    
+
     }
     public void EnleverDes(){
         dd.remove(4);

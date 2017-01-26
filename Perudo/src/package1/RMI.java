@@ -39,5 +39,6 @@ public interface RMI extends Remote{
     public void AjouterDes(String attri1, String attri2)throws RemoteException;
     public ArrayList<Annonce> AfficherTouteAnnonces() throws RemoteException;
     public boolean OnCompte(Integer numj) throws RemoteException;
+    public void RemplirDesJoueur(String attri1, String attri2)throws RemoteException;
     // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 }
