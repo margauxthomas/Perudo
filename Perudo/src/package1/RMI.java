@@ -33,6 +33,7 @@ public interface RMI extends Remote{
     public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException;
     public ArrayList<String> AfficherToutDes() throws RemoteException;
     public Boolean Comparaison(Integer nb, Integer val) throws RemoteException;
+    public Boolean ComparaisonTtPile(Integer nb, Integer val) throws RemoteException;
     public Integer SetOrdre(String attri1, String attri2)throws RemoteException;
     public Boolean RetrouverOrdreJoueur(Integer numero)throws RemoteException;
     public void EnleverDes(String attri1, String attri2)throws RemoteException;
@@ -40,5 +41,6 @@ public interface RMI extends Remote{
     public ArrayList<Annonce> AfficherTouteAnnonces() throws RemoteException;
     public boolean OnCompte(Integer numj) throws RemoteException;
     public void RemplirDesJoueur(String attri1, String attri2)throws RemoteException;
+    public boolean OnCompteTtPile(Integer numj) throws RemoteException;
     // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 }
