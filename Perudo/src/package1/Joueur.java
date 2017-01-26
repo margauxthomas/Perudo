@@ -22,24 +22,42 @@ public class Joueur {
     
     private ArrayList<String> valeurdes=new ArrayList<>();
     private ArrayList<Annonce> ann= new ArrayList<>();
-
+    
      private ArrayList<Dés> dd= new ArrayList<>();
      
-    public void RemplirDes(){
+    public ArrayList<Dés> RemplirDes(){
         for(int i = 0; i <5; i++){
-        Dés d= new Dés();
+        Dés d= new Dés("0");
+        String v=d.getValeur();
+        d.setValeur(v);
         //Dés d1 = d.getInstanceD();
         dd.add(d);
         //int i=0;
         }
-    
-
+        return dd;
     }
+    public ArrayList<Dés> ReRemplirDés(){
+        for (Dés D : dd) {
+                String v=D.getValeur();
+                D.setValeur(v);
+		}
+        return dd;
+    }
+    public ArrayList<Dés> getDd() {
+        return dd;
+    }
+
+    public void setDd(ArrayList<Dés> dd) {
+        this.dd = dd;
+    }
+    
     public void EnleverDes(){
-        dd.remove(4);
+        dd.remove(1);
     }
     public void AjouterDes(){
-        Dés d= new Dés();
+        Dés d= new Dés("0");
+        String v=d.getValeur();
+        d.setValeur(v);
         dd.add(d);
     }
     public ArrayList<String> AfficherDés(){
@@ -48,15 +66,17 @@ public class Joueur {
     }
     public ArrayList<String> DonnerValeur(){
         for (Dés D : dd) {
-		String valtmp=D.getValeur();
-                valeurdes.add(valtmp);
+		//String valtmp=D.getValeur();
+                valeurdes.add(D.getVal());
 		}
         return valeurdes;
     }
    
-       public Joueur(Couleur pions, User dude) {
+       public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage){
            this.pions=pions;
            this.dude=dude;
+           this.dd=dd;
+           this.passage=passage;
            //this.passage=passage;
     }
 
@@ -117,9 +137,9 @@ public class Joueur {
        
      private static Vector classes = new Vector();
      
-     public static Joueur getInstanceJ(Couleur pions, User dude){
+     public static Joueur getInstanceJ(Couleur pions, User dude, ArrayList<Dés> dd, Integer passage){
             
-        Joueur tmp = new Joueur(pions, dude);
+        Joueur tmp = new Joueur(pions, dude, dd, passage);
         if (classes.contains(tmp)) {
             Enumeration enume = classes.elements();
             while (enume.hasMoreElements()) {

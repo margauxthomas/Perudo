@@ -8,16 +8,28 @@ import java.rmi.RemoteException;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.Vector;
+import java.io.Serializable;
 
 /**
  *
  * @author stri
  */
-public class Dés
+public class Dés implements Serializable
 {
    private String valeur;
 
-    public String getValeur() {
+   public Dés (String valeur){
+       this.valeur=valeur;
+   }
+   
+   public void setValeur(String v){
+       this.valeur=v;
+   }
+   public String getVal(){
+       return valeur;
+   }
+   
+   public String getValeur() {
         Random rand = new Random();
         int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;
         if(nombreAleatoire==1){
@@ -28,10 +40,12 @@ public class Dés
         }
         return valeur;
     }
+    
+    
     private static Vector classes = new Vector();
-    public static Dés getInstanceD(){
+    public static Dés getInstanceD(String v){
             
-		Dés tmp = new Dés();
+		Dés tmp = new Dés(v);
 		if (classes.contains(tmp)) {
 			Enumeration enume = classes.elements();
 			while (enume.hasMoreElements()) {
@@ -47,11 +61,5 @@ public class Dés
 		}
                     return null;
 	}
-    
-    public static void main(String args[]){
-            Dés d=new Dés();
-           System.err.println("valeur aleatoir   "+d.getValeur());
-  
-    }
    
 }
