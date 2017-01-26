@@ -130,8 +130,8 @@ public class RMIClient {
         //methode affichage des joueurss
         public void AfficherJoueur(RMI rmi) throws RemoteException{
             
-            System.out.println("Voici les joueurs présent à cet instant");
-            System.out.println("On va attendre que tout le monde soit présent avant de commencer");
+            System.out.println("\n Voici les joueurs présent à cet instant");
+            System.out.println("\n On va attendre que tout le monde soit présent avant de commencer");
               HashMap<String, String> h = new HashMap<>(); 
               
               h=rmi.AfficherJoueur();
@@ -195,7 +195,7 @@ public class RMIClient {
             }
         }
         
-        public void ResultatCompterDesTPile(Integer numj, RMI rmi) throws RemoteException{
+        public void ResultatCompterDesTtPile(Integer numj, RMI rmi) throws RemoteException{
             Boolean resultat=rmi.OnCompteTtPile(numj);
             if(resultat){
                 System.out.println("\n Il y a bien le tout-pile !");
@@ -220,7 +220,7 @@ public class RMIClient {
         }
   
         // Décision surenchere, menteur, tout pile
-        public Integer FaireChoix(RMI rmi) throws RemoteException, InterruptedException{
+        public Integer FaireChoix(RMI rmi) throws RemoteException{
           int choix1=0;
            System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
@@ -228,6 +228,7 @@ public class RMIClient {
                 System.out.println("Tapez 1 pour surenchérir, 2 pour le menteur, trois pour le tout-pile !"); 
                 
                     try{
+                        
                     choix1 = (int) Integer.parseInt(scanch.next());
                     isNumber = false; // execute que si parseInt ne lance pas d'exception
                     System.out.println("Vous avez entré " + choix1);
@@ -317,13 +318,14 @@ public class RMIClient {
             }
 
             CreationJoueur(rmi2, pseu, col);
+            RemplirDesJoueur(rmi2, pseu, col);
             AfficherJoueur(rmi2);
 
             //recupérer le nombre de joueur inscrit
            int go;
            go=NbJoueurPresent(rmi2);
            while(go!=2){
-               System.out.println("On attend le nombre suffisant de joueur");
+               System.out.println("\n On attend le nombre suffisant de joueur");
                Thread.sleep(4000);
                go=NbJoueurPresent(rmi2);
            }
@@ -348,9 +350,9 @@ public class RMIClient {
                     Thread.sleep(4000);
                     ordre=AQuiDeJouer(num, rmi2);
                 }
-                System.out.println("A votre tour");
+                System.out.println("\n A votre tour");
                 AfficherAnnonce(rmi2);
-                System.out.println("je suis apres afficher annonce");
+                System.out.println("\n je suis apres afficher annonce");
                 System.out.println(choix);
                 choix=FaireChoix(rmi2);
                 System.out.println(choix);
@@ -428,22 +430,24 @@ public class RMIClient {
         }
         client.CreationJoueur(rmi2, pseu, col);
         client.RemplirDesJoueur(rmi2, pseu, col);
+        client.AfficherDesJoueur(rmi2, pseu, col);
+       
         //recupérer le nombre de joueur inscrit
         //tant que pas egal a 6 ne pas faire la suite
        int go;
        go=client.NbJoueurPresent(rmi2);
        while(go!=2){
-           System.out.println("On attend le nombre suffisant de joueur");
+           System.out.println("\n On attend le nombre suffisant de joueur");
            Thread.sleep(4000);
            go=client.NbJoueurPresent(rmi2);
        }
        
        client.AfficherJoueur(rmi2);
       //boucle tour commence
-       client.AfficherDesJoueur(rmi2, pseu, col);
-       
+       //client.AfficherDesJoueur(rmi2, pseu, col);
+       //client.AfficherDesPartie(rmi2);
        num=client.AttribuerOrdre(pseu, col, rmi2);
-       System.out.println(num);
+       System.out.println("\n"+num);
        ordre=client.AQuiDeJouer(num, rmi2);
        while(!ordre){
            System.out.println("\n Attendez votre tour");
@@ -477,6 +481,7 @@ public class RMIClient {
                 System.out.println("je suis dans le case 3 ");
                 client.ToutPile();
                 client.AfficherDesPartie(rmi2);
+                client.ResultatCompterDesTtPile(num, rmi2);
                 System.out.println("je suis apres afficher des partie ");
                 break;
        }

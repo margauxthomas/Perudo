@@ -119,8 +119,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public ArrayList<String> AfficherDesJoueur(String attri1, String attri2)throws RemoteException{
          Couleur cattri1=Couleur.getInstanceC(attri2);
         User uattri2=User.getInstanceU(attri1);
-                
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
+        //valeurdesj.clear();
+        //valeurdesj=nj.AfficherDés();
         for (String val : valeurdesj) {
                         valdesworld.add(val);
 			System.out.println(val);
@@ -129,13 +130,13 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return valeurdesj;
     }
     public void RemplirDesJoueur(String attri1, String attri2)throws RemoteException{
-                Couleur cattri1=Couleur.getInstanceC(attri2);
+        Couleur cattri1=Couleur.getInstanceC(attri2);
         User uattri2=User.getInstanceU(attri1);
                 
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2);
         nj.RemplirDes();
-        valeurdesj.clear();
-        valeurdesj=nj.AfficherDés();
+        valeurdesj=nj.DonnerValeur();
+        
     }
     
     public Integer SetOrdre(String attri1, String attri2)throws RemoteException{

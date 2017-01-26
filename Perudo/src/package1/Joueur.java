@@ -43,6 +43,10 @@ public class Joueur {
         dd.add(d);
     }
     public ArrayList<String> AfficherDés(){
+        
+        return valeurdes;
+    }
+    public ArrayList<String> DonnerValeur(){
         for (Dés D : dd) {
 		String valtmp=D.getValeur();
                 valeurdes.add(valtmp);
