@@ -30,7 +30,7 @@ public class RMIClient {
        public  ArrayList<String> flag = new ArrayList<>();
        public  static ArrayList<String> flag2 = new ArrayList<>();
        public  static ArrayList<String> pseudo2 = new ArrayList<>();
-       ArrayList<String> valeurdesj = new ArrayList<>();
+       
        ArrayList<String> valdesworld = new ArrayList<>();
        ArrayList<Dés> dd = new ArrayList<>();
                int j=0;
@@ -39,7 +39,7 @@ public class RMIClient {
         String pseu;
         String col;
         Boolean ordre;
-        Integer numpass;
+        Integer numpass=0;
  int count=0;
                      int count1;
                     int go2;
@@ -164,9 +164,10 @@ public class RMIClient {
         }
         
         //Affichage des des en fonction des joueurs:
-        public Integer AfficherDesJoueur(RMI rmi ,String pseu, String col, ArrayList <Dés> dd) throws RemoteException{
+        public Integer AfficherDesJoueur(RMI rmi ,String pseu) throws RemoteException{
+            ArrayList<String> valeurdesj = new ArrayList<>();
             valeurdesj.clear();
-            valeurdesj=rmi.AfficherDesJoueur(pseu,col, dd,numpass);
+            valeurdesj=rmi.AfficherDesJoueur(pseu);
             int count=valeurdesj.size();
             System.out.println("\n Voici vos " +count+ " dés");
             for (String val : valeurdesj) {
@@ -174,18 +175,20 @@ public class RMIClient {
                 }
             return count;
         }
-        public ArrayList<Dés> RemplirDesJoueur(RMI rmi ,String pseu, String col) throws RemoteException{
-            dd=rmi.RemplirDesJoueur(pseu, col,numpass);
+        
+        
+        public ArrayList<Dés> RemplirDesJoueur(RMI rmi ,String pseu) throws RemoteException{
+            rmi.RemplirDesJoueur(pseu);
             return dd;
         }
-        public Integer AttribuerOrdre(String pseu, String col, RMI rmi, ArrayList <Dés> dd) throws RemoteException{
+        public Integer AttribuerOrdre(String pseu,RMI rmi) throws RemoteException{
             Integer numero;
-            numero=rmi.SetOrdre(pseu, col, dd);
+            numero=rmi.SetOrdre(pseu);
             return numero;
         }
-        public Integer ReattribuerOrdre(String pseu, String col, RMI rmi, ArrayList <Dés> dd) throws RemoteException{
+        public Integer ReattribuerOrdre(String pseu,RMI rmi) throws RemoteException{
              Integer numero;
-            numero=rmi.ReSetOrdre(pseu, col, dd);
+            numero=rmi.ReSetOrdre(pseu);
             return numero;
         }
         
@@ -206,8 +209,8 @@ public class RMIClient {
             }
             return size;
         }
-        public void ResultatCompterDes(Integer numj, RMI rmi) throws RemoteException{
-            Boolean resultat=rmi.OnCompte(numj);
+        public void ResultatCompterDes(String pseu, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.OnCompte(pseu);
             if(resultat){
                 System.out.println("\n Il y a bien le nombre de dés annoncé à cette valeur");
             }else{
@@ -215,8 +218,8 @@ public class RMIClient {
             }
         }
         
-        public void ResultatCompterDesTtPile(Integer numj, RMI rmi) throws RemoteException{
-            Boolean resultat=rmi.OnCompteTtPile(numj);
+        public void ResultatCompterDesTtPile(String pseu, RMI rmi) throws RemoteException{
+            Boolean resultat=rmi.OnCompteTtPile(pseu);
             if(resultat){
                 System.out.println("\n Il y a bien le tout-pile !");
             }else{
@@ -322,8 +325,8 @@ public class RMIClient {
                  
                 System.out.println("Vous avez tenté le tout pile !");
                 }  
-        public ArrayList<Dés> ReRemplirJoueur(String pseu, String col, RMI rmi, ArrayList <Dés> dd1) throws RemoteException{
-            dd=rmi.ReRemplirJoueur(pseu,col,dd1,numpass);
+        public ArrayList<Dés> ReRemplirJoueur(String pseu, RMI rmi) throws RemoteException{
+            rmi.ReRemplirJoueur(pseu);
             return dd;
         }        
         
@@ -378,8 +381,8 @@ public class RMIClient {
             }
              
             CreationJoueur(rmi2, pseu, col);
-            dd=RemplirDesJoueur(rmi2, pseu, col);
-            AfficherDesJoueur(rmi2, pseu, col, dd);
+            RemplirDesJoueur(rmi2, pseu);
+            AfficherDesJoueur(rmi2, pseu);
             AfficherJoueur(rmi2);
 
             //recupérer le nombre de joueur inscrit
@@ -392,7 +395,8 @@ public class RMIClient {
            }
 
            //AfficherJoueur(rmi2);
-           numpass=AttribuerOrdre(pseu, col, rmi2, dd);
+           numpass=AttribuerOrdre(pseu,rmi2);
+           System.out.println(numpass);
            go2=NbJoueurPresent(rmi2);
            ChangeRepere(rmi2, go2);
            //AfficherDesJoueur(rmi2, pseu, col);
@@ -405,12 +409,12 @@ public class RMIClient {
             System.out.println("cas menteur:"+RecupCasMenteur(rmi2));
            if(RecupCasMenteur(rmi2)==2){
                     Remisecompteur(rmi2);
-                    numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
+                    numpass=ReattribuerOrdre(pseu,rmi2);
                     // numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
                     System.out.println("Jai rerempli");
-                    dd=ReRemplirJoueur(pseu, col, rmi2, dd);
+                    ReRemplirJoueur(pseu, rmi2);
 
-                    AfficherDesJoueur(rmi2, pseu, col, dd);
+                    AfficherDesJoueur(rmi2, pseu);
                     System.out.println("apres remise compteur");
                     //ChangeCasMenteur(rmi2, 0);
                 }
@@ -418,8 +422,8 @@ public class RMIClient {
                 //System.out.println("Jai rerempli");
                 //ReRemplirJoueur(pseu, col, rmi2, dd);
             
-            AfficherDesJoueur(rmi2, pseu, col, dd);
-            while(AfficherDesJoueur(rmi2, pseu, col, dd)==0){
+            AfficherDesJoueur(rmi2, pseu);
+            while(AfficherDesJoueur(rmi2, pseu)==0){
                 System.out.println("you loose");
             }
             ordre=AQuiDeJouer(numpass, rmi2);
@@ -435,7 +439,7 @@ public class RMIClient {
                 if(RecupRepere(rmi2)==0){
                     Remisecompteur(rmi2);
                     System.out.println("apres remise compteur");
-                numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
+                numpass=ReattribuerOrdre(pseu,rmi2);
                 System.out.println("numero"+numpass);
                 System.out.println("je suis dans le if du tour on recuper un nouvelle attribuer ordre");
                 go2=NbJoueurPresent(rmi2);
@@ -516,7 +520,7 @@ public class RMIClient {
                      case 2:
                          Menteur();
                          AfficherDesPartie(rmi2);
-                         ResultatCompterDes(numpass, rmi2);
+                         ResultatCompterDes(pseu, rmi2);
                          ChangeRepere(rmi2, go2);
                          ChangeCasMenteur(rmi2, 2);
                          ReSetpassage(rmi2);
@@ -529,7 +533,7 @@ public class RMIClient {
                      case 3:
                          ToutPile();
                          AfficherDesPartie(rmi2);
-                         ResultatCompterDesTtPile(numpass, rmi2);
+                         ResultatCompterDesTtPile(pseu, rmi2);
                          ChangeCasMenteur(rmi2, 2);
                          ChangeRepere(rmi2, go2);
                          Tour(rmi2);

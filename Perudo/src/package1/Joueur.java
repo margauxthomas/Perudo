@@ -20,26 +20,36 @@ public class Joueur {
   //private ArrayList<Dés> dd;
     private Integer passage;
     private ArrayList<Dés> dd;
+
+    public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage) {
+        this.pions = pions;
+        this.dude = dude;
+        this.passage = passage;
+        this.dd = dd;
+    }
       
       
     private ArrayList<String> valeurdes=new ArrayList<>();
     private ArrayList<Annonce> ann= new ArrayList<>();
-    
-          public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage){
+    /*
+    public Joueur(Couleur pions, User dude, ArrayList<Dés> dd, Integer passage){
            this.pions=pions;
            this.dude=dude;
            this.dd=dd;
            this.passage=passage;
            //this.passage=passage;
     }
+    */
      
     public ArrayList<Dés> RemplirDes(){
+        
         for(int i = 0; i <5; i++){
         Dés d= new Dés("0");
         String v=d.getValeur();
         d.setValeur(v);
         //Dés d1 = d.getInstanceD();
         this.dd.add(d);
+        setDd(dd);
         //int i=0;
         }
         return this.dd;
@@ -51,16 +61,30 @@ public class Joueur {
 		}
         return this.dd;
     }
+    public void ViderD(){
+        this.dd.clear();
+    }
+
     public ArrayList<Dés> getDd() {
-        return this.dd;
+        return dd;
     }
 
     public void setDd(ArrayList<Dés> dd) {
         this.dd = dd;
     }
     
+
+    
     public void EnleverDes(){
-        this.dd.remove(1);
+       int tmp;
+        
+        tmp=this.dd.size();
+        this.dd.clear();
+        for(int i = 0; i <tmp-1; i++){
+            Dés d= new Dés("0");
+            this.dd.add(d);
+        }
+        
     }
     public void AjouterDes(){
         Dés d= new Dés("0");
@@ -73,6 +97,7 @@ public class Joueur {
         return valeurdes;
     }
     public ArrayList<String> DonnerValeur(){
+        valeurdes.clear();
         for (Dés D : this.dd) {
 		//String valtmp=D.getValeur();
                 valeurdes.add(D.getVal());
