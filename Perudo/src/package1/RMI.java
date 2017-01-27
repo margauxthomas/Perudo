@@ -44,5 +44,15 @@ public interface RMI extends Remote{
     public boolean OnCompteTtPile(Integer numj) throws RemoteException;
     public void ResetCompteur() throws RemoteException;
     public ArrayList <Dés> ReRemplirJoueur(String attri1, String attri2,ArrayList <Dés> dd1, Integer p) throws RemoteException;
-    // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
+    public Integer RecupRepere() throws RemoteException;
+    public void ChangeRepere(Integer rp) throws RemoteException;
+     public Integer ReSetOrdre(String attri1, String attri2,ArrayList <Dés> dd1)throws RemoteException;
+     public Integer RecupCasMenteur() throws RemoteException;
+     public void ChangeCasmenteur(Integer cm) throws RemoteException;
+     public void ReSetpassage()throws RemoteException;
+     public void ClearArrayworld()throws RemoteException;
+
+// public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
+
+
 }

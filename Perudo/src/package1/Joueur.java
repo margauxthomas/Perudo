@@ -19,11 +19,19 @@ public class Joueur {
     private Annonce val;
   //private ArrayList<Dés> dd;
     private Integer passage;
-    
+    private ArrayList<Dés> dd;
+      
+      
     private ArrayList<String> valeurdes=new ArrayList<>();
     private ArrayList<Annonce> ann= new ArrayList<>();
     
-     private ArrayList<Dés> dd= new ArrayList<>();
+          public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage){
+           this.pions=pions;
+           this.dude=dude;
+           this.dd=dd;
+           this.passage=passage;
+           //this.passage=passage;
+    }
      
     public ArrayList<Dés> RemplirDes(){
         for(int i = 0; i <5; i++){
@@ -31,20 +39,20 @@ public class Joueur {
         String v=d.getValeur();
         d.setValeur(v);
         //Dés d1 = d.getInstanceD();
-        dd.add(d);
+        this.dd.add(d);
         //int i=0;
         }
-        return dd;
+        return this.dd;
     }
     public ArrayList<Dés> ReRemplirDés(){
-        for (Dés D : dd) {
+        for (Dés D : this.dd) {
                 String v=D.getValeur();
                 D.setValeur(v);
 		}
-        return dd;
+        return this.dd;
     }
     public ArrayList<Dés> getDd() {
-        return dd;
+        return this.dd;
     }
 
     public void setDd(ArrayList<Dés> dd) {
@@ -52,33 +60,27 @@ public class Joueur {
     }
     
     public void EnleverDes(){
-        dd.remove(1);
+        this.dd.remove(1);
     }
     public void AjouterDes(){
         Dés d= new Dés("0");
         String v=d.getValeur();
         d.setValeur(v);
-        dd.add(d);
+        this.dd.add(d);
     }
     public ArrayList<String> AfficherDés(){
         
         return valeurdes;
     }
     public ArrayList<String> DonnerValeur(){
-        for (Dés D : dd) {
+        for (Dés D : this.dd) {
 		//String valtmp=D.getValeur();
                 valeurdes.add(D.getVal());
 		}
         return valeurdes;
     }
    
-       public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage){
-           this.pions=pions;
-           this.dude=dude;
-           this.dd=dd;
-           this.passage=passage;
-           //this.passage=passage;
-    }
+
 
     public Annonce getVal() {
         return val;
@@ -86,6 +88,9 @@ public class Joueur {
 
     public void setVal(Annonce val) {
         this.val = val;
+    }
+    public Integer GetSize(){
+        return dd.size();
     }
    
     

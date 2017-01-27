@@ -41,6 +41,11 @@ public class RMIClient {
         Boolean ordre;
         Integer numpass;
  int count=0;
+                     int count1;
+                    int go2;
+                    int essai=0;
+        //int repere;
+        //int cas2;
         
        
        boolean isNumber = true;
@@ -178,6 +183,11 @@ public class RMIClient {
             numero=rmi.SetOrdre(pseu, col, dd);
             return numero;
         }
+        public Integer ReattribuerOrdre(String pseu, String col, RMI rmi, ArrayList <Dés> dd) throws RemoteException{
+             Integer numero;
+            numero=rmi.ReSetOrdre(pseu, col, dd);
+            return numero;
+        }
         
         public Boolean AQuiDeJouer(Integer num, RMI rmi) throws RemoteException{
             Boolean ordre;
@@ -312,10 +322,42 @@ public class RMIClient {
                  
                 System.out.println("Vous avez tenté le tout pile !");
                 }  
-        public void ReRemplirJoueur(String pseu, String col, RMI rmi, ArrayList <Dés> dd1) throws RemoteException{
+        public ArrayList<Dés> ReRemplirJoueur(String pseu, String col, RMI rmi, ArrayList <Dés> dd1) throws RemoteException{
             dd=rmi.ReRemplirJoueur(pseu,col,dd1,numpass);
+            return dd;
         }        
-            
+        
+        public Integer RecupRepere(RMI rmi) throws RemoteException{
+            int repere;
+            repere=rmi.RecupRepere();
+            return repere;
+        }
+        public void ChangeRepere(RMI rmi, Integer rp)throws RemoteException{
+            rmi.ChangeRepere(rp);
+        }
+        
+        public Integer RecupCasMenteur(RMI rmi) throws RemoteException{
+        int cas2;
+        cas2=rmi.RecupCasMenteur();
+        return cas2;
+        }
+        public void ChangeCasMenteur(RMI rmi, Integer cm)throws RemoteException{
+            rmi.ChangeCasmenteur(cm);
+        }
+        public void ReSetpassage(RMI rmi)throws RemoteException{
+            rmi.ReSetpassage();
+        }
+        public void ClearArrayworld(RMI rmi)throws RemoteException{
+            rmi.ClearArrayworld();
+        }
+        /*
+        public Integer GetNumPassage(RMI rmi)throws RemoteException{
+            int numpass;
+            numpass=rmi.GetNumPassage();
+            return numpass;
+        }
+        
+        */
         public void LancementPartie(RMI rmi2) throws RemoteException, InterruptedException{      
    
             pseudo2=getPseudo(rmi2);
@@ -351,33 +393,64 @@ public class RMIClient {
 
            //AfficherJoueur(rmi2);
            numpass=AttribuerOrdre(pseu, col, rmi2, dd);
+           go2=NbJoueurPresent(rmi2);
+           ChangeRepere(rmi2, go2);
            //AfficherDesJoueur(rmi2, pseu, col);
           
     }
     
         public void Tour(RMI rmi2) throws RemoteException, InterruptedException{
+            Thread.sleep(2000);
             int choix=0;
+            System.out.println("cas menteur:"+RecupCasMenteur(rmi2));
+           if(RecupCasMenteur(rmi2)==2){
+                    Remisecompteur(rmi2);
+                    numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
+                    // numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
+                    System.out.println("Jai rerempli");
+                    dd=ReRemplirJoueur(pseu, col, rmi2, dd);
+
+                    AfficherDesJoueur(rmi2, pseu, col, dd);
+                    System.out.println("apres remise compteur");
+                    //ChangeCasMenteur(rmi2, 0);
+                }
             
-            if(count>1){
-                System.out.println("Jai rerempli");
-                ReRemplirJoueur(pseu, col, rmi2, dd);
-            }
+                //System.out.println("Jai rerempli");
+                //ReRemplirJoueur(pseu, col, rmi2, dd);
+            
             AfficherDesJoueur(rmi2, pseu, col, dd);
             while(AfficherDesJoueur(rmi2, pseu, col, dd)==0){
                 System.out.println("you loose");
             }
             ordre=AQuiDeJouer(numpass, rmi2);
-                while(!ordre){
+            while(!ordre){
                     System.out.println("\n Attendez votre tour");
                     Thread.sleep(4000);
-                    ordre=AQuiDeJouer(numpass, rmi2);
+                System.out.println("recuperzation repere"+RecupRepere(rmi2));
+                 if(RecupCasMenteur(rmi2)==2){
+                     
+                      ChangeRepere(rmi2, go2);
+                    ChangeCasMenteur(rmi2, 0);
                 }
+                if(RecupRepere(rmi2)==0){
+                    Remisecompteur(rmi2);
+                    System.out.println("apres remise compteur");
+                numpass=ReattribuerOrdre(pseu, col, rmi2, dd);
+                System.out.println("numero"+numpass);
+                System.out.println("je suis dans le if du tour on recuper un nouvelle attribuer ordre");
+                go2=NbJoueurPresent(rmi2);
+                ChangeRepere(rmi2, go2);
+                 }
+                
+                    ordre=AQuiDeJouer(numpass, rmi2);
+            }
                 System.out.println("\n A votre tour");
                 AfficherAnnonce(rmi2);
-                System.out.println(choix);
+                //go2=NbJoueurPresent(rmi2);
+                //ChangeRepere(rmi2,go2);
                 choix=FaireChoix(rmi2);
-                System.out.println(choix);
-                System.out.println(choix);
+                SwitchCase(rmi2, choix);
+                /*
                 switch(choix)
                 {
                      case 1:
@@ -407,41 +480,65 @@ public class RMIClient {
                          
                          break;
                 }
-                
+                */
                 //ReRemplirJoueur(pseu,col,rmi2,dd);
 
             
-    }/*
+    }
     public void SwitchCase(RMI rmi2, Integer choix2) throws RemoteException, InterruptedException{
-                        switch(choix2)
-                {
+                    
+                            switch(choix2)
+                     {
                      case 1:
-                         System.out.println("je suis dans le case 1");
+                         int repere;
                          nbd=SurenchereDé();
                          fd=SurenchereFaceDé();
+                         
+                         repere=RecupRepere(rmi2);
+                         System.out.println("voici le repere"+repere);
+                         if(RecupRepere(rmi2)==1){
+                             ChangeRepere(rmi2, repere-1);
+                             EnvoiEnchere(rmi2, nbd, fd, pseu, col,dd);
+                             Thread.sleep(10000);
+                             System.out.println("dans n"+RecupRepere(rmi2));
+                             Tour(rmi2);
+                             
+                         }
+                         else{
+                         ChangeRepere(rmi2, repere-1);
                          EnvoiEnchere(rmi2, nbd, fd, pseu, col,dd);
-                         System.out.println("je suis apres le envoie enchere");
+                         System.out.println("dans le case ape incrementation"+RecupRepere(rmi2));
+                          Thread.sleep(10000);
+                         Tour(rmi2);
+                         }
                          //Thread.sleep(30000);
                          break;
                      case 2:
-                         System.out.println("je suis dans le case 2 ");
                          Menteur();
                          AfficherDesPartie(rmi2);
-                         System.out.println("je suis apres afficher des partie ");
                          ResultatCompterDes(numpass, rmi2);
-                         Remisecompteur(rmi2);
+                         ChangeRepere(rmi2, go2);
+                         ChangeCasMenteur(rmi2, 2);
+                         ReSetpassage(rmi2);
+                         ClearArrayworld(rmi2);
+                         essai=1;
+                         Tour(rmi2);
+                         
                          break;
 
                      case 3:
-                         System.out.println("je suis dans le case 3 ");
                          ToutPile();
                          AfficherDesPartie(rmi2);
-                         Remisecompteur(rmi2);
+                         ResultatCompterDesTtPile(numpass, rmi2);
+                         ChangeCasMenteur(rmi2, 2);
+                         ChangeRepere(rmi2, go2);
+                         Tour(rmi2);
+                         
                          break;
                 }
         Tour(rmi2);
     }
-        */
+        
     public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         RMI rmi2=client.connectServer();

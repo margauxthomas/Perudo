@@ -156,7 +156,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         Couleur cattri1=Couleur.getInstanceC(attri2);
         User uattri2=User.getInstanceU(attri1);
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1, p);
+        System.out.println("j'affiche les des de cette parsonne"+nj.getDude().getPseudo());
+        System.out.println("la taille de son d"+nj.GetSize());
         nj.ReRemplirDés();
+        //valdesworld.clear();
                //valeurdesj=nj.DonnerValeur();
                 for (String val : nj.DonnerValeur()) {
                         valdesworld.add(val);
@@ -164,6 +167,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
 	}
         
         return nj.getDd();
+    }
+    public void ClearArrayworld()throws RemoteException{
+        valdesworld.clear();
     }
     
     public Integer SetOrdre(String attri1, String attri2,ArrayList <Dés> dd1)throws RemoteException{
@@ -183,7 +189,27 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         return numero;
     }
-    
+    public void ReSetpassage()throws RemoteException{
+        passage=1;
+    }
+    public Integer ReSetOrdre(String attri1, String attri2,ArrayList <Dés> dd1)throws RemoteException{
+        Couleur cattri1=Couleur.getInstanceC(attri2);
+        User uattri2=User.getInstanceU(attri1);        
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1, numpass);
+        
+        System.out.println("Attributiion numéro de passage "+passage);
+        nj.setPassage(passage);
+        passage++;
+        Integer numero;
+        numero=nj.getPassage();
+        //joueurspa.add(nj);
+        System.out.println("num du joueur"+numero);
+        for(Joueur J:joueurs){
+            System.out.println("dans setordre");
+            System.out.println(J.getPassage());
+        }
+        return numero;
+    }
     public Boolean RetrouverOrdreJoueur(Integer numero)throws RemoteException{
        
         
@@ -440,8 +466,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         Couleur cattri1=Couleur.getInstanceC(attri2);
         User uattri2=User.getInstanceU(attri1);        
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1, p);
+        System.out.println("celui qui perd un d"+nj.getDude().getPseudo());
         nj.EnleverDes();
+           System.out.println("il a maintenant"+nj.GetSize());
         String test=nj.getDude().getPseudo();
+        nj.setDd(nj.getDd());
         //System.out.println("numero de passage du perdant"+nj.getPassage());
         int rang=0;
         System.out.println("je suis avant le for");
@@ -578,7 +607,23 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public ArrayList<User> AfficherUser(){
         return users;
     }
-        
+    
+    int repere=0;
+     public Integer RecupRepere() throws RemoteException{
+         return repere;
+     }
+     public void ChangeRepere(Integer rp) throws RemoteException{
+           repere=rp;
+           System.out.println("repere ooooooeffffffffffffffffffffffffffffffffffffffffffffffffffffo"+repere);
+       }
+     int cas2=0;
+     public Integer RecupCasMenteur() throws RemoteException{
+         return cas2;
+     }
+     public void ChangeCasmenteur(Integer cm) throws RemoteException{
+           cas2=cm;
+           System.out.println("cas menteur kdfoqhcojefsd"+cas2);
+       }
         
     
     
