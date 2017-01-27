@@ -98,20 +98,26 @@ public class RMIClient {
             System.out.println("Veuillez saisir votre pseudo :");
             String pseu = sc.nextLine();
            
-            if(u.contains(pseu)){
+                     
+            if(u.contains(pseu) || pseu.equals("")){
             return null;
-                }else return pseu;
+            }else return pseu;
+            
+            
+            
         }
         
         public String saisieCouleur(RMI rmi, String pseu, ArrayList<String> c) throws RemoteException{
             //Saisier du choix de dés
                 //Manque afficher couleur déja choisit
             Scanner sc1 = new Scanner(System.in);
-            System.out.println("Choisissez une couleur de dés : ");
+
+            System.out.println("Choisissez une couleur de dés ( rouge, bleu,jaune,vert ou orange) : ");
             String col = sc1.nextLine();
             
             //Creation des User et des objets couleur
-            if(c.contains(col)){
+            if(c.contains(col) || col.equals("") || !col.equals("rouge") && !col.equals("jaune") && !col.equals("vert") && !col.equals("bleu") && !col.equals("orange")){
+                System.out.println(col);
                 return null;
             }else{
             String lancement =rmi.setPseudo(pseu)+rmi.setCouleur(col);
@@ -306,14 +312,17 @@ public class RMIClient {
             pseudo2=getPseudo(rmi2);
             flag2=getCool(rmi2);
             pseu=saisiePseudo(rmi2,pseudo2);
-                while(pseu==null){
-                 System.out.println("Pseudo deja utilisé, choisissez en un autre");
+           
+            while(pseu==null){
+                 System.out.println("Pseudo non pris en compte, choisissez en un autre");
                  pseu=saisiePseudo(rmi2,pseudo2);
             }
+             
 
             col=saisieCouleur(rmi2, pseu, flag2);
             while(col==null){
-                 System.out.println("Couleur déja prise !");
+                 System.out.println("Couleur déja prise ou ne rentrant pas dans les couleurs à choisir !");
+                 System.out.println("Rappel : rouge, bleu, jaune, vert, orange");
                  col=saisieCouleur(rmi2,pseu, flag2);
             }
 
@@ -397,13 +406,13 @@ public class RMIClient {
         if(rmi2==null){
             System.out.println("Erreur de connexion");
         }
-        /*
+        
         client.LancementPartie(rmi2);
         System.out.println(client.AfficherDesPartie(rmi2));
         while(client.AfficherDesPartie(rmi2)!=0){
         client.Tour(rmi2);
-        }*/
-        
+        }
+        /*   
         int j=0;
         int fd;
         int nbd;
@@ -492,7 +501,7 @@ public class RMIClient {
        //client.ResultatCompterDes(3, 2, rmi2);
        
        
-        
+   */     
         
         
     }
