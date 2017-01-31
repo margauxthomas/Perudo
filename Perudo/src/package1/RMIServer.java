@@ -190,8 +190,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 for (String val : J.DonnerValeur()) {
                         valdesworld.add(val);
 			System.out.println(val);
-	}
             }
+           }
         }
         
         return a2;
@@ -228,6 +228,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             //System.out.println(J.getPassage());
         return numero;
     }
+    
     public void ReSetpassage()throws RemoteException{
         passage=1;
     }
@@ -268,7 +269,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return ordre;
     }
     
-    
+
     
     
     
@@ -330,6 +331,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                       if(J.getPassage()==numj-1){
                          pseulj=J.getDude().getPseudo();
                       }
+                      /*
+                      else if(J.getPassage()==joueurs.size()){
+                          System.out.println( "kfykgyuljkljgfdghjkjhgfdxxfghjhgfdghjgfdxcgvh");
+                           pseulj=J.getDude().getPseudo();
+                      }*/
                 }
                       /*
                 if(p==(numj)){
@@ -391,11 +397,17 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                       }
                 }
                 for(Joueur J: joueurs){
+                    
+                    
                       if(J.getPassage()==numj2-1){
                          pseulj=J.getDude().getPseudo();
                       }
+                      /*
+                      else if(J.getPassage()==joueurs.size()){
+                           pseulj=J.getDude().getPseudo();
+                      }*/
                 }
-                    RecupererAnnonce(pseulj);
+                    RecupererAnnonceTtPile(pseulj);
                     TraitementResultatTtPile(attri1);
 
     }
@@ -414,7 +426,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     
      public void TraitementResultatTtPile(String pseujec) throws RemoteException{
                     if(resultat){
-                System.out.println("je suis dans le cas ou le resultat est bon");
+                System.out.println("je suis dans le cas ou le resultat tt pile est bon");
                 AjouterDes(pseujec);
             }else {
                         System.out.println("je suis dans le cas ou le resultat est pas bon");
@@ -530,10 +542,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 c++;
                 }
             }
+        System.out.println("nombre de dés"+nb);
         System.out.println("nombre "+c);
         if(c!=nb){
             resultat=false;
-        }else resultat=true;
+        }else if(c==nb) resultat=true;
         System.out.println(resultat);
     return resultat;
     }
@@ -546,11 +559,22 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         System.out.println("celui qui perd un d"+nj.getDude().getPseudo());
         */
         int rang=0;
+        
+           for(int i=0;i<joueurs.size();i++){
+            int tmp;
+            //System.out.println("je suis avant le get(i)");
+            tmp= joueurs.get(i).getPassage();
+            //System.out.println("get(i) suivant"+tmp);
+            joueurs.get(i).setPassage(tmp+1);
+            //System.out.println("je vais passer dans le 1");
+            
+        }
+        
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
                 J.EnleverDes();
                 J.setPassage(1);
-                rang=J.getPassage();
+                //rang=J.getPassage();
             }
         }
         /*
@@ -577,15 +601,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         }
 */
-        for(int i=0;i<rang-1;i++){
-            int tmp;
-            //System.out.println("je suis avant le get(i)");
-            tmp= joueurs.get(i).getPassage();
-            //System.out.println("get(i) suivant"+tmp);
-            joueurs.get(i).setPassage(tmp+1);
-            //System.out.println("je vais passer dans le 1");
-            
-        }
+     
         //nj.setPassage(1);
         //joueurspa.add(nj);
     }
@@ -594,7 +610,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         
         compteur=1;
     }
-    
+    public void SetCompteur()throws RemoteException{
+        compteur++;
+    }
+   
     public void AjouterDes(String attri1)throws RemoteException{
         /*
         Couleur cattri1=Couleur.getInstanceC(attri1);
@@ -605,15 +624,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
 
         int rang=0;
         */
-        int rang=0;
-        for(Joueur J: joueurs){
-            if(J.getDude().getPseudo().equals(attri1)){
-                J.AjouterDes();
-                J.setPassage(1);
-                rang=J.getPassage();
-            }
-        }
-        for(int i=0;i<rang-1;i++){
+         int rang=0;
+        
+           for(int i=0;i<joueurs.size();i++){
             int tmp;
             //System.out.println("je suis avant le get(i)");
             tmp= joueurs.get(i).getPassage();
@@ -621,6 +634,14 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             joueurs.get(i).setPassage(tmp+1);
             //System.out.println("je vais passer dans le 1");
             
+        }
+        
+        for(Joueur J: joueurs){
+            if(J.getDude().getPseudo().equals(attri1)){
+                J.AjouterDes();
+                J.setPassage(1);
+                //rang=J.getPassage();
+            }
         }
         /*
         
@@ -681,7 +702,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         }
         //nj.setVal(a);
-        compteur++;
+       // compteur++;
         /*
         int test;
         int test2;
@@ -754,9 +775,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return users;
     }
     
-    int repere=0;
+    int repere=1;
      public Integer RecupRepere() throws RemoteException{
-         return repere;
+         return compteur;
      }
      public void ChangeRepere(Integer rp) throws RemoteException{
            repere=rp;
@@ -770,8 +791,39 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
            cas2=cm;
            System.out.println("cas menteur kdfoqhcojefsd"+cas2);
        }
-        
+    int cas3=0;
+     public Integer RecupCasPile() throws RemoteException{
+         return cas3;
+     }
+     public void ChangeCasPile(Integer ctp) throws RemoteException{
+           cas3=ctp;
+           System.out.println("cas tt pile  kdfoqhcojefsd"+cas2);
+       }
+    public void ClearttAnnonces() throws RemoteException{
+        ttlesann.clear();
+    }
+    public Integer RecuPassage(String attri1) throws RemoteException{
+        int path=0;
+        for(Joueur J: joueurs){
+            if(J.getDude().getPseudo().equals(attri1)){
+                path=J.getPassage();
+                System.out.println("le numerod e passage recup"+path);
+            }
+        }
+        return path;
+        }
     
+    public void Supprimerjoueur(String attri1) throws RemoteException{
+        for(Joueur J: joueurs){
+            if(J.getDude().getPseudo().equals(attri1)){
+                joueurs.remove(J);
+            }
+        }
+        
+    }
+    
+    
+    //fonction supprimer joueur a fiare 
     
     public static void main(String args[]){
         try{

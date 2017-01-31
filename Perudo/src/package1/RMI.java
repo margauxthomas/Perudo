@@ -51,7 +51,13 @@ public interface RMI extends Remote{
      public void ChangeCasmenteur(Integer cm) throws RemoteException;
      public void ReSetpassage()throws RemoteException;
      public void ClearArrayworld()throws RemoteException;
-
+      public void SetCompteur()throws RemoteException;
+      public Integer RecupCasPile() throws RemoteException;
+       public void ChangeCasPile(Integer ctp) throws RemoteException;
+       public void ClearttAnnonces() throws RemoteException;
+ public Integer RecuPassage(String attri1) throws RemoteException;
+  public void Supprimerjoueur(String attri1) throws RemoteException;
+  
 // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 
 
