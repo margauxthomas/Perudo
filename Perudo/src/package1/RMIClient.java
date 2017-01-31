@@ -375,6 +375,9 @@ public class RMIClient {
             path=rmi.RecuPassage(attri1);
             return path;
         }
+         public void Supprimerjoueur(RMI rmi, String pseu) throws RemoteException{
+            rmi.Supprimerjoueur(pseu);
+         }
         /*
         public Integer GetNumPassage(RMI rmi)throws RemoteException{
             int numpass;
@@ -426,6 +429,13 @@ public class RMIClient {
     }
     
         public void Tour(RMI rmi2) throws RemoteException, InterruptedException{
+            
+            int fin;
+            fin=NbJoueurPresent(rmi2);
+            if(fin==1){
+                System.out.println("Felicitation vous avez gagner");
+                AfficherJoueur(rmi2);
+            }
             Thread.sleep(2000);
             int choix=0;
             System.out.println("cas menteur:"+RecupCasMenteur(rmi2));
@@ -441,7 +451,10 @@ public class RMIClient {
             AfficherDesJoueur(rmi2, pseu);
             while(AfficherDesJoueur(rmi2, pseu)==0){
                 System.out.println("you loose");
+                Supprimerjoueur(rmi2, pseu);
+                
             }
+            
             go2=NbJoueurPresent(rmi2);
             ordre=AQuiDeJouer(numpass, rmi2);
             

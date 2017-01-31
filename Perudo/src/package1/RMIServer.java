@@ -190,8 +190,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 for (String val : J.DonnerValeur()) {
                         valdesworld.add(val);
 			System.out.println(val);
-	}
             }
+           }
         }
         
         return a2;
@@ -228,6 +228,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             //System.out.println(J.getPassage());
         return numero;
     }
+    
     public void ReSetpassage()throws RemoteException{
         passage=1;
     }
@@ -789,6 +790,15 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         return path;
         }
+    
+    public void Supprimerjoueur(String attri1) throws RemoteException{
+        for(Joueur J: joueurs){
+            if(J.getDude().getPseudo().equals(attri1)){
+                joueurs.remove(J);
+            }
+        }
+        
+    }
     
     
     //fonction supprimer joueur a fiare 
