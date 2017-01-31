@@ -592,6 +592,10 @@ public class RMIClient {
                              
                              //System.out.println("dans n"+RecupRepere(rmi2));
                              Tour(rmi2);
+                             
+                             
+                             //System.out.println("dans n"+RecupRepere(rmi2));
+                             Tour(rmi2);
                          }
                          else{
                         
