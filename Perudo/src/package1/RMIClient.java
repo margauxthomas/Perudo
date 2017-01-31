@@ -491,7 +491,7 @@ public class RMIClient {
     }
     public void SwitchCase(RMI rmi2, Integer choix2) throws RemoteException, InterruptedException{
                     
-                            switch(choix2)
+                    switch(choix2)
                      {
                      case 1:
                          int repere;
@@ -506,9 +506,9 @@ public class RMIClient {
                              Thread.sleep(10000);
                              System.out.println("dans n"+RecupRepere(rmi2));
                              Tour(rmi2);
-                             
                          }
                          else{
+                         
                          ChangeRepere(rmi2, repere-1);
                          EnvoiEnchere(rmi2, nbd, fd, pseu, col,dd);
                          System.out.println("dans le case ape incrementation"+RecupRepere(rmi2));

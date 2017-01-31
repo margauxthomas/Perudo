@@ -7,7 +7,7 @@ package package1;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.io.Serializable;
-/**
+/*
  *
  * @author jonat
  */
@@ -32,7 +32,7 @@ public class Annonce implements Serializable{
         this.valDé = valDé;
     }
      private static Vector classes = new Vector();
-     public static Annonce getInstanceA(Integer nbdé, Integer valDé){
+/*     public static Annonce getInstanceA(Integer nbdé, Integer valDé){
             
 		Annonce tmp = new Annonce(nbdé, valDé);
 		if (classes.contains(tmp)) {
@@ -49,5 +49,5 @@ public class Annonce implements Serializable{
 			return tmp;
 		}
                     return null;
-	}
+	}*/
 }

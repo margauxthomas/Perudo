@@ -645,15 +645,37 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         Couleur cattri1=Couleur.getInstanceC(attri2);
         User uattri2=User.getInstanceU(attri1);
                 
-        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1,p);
-*/
-        Annonce a = new Annonce(nombreDé,faceduDé);
-        a=Annonce.getInstanceA(nombreDé, faceduDé);
-        a.setAnnonce(nombreDé, faceduDé);
-        ttlesann.add(a);
+        Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1,p);*/
+        
+        /* Cas où t'as déjà géré le contenu de la liste (initialisée?) */
+        Annonce anterieure = ttlesann.get(ttlesann.size()-1);
+        Annonce newannonce = new Annonce(nombreDé,faceduDé);
+        if (anterieure.getDé() > nombreDé){
+            System.out.println("Rentre une valeur plus grande ");
+        }
+            else{     
+            if (anterieure.getAnnValDé() >faceduDé){
+                System.out.println("Rentre une valeur plus grande");
+            }
+            else{
+                 newannonce.setAnnonce(nombreDé, faceduDé);
+            }
+                    
+        }
+        
+        /* Cas ou ce n'est pas fait ! */
+        if (ttlesann.isEmpty()){                    
+            newannonce.setAnnonce(nombreDé, faceduDé);
+        }
+        else {
+           System.out.println("Rentre une valeur plus grande batard");
+        }
+        
+        Annonce nouvelle = new Annonce(nombreDé, faceduDé);
+        ttlesann.add(nouvelle);
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
-                J.setVal(a);
+                J.setVal(nouvelle );
                 joueursann.clear();
                 joueursann.add(J);
             }
