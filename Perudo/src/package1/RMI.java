@@ -57,7 +57,8 @@ public interface RMI extends Remote{
        public void ClearttAnnonces() throws RemoteException;
  public Integer RecuPassage(String attri1) throws RemoteException;
   public void Supprimerjoueur(String attri1) throws RemoteException;
-  
+  public void ChangeIndice(Integer in) throws RemoteException;
+   public Integer RecupIndice() throws RemoteException;
 // public HashMap<String, HashSet<String>> CreerPartie() throws RemoteException;
 
 
