@@ -40,7 +40,8 @@ public class RMIClient {
     Scanner scanch = new Scanner(System.in);
     int nbDé =0;
     int faceDé =0;
-
+    int count2=0;
+    int count3=0;
     
     public static RMIClient getInstance(){        
 	RMIClient tmp = new RMIClient();
@@ -328,9 +329,9 @@ public class RMIClient {
 
 
     public void ToutPile() throws RemoteException{
-
     System.out.println("Vous avez tenté le tout pile !");
-    }  
+    }
+    
     public ArrayList<Dés> ReRemplirJoueur(String pseu, RMI rmi) throws RemoteException{
         rmi.ReRemplirJoueur(pseu);
         return dd;
@@ -453,10 +454,11 @@ public class RMIClient {
             ordre=false;
         }
         while(!ordre){
+           
             System.out.println("\n Attendez votre tour");
             Thread.sleep(1000);   
             System.out.println("le cas menteur :"+RecupCasMenteur(rmi2));
-            if(RecupCasMenteur(rmi2)>=2){
+            if(RecupCasMenteur(rmi2)>=2 && count2<1){
                 Remisecompteur(rmi2);
                 System.out.println("Voici vos nouveau dés");
                 ReRemplirJoueur(pseu, rmi2);
@@ -464,18 +466,10 @@ public class RMIClient {
                 ChangeCasMenteur(rmi2, RecupCasMenteur(rmi2)+1);
                 ClearttAnnonces(rmi2);
                 numpass=RecuPassage(rmi2, pseu);
-            }
-            System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2));
-            if(RecupCasMenteur(rmi2)==2+go2+1){
-                System.out.println("je remet a zero le cas menteur");
-                ChangeCasMenteur(rmi2, 0);
+                count2++;
             }
             System.out.println("le cas tt pile :"+RecupCasPile(rmi2));
-            if(RecupCasPile(rmi2)==3+go2+1){
-                ChangeCasPile(rmi2, 0);
-                System.out.println("je remet a zero le cas tt pile");
-            }
-            if(RecupCasPile(rmi2)>=3){
+            if(RecupCasPile(rmi2)>=3 && count3<1){
                 Remisecompteur(rmi2);
                 System.out.println("Jai rerempli apres un tt pile");
                 ReRemplirJoueur(pseu, rmi2);
@@ -483,9 +477,19 @@ public class RMIClient {
                 ChangeCasPile(rmi2, RecupCasPile(rmi2)+1);
                 ClearttAnnonces(rmi2);
                 numpass=RecuPassage(rmi2, pseu);
+                count3++;
             }
+            System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2));
+            if(RecupCasMenteur(rmi2)==2+go2){
+                System.out.println("je remet a zero le cas menteur");
+                ChangeCasMenteur(rmi2, 0);
+            }
+ 
             System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2));
-
+            if(RecupCasPile(rmi2)==3+go2){
+                ChangeCasPile(rmi2, 0);
+                System.out.println("je remet a zero le cas tt pile");
+            }
             ordre=AQuiDeJouer(numpass, rmi2);
         }
         System.out.println("\n A votre tour");
