@@ -669,38 +669,18 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         Joueur nj=Joueur.getInstanceJ(cattri1, uattri2, dd1,p);*/
         
         /* Cas où t'as déjà géré le contenu de la liste (initialisée?) */
-        Annonce anterieure = ttlesann.get(ttlesann.size()-1);
-        Annonce newannonce = new Annonce(nombreDé,faceduDé);
-        if (anterieure.getDé() > nombreDé){
-            System.out.println("Rentre une valeur plus grande ");
-        }
-            else{     
-            if (anterieure.getAnnValDé() >faceduDé){
-                System.out.println("Rentre une valeur plus grande");
-            }
-            else{
-                 newannonce.setAnnonce(nombreDé, faceduDé);
-            }
-                    
-        }
-        
-        /* Cas ou ce n'est pas fait ! */
-        if (ttlesann.isEmpty()){                    
-            newannonce.setAnnonce(nombreDé, faceduDé);
-        }
-        else {
-           System.out.println("Rentre une valeur plus grande batard");
-        }
-        
-        Annonce nouvelle = new Annonce(nombreDé, faceduDé);
-        ttlesann.add(nouvelle);
+       Annonce a = new Annonce(nombreDé,faceduDé);
+      //  a=Annonce.getInstanceA(nombreDé, faceduDé);
+        a.setAnnonce(nombreDé, faceduDé);
+        ttlesann.add(a);
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
-                J.setVal(nouvelle );
+                J.setVal(a);
                 joueursann.clear();
                 joueursann.add(J);
             }
-        }
+}
+      
         //nj.setVal(a);
        // compteur++;
         /*
