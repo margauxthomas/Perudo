@@ -774,6 +774,15 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public ArrayList<User> AfficherUser(){
         return users;
     }
+    int indice=0;
+    public void ChangeIndice(Integer in) throws RemoteException{
+         indice=in;
+     }
+     public Integer RecupIndice() throws RemoteException{
+         return indice;
+     }
+    
+    
     
     int repere=1;
      public Integer RecupRepere() throws RemoteException{

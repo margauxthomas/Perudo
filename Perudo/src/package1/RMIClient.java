@@ -246,7 +246,25 @@ public class RMIClient {
   
         // Décision surenchere, menteur, tout pile
         public Integer FaireChoix(RMI rmi) throws RemoteException{
-          int choix1=0;
+            int choix1=0;
+            if(RecupIndice(rmi)==0){
+                choix1=0;
+           System.out.println("\n Vous devez faire une annonce"); 
+           
+             do{
+                System.out.println("Tapez 1 pour enchérir "); 
+                
+                    try{
+                        
+                    choix1 = (int) Integer.parseInt(scanch.next());
+                    isNumber = false; // execute que si parseInt ne lance pas d'exception
+                    System.out.println("Vous avez entré " + choix1);
+                        } catch(NumberFormatException e){
+                            System.out.println("Vous devez entrer le chiffre 1.");
+                        } 
+                } while(choix1 !=1 );
+            }else{
+          choix1=0;
            System.out.println("\n Vous devez surenchérir, accusez de menteur votre prédecesseur ou tenter le tout-pile !"); 
            
              do{
@@ -275,16 +293,59 @@ public class RMIClient {
                if(choix==3){
                  ToutPile();
              }
-             */
+             */}
+            ChangeIndice(1, rmi);
              return choix1;
         }
         
+        public Integer Recupenbdélastann(RMI rmi) throws RemoteException{
+           ArrayList<Annonce> annonce2 = new ArrayList<>();
+           Integer nbdéslastann=0;
+              Annonce lasta;
+           annonce2=rmi.AfficherTouteAnnonces();
+           if(annonce2.size()==0){
+               nbdéslastann=0;
+           }
+           else if(annonce2.size()==1){
+               lasta=annonce2.get(0);
+               nbdéslastann=lasta.getDé();
+           }else {
+         lasta =annonce2.get(annonce2.size()-1);
+            nbdéslastann=lasta.getDé();
+           }
+            
+            return nbdéslastann;
+        }
+          public Integer Recupevaldélastann(RMI rmi) throws RemoteException{
+           ArrayList<Annonce> annonce2 = new ArrayList<>();
+          Integer valdéslasta =0;
+              Annonce lasta;
+           annonce2=rmi.AfficherTouteAnnonces();
+           if(annonce2.size()==0){
+               valdéslasta=0;
+           }
+         else if(annonce2.size()==1){
+               lasta=annonce2.get(0);
+               valdéslasta=lasta.getAnnValDé();
+           }else {
+         lasta =annonce2.get(annonce2.size()-1);
+            valdéslasta=lasta.getAnnValDé();
+         }
+           
+            return valdéslasta;
+        }
+          
+          
+        
         // Methode surenchere rajout de dés
-            public Integer SurenchereDé() throws RemoteException{
+        
+            public Integer SurenchereDé(RMI rmi ) throws RemoteException{
                     nbDé=0;      
+                   
  
                     do {
-                         System.out.println("Veuillez entrer votre annonce : ");
+                         System.out.println("Veuillez entrer votre annonce dont le nombre de dé OU la valeur de la face est superieur "
+                                 + "à la précédente annonce : ");
                         System.out.println("Nombre de dés sur la table :  ");
                                   
            
@@ -295,13 +356,13 @@ public class RMIClient {
                         } catch(NumberFormatException e){
                             System.out.println("Vous devez entrer des chiffres.");
                         }
-                    } while(nbDé ==0);
+                    } while(nbDé ==0 );
                    
                    return nbDé;
             }  
             
             // Methode surenchere face de dés
-             public Integer SurenchereFaceDé() throws RemoteException{     
+             public Integer SurenchereFaceDé(RMI rmi ) throws RemoteException{     
                  faceDé=0;
                     while(faceDé !=2 && faceDé !=3 && faceDé !=4 && faceDé !=5 && faceDé !=6){
                         System.out.println("face des dés :  (compris entre 2 & 6)");
@@ -378,6 +439,16 @@ public class RMIClient {
          public void Supprimerjoueur(RMI rmi, String pseu) throws RemoteException{
             rmi.Supprimerjoueur(pseu);
          }
+         
+      public void ChangeIndice(Integer in, RMI rmi) throws RemoteException{
+         rmi.ChangeIndice(in);
+     }
+     public Integer RecupIndice(RMI rmi) throws RemoteException{
+         int indice;
+         indice=rmi.RecupIndice();
+         
+         return indice;
+     }
         /*
         public Integer GetNumPassage(RMI rmi)throws RemoteException{
             int numpass;
@@ -578,8 +649,12 @@ public class RMIClient {
                          int repere;
                          nbd=0;
                          fd=0;
-                         nbd=SurenchereDé();
-                         fd=SurenchereFaceDé();
+                         do{
+                         nbd=SurenchereDé(rmi2);
+                         fd=SurenchereFaceDé(rmi2);
+                         System.out.println("recupe du nb dé dernier :"+Recupenbdélastann(rmi2));
+                         System.out.println("Recupde la dernier annonce :"+Recupevaldélastann(rmi2));
+                         }while(Recupenbdélastann(rmi2)>nbd && Recupevaldélastann(rmi2)>fd);
                          nbj=NbJoueurPresent(rmi2);
                          repere=RecupRepere(rmi2);
                          System.out.println("voici le repere"+repere);
@@ -618,6 +693,8 @@ public class RMIClient {
                          //ReSetpassage(rmi2);
                          ClearArrayworld(rmi2);
                          //essai=1;
+                         ChangeIndice(0, rmi2);
+                         ChangeCasMenteur(rmi2, 2);
                          Tour(rmi2);
                          
                          break;
@@ -629,6 +706,8 @@ public class RMIClient {
                          ChangeCasPile(rmi2, 3);
                          ClearArrayworld(rmi2);
                          //ChangeRepere(rmi2, go2);
+                         ChangeIndice(0, rmi2);
+                         ChangeCasPile(rmi2, 3);
                          Tour(rmi2);
                          
                          break;
