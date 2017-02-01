@@ -344,7 +344,8 @@ public class RMIClient {
                    
  
                     do {
-                         System.out.println("Veuillez entrer votre annonce : ");
+                         System.out.println("Veuillez entrer votre annonce dont le nombre de dé OU la valeur de la face est superieur "
+                                 + "à la précédente annonce : ");
                         System.out.println("Nombre de dés sur la table :  ");
                                   
            
