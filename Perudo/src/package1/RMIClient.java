@@ -484,7 +484,7 @@ public class RMIClient {
             //recupérer le nombre de joueur inscrit
            int go;
            go=NbJoueurPresent(rmi2);
-           while(go!=2){
+           while(go<=2){
                System.out.println("\n On attend le nombre suffisant de joueur");
                Thread.sleep(4000);
                go=NbJoueurPresent(rmi2);
