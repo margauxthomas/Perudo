@@ -42,7 +42,8 @@ public class RMIClient {
     int faceDé =0;
     int count2=0;
     int count3=0;
-    
+    int nump=0;
+   
     public static RMIClient getInstance(){        
 	RMIClient tmp = new RMIClient();
             if (classes.contains(tmp)) {
@@ -115,13 +116,13 @@ public class RMIClient {
     }
         
         //methode affichage des joueurss
-    public void AfficherJoueur(RMI rmi) throws RemoteException{
+    public void AfficherJoueur(RMI rmi, Integer nump) throws RemoteException{
 
         System.out.println("\n Voici les joueurs présent à cet instant");
         System.out.println("\n On va attendre que tout le monde soit présent avant de commencer"
                 + "Voici les joueurs de la partie");
         HashMap<String, String> h = new HashMap<>(); 
-        h=rmi.AfficherJoueur();
+        h=rmi.AfficherJoueur(nump);
         Set cles = h.keySet();
         Iterator it = cles.iterator();
         while (it.hasNext()){
@@ -132,16 +133,16 @@ public class RMIClient {
         System.out.println("\n On va attendre que tout le monde soit présent avant de commencer");
     }
         
-    public Integer NbJoueurPresent(RMI rmi) throws RemoteException{
-        int element=rmi.CompteJoueur();
+    public Integer NbJoueurPresent(RMI rmi, Integer nump) throws RemoteException{
+        int element=rmi.CompteJoueur(nump);
         return element;
     }
         
     //Affichage des des en fonction des joueurs:
-    public Integer AfficherDesJoueur(RMI rmi ,String pseu) throws RemoteException{
+    public Integer AfficherDesJoueur(RMI rmi ,String pseu, Integer nump) throws RemoteException{
         ArrayList<String> valeurdesj = new ArrayList<>();
         valeurdesj.clear();
-        valeurdesj=rmi.AfficherDesJoueur(pseu);
+        valeurdesj=rmi.AfficherDesJoueur(pseu, nump);
         int count=valeurdesj.size();
         System.out.println("\n Voici vos " +count+ " dés");
         for (String val : valeurdesj) {
@@ -150,32 +151,32 @@ public class RMIClient {
         return count;
     }
 
-    public ArrayList<Dés> RemplirDesJoueur(RMI rmi ,String pseu) throws RemoteException{
-        rmi.RemplirDesJoueur(pseu);
+    public ArrayList<Dés> RemplirDesJoueur(RMI rmi ,String pseu, Integer nump) throws RemoteException{
+        rmi.RemplirDesJoueur(pseu, nump);
         return dd;
     }
     
-    public Integer AttribuerOrdre(String pseu,RMI rmi) throws RemoteException{
+    public Integer AttribuerOrdre(String pseu,RMI rmi, Integer nump) throws RemoteException{
         Integer numero;
-        numero=rmi.SetOrdre(pseu);
+        numero=rmi.SetOrdre(pseu, nump);
         return numero;
     }
     
-    public Integer ReattribuerOrdre(String pseu,RMI rmi) throws RemoteException{
+    public Integer ReattribuerOrdre(String pseu,RMI rmi, Integer nump) throws RemoteException{
         Integer numero;
-        numero=rmi.ReSetOrdre(pseu);
+        numero=rmi.ReSetOrdre(pseu, nump);
         return numero;
     }
 
-    public Boolean AQuiDeJouer(Integer num, RMI rmi) throws RemoteException{
+    public Boolean AQuiDeJouer(String pseu, RMI rmi,Integer nump) throws RemoteException{
         Boolean ordre;
-        ordre=rmi.RetrouverOrdreJoueur(num);
+        ordre=rmi.RetrouverOrdreJoueur(pseu, nump);
         return ordre;
     }
 
-    public Integer AfficherDesPartie(RMI rmi) throws RemoteException{
+    public Integer AfficherDesPartie(RMI rmi,Integer nump) throws RemoteException{
         int size;
-        valdesworld=rmi.AfficherToutDes();
+        valdesworld=rmi.AfficherToutDes(nump);
         System.out.println("\n Dés de tout le monde :" );
         size=valdesworld.size();
         for(String vald: valdesworld){
@@ -184,8 +185,8 @@ public class RMIClient {
         return size;
     }
     
-    public void ResultatCompterDes(String pseu, RMI rmi) throws RemoteException{
-        Boolean resultat=rmi.OnCompte(pseu);
+    public void ResultatCompterDes(String pseu, RMI rmi, Integer nump) throws RemoteException{
+        Boolean resultat=rmi.OnCompte(pseu, nump);
         if(resultat){
             System.out.println("\n Il y a bien le nombre de dés annoncé à cette valeur");
         }else{
@@ -193,8 +194,8 @@ public class RMIClient {
         }
     }
 
-    public void ResultatCompterDesTtPile(String pseu, RMI rmi) throws RemoteException{
-        Boolean resultat=rmi.OnCompteTtPile(pseu);
+    public void ResultatCompterDesTtPile(String pseu, RMI rmi,Integer nump) throws RemoteException{
+        Boolean resultat=rmi.OnCompteTtPile(pseu, nump);
         if(resultat){
             System.out.println("\n Il y a bien le tout-pile !");
         }else{
@@ -202,26 +203,26 @@ public class RMIClient {
         }
     }
 
-    public void EnvoiEnchere(RMI rmi,Integer nbDé ,Integer valDé ,String pseu) throws RemoteException{
-        rmi.RecuperationAnn(nbDé,valDé,pseu);
+    public void EnvoiEnchere(RMI rmi,Integer nbDé ,Integer valDé ,String pseu, Integer nump) throws RemoteException{
+        rmi.RecuperationAnn(nbDé,valDé,pseu, nump);
     }
 
-    public void AfficherAnnonce(RMI rmi) throws RemoteException{
+    public void AfficherAnnonce(RMI rmi, Integer nump) throws RemoteException{
         ArrayList<Annonce> annonces = new ArrayList<>();
-        annonces=rmi.AfficherTouteAnnonces();
+        annonces=rmi.AfficherTouteAnnonces(nump);
         for(Annonce A:annonces){
             System.out.println("Nombre de dés :"+A.getDé()+ " ayant une valeur de "+A.getAnnValDé());
         }
     }
 
-    public void Remisecompteur(RMI rmi) throws RemoteException{
-        rmi.ResetCompteur();
+    public void Remisecompteur(RMI rmi, Integer nump) throws RemoteException{
+        rmi.ResetCompteur(nump);
     }
 
     // Décision surenchere, menteur, tout pile
     public Integer FaireChoix(RMI rmi) throws RemoteException{
         int choix1=0;
-        if(RecupIndice(rmi)==0){
+        if(RecupIndice(rmi,nump)==0){
             choix1=0;
             System.out.println("\n Vous devez faire une annonce"); 
             do{
@@ -250,15 +251,15 @@ public class RMIClient {
                 } 
             }while(choix1 !=1 && choix1!=2 && choix1!=3);
         }
-        ChangeIndice(1, rmi);
+        ChangeIndice(1, rmi,nump);
         return choix1;
     }
 
-    public Integer Recupenbdélastann(RMI rmi) throws RemoteException{
+    public Integer Recupenbdélastann(RMI rmi, Integer nump) throws RemoteException{
         ArrayList<Annonce> annonce2 = new ArrayList<>();
         Integer nbdéslastann=0;
         Annonce lasta;
-        annonce2=rmi.AfficherTouteAnnonces();
+        annonce2=rmi.AfficherTouteAnnonces(nump);
         if(annonce2.size()==0){
             nbdéslastann=0;
         }
@@ -271,11 +272,11 @@ public class RMIClient {
         }
         return nbdéslastann;
     }
-    public Integer Recupevaldélastann(RMI rmi) throws RemoteException{
+    public Integer Recupevaldélastann(RMI rmi, Integer nump) throws RemoteException{
         ArrayList<Annonce> annonce2 = new ArrayList<>();
         Integer valdéslasta =0;
         Annonce lasta;
-        annonce2=rmi.AfficherTouteAnnonces();
+        annonce2=rmi.AfficherTouteAnnonces(nump);
         if(annonce2.size()==0){
             valdéslasta=0;
         }
@@ -332,55 +333,55 @@ public class RMIClient {
     System.out.println("Vous avez tenté le tout pile !");
     }
     
-    public ArrayList<Dés> ReRemplirJoueur(String pseu, RMI rmi) throws RemoteException{
-        rmi.ReRemplirJoueur(pseu);
+    public ArrayList<Dés> ReRemplirJoueur(String pseu, RMI rmi, Integer nump) throws RemoteException{
+        rmi.ReRemplirJoueur(pseu, nump);
         return dd;
     }        
     
-    public Integer RecupRepere(RMI rmi) throws RemoteException{
+    public Integer RecupRepere(RMI rmi, Integer nump) throws RemoteException{
         int repere;
-        repere=rmi.RecupRepere();
+        repere=rmi.RecupRepere(nump);
         return repere;
     }
-    
-    public void ChangeRepere(RMI rmi, Integer rp)throws RemoteException{
-        rmi.ChangeRepere(rp);
+    /*
+    public void ChangeRepere(RMI rmi, Integer rp,Integer nump)throws RemoteException{
+        rmi.ChangeRepere(rp, nump);
     }
-    
-    public Integer RecupCasMenteur(RMI rmi) throws RemoteException{
+    */
+    public Integer RecupCasMenteur(RMI rmi, Integer nump) throws RemoteException{
         int cas2=0;
-        cas2=rmi.RecupCasMenteur();
+        cas2=rmi.RecupCasMenteur(nump);
         return cas2;
     }
     
-    public void ChangeCasMenteur(RMI rmi, Integer cm)throws RemoteException{
-        rmi.ChangeCasmenteur(cm);
+    public void ChangeCasMenteur(RMI rmi, Integer cm, Integer nump)throws RemoteException{
+        rmi.ChangeCasmenteur(cm, nump);
     }
     
-    public Integer RecupCasPile(RMI rmi) throws RemoteException{
+    public Integer RecupCasPile(RMI rmi, Integer nump) throws RemoteException{
         int cas3=0;
-        cas3=rmi.RecupCasPile();
+        cas3=rmi.RecupCasPile(nump);
         return cas3;
     }
     
-    public void ChangeCasPile(RMI rmi, Integer ctp) throws RemoteException{
-       rmi.ChangeCasPile(ctp);
+    public void ChangeCasPile(RMI rmi, Integer ctp, Integer nump) throws RemoteException{
+       rmi.ChangeCasPile(ctp, nump);
     }
     
-    public void ClearttAnnonces(RMI rmi) throws RemoteException{
-       rmi.ClearttAnnonces();
+    public void ClearttAnnonces(RMI rmi, Integer nump) throws RemoteException{
+       rmi.ClearttAnnonces(nump);
     }
 
-    public void ReSetpassage(RMI rmi)throws RemoteException{
-        rmi.ReSetpassage();
+    public void ReSetpassage(RMI rmi, Integer nump)throws RemoteException{
+        rmi.ReSetpassage(nump);
     }
     
-    public void ClearArrayworld(RMI rmi)throws RemoteException{
-        rmi.ClearArrayworld();
+    public void ClearArrayworld(RMI rmi, Integer nump)throws RemoteException{
+        rmi.ClearArrayworld(nump);
     }
     
-    public void setCompteur(RMI rmi) throws RemoteException{
-        rmi.SetCompteur();
+    public void setCompteur(RMI rmi, Integer nump) throws RemoteException{
+        rmi.SetCompteur(nump);
     }
     
     public Integer RecuPassage(RMI rmi, String attri1) throws RemoteException{
@@ -389,19 +390,41 @@ public class RMIClient {
         return path;
     }
     
-    public void Supprimerjoueur(RMI rmi, String pseu) throws RemoteException{
-        rmi.Supprimerjoueur(pseu);
+    public void Supprimerjoueur(RMI rmi, String pseu, Integer nump) throws RemoteException{
+        rmi.Supprimerjoueur(pseu,nump);
     }
 
-    public void ChangeIndice(Integer in, RMI rmi) throws RemoteException{
-        rmi.ChangeIndice(in);
+    public void ChangeIndice(Integer in, RMI rmi,Integer nump) throws RemoteException{
+        rmi.ChangeIndice(in, nump);
     }
     
-    public Integer RecupIndice(RMI rmi) throws RemoteException{
+    public Integer RecupIndice(RMI rmi, Integer nump) throws RemoteException{
         int indice;
-        indice=rmi.RecupIndice();
+        indice=rmi.RecupIndice(nump);
 
         return indice;
+    }
+    
+    public Integer AfficherLesParties(RMI rmi)throws RemoteException{
+        int sizeprch=0;
+        ArrayList<Integer> partie = new ArrayList<>();
+        partie=rmi.AfficherLesParties();
+        for(Integer I: partie){
+            System.out.println("Numero de la partie :"+I);
+        }
+        sizeprch=partie.size();
+        return sizeprch;
+    }
+    
+    public void CreerJoueurRejPart(RMI rmi, String pseu, String col, Integer nump) throws RemoteException{
+        System.out.println("c'est parti !");
+        rmi.CreerJoueurRejPart(pseu, col, nump);
+    }
+    
+    public Integer RecupNumPart(RMI rmi, String attri1)throws RemoteException{
+        int nump;
+        nump=rmi.RecupNumPart(attri1);
+        return nump;
     }
     
     public void LancementPartie(RMI rmi2) throws RemoteException, InterruptedException{      
@@ -419,85 +442,106 @@ public class RMIClient {
             System.out.println("Rappel : rouge, bleu, jaune, vert, orange");
             col=saisieCouleur(rmi2,pseu, flag2);
         }
-        CreationJoueur(rmi2, pseu, col);
-        RemplirDesJoueur(rmi2, pseu);
-        AfficherDesJoueur(rmi2, pseu);
-        AfficherJoueur(rmi2);
+        int sizep;
+        sizep=AfficherLesParties(rmi2);
+        int chp=0;
+        chp=ChoixPartie();
+        if(chp==1){
+            CreationJoueur(rmi2, pseu, col);
+        }else if(chp==2){
+            int chqp=0;
+            chqp=Quellepartie(sizep);
+            CreerJoueurRejPart(rmi2,pseu,col,chqp);
+        }
+        nump=RecupNumPart(rmi2, pseu);
+        RemplirDesJoueur(rmi2, pseu, nump);
+        AfficherDesJoueur(rmi2, pseu, nump);
+        AfficherJoueur(rmi2, nump);
 
         int go;
-        go=NbJoueurPresent(rmi2);
+        go=NbJoueurPresent(rmi2, nump);
         while(go<2){
             System.out.println("\n On attend le nombre suffisant de joueur");
             Thread.sleep(4000);
-            go=NbJoueurPresent(rmi2);
+            go=NbJoueurPresent(rmi2, nump);
         }
 
-        numpass=AttribuerOrdre(pseu,rmi2);
+        numpass=AttribuerOrdre(pseu,rmi2, nump);
     }
 
     public void Tour(RMI rmi2) throws RemoteException, InterruptedException{
+        count2=0;
+        count3=0;
         int fin;
-        fin=NbJoueurPresent(rmi2);
+        fin=NbJoueurPresent(rmi2, nump);
         if(fin==1){
             System.out.println("Felicitation vous avez gagné");
-            AfficherJoueur(rmi2);
+            AfficherJoueur(rmi2, nump);
         }
         Thread.sleep(2000);
         int choix=0;
-        while(AfficherDesJoueur(rmi2, pseu)==0){
+        while(AfficherDesJoueur(rmi2, pseu, nump)==0){
             System.out.println("you loose");
-            Supprimerjoueur(rmi2, pseu);
+            Supprimerjoueur(rmi2, pseu, nump);
         }
-        go2=NbJoueurPresent(rmi2);
-        ordre=AQuiDeJouer(numpass, rmi2);
-        if(RecupCasMenteur(rmi2)>=2 || RecupCasPile(rmi2)>=3){
+        go2=NbJoueurPresent(rmi2, nump);
+        ordre=AQuiDeJouer(pseu, rmi2, nump);
+        if(RecupCasMenteur(rmi2, nump)>=2 || RecupCasPile(rmi2, nump)>=3){
             ordre=false;
+            count2=0;
+            count3=0;
         }
         while(!ordre){
            
             System.out.println("\n Attendez votre tour");
             Thread.sleep(1000);   
-            System.out.println("le cas menteur :"+RecupCasMenteur(rmi2));
-            if(RecupCasMenteur(rmi2)>=2 && count2<1){
-                Remisecompteur(rmi2);
+            System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump));
+            
+            System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2,nump));
+            if(RecupCasMenteur(rmi2,nump)==2+(go2)){
+                System.out.println("je remet a zero le cas menteur");
+                ChangeCasMenteur(rmi2, 0,nump);
+                numpass=RecuPassage(rmi2, pseu);
+            }
+ 
+            System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2,nump));
+            if(RecupCasPile(rmi2,nump)==3+(go2)){
+                ChangeCasPile(rmi2, 0,nump);
+                System.out.println("je remet a zero le cas tt pile");
+                numpass=RecuPassage(rmi2, pseu);
+            }
+            
+            if(RecupCasMenteur(rmi2,nump)>=2 && count<1){
+                Remisecompteur(rmi2, nump);
                 System.out.println("Voici vos nouveau dés");
-                ReRemplirJoueur(pseu, rmi2);
-                AfficherDesJoueur(rmi2, pseu);
-                ChangeCasMenteur(rmi2, RecupCasMenteur(rmi2)+1);
-                ClearttAnnonces(rmi2);
+                ReRemplirJoueur(pseu, rmi2,nump);
+                AfficherDesJoueur(rmi2, pseu,nump);
+                ChangeCasMenteur(rmi2, RecupCasMenteur(rmi2,nump)+1,nump);
+                ClearttAnnonces(rmi2, nump);
                 numpass=RecuPassage(rmi2, pseu);
                 count2++;
             }
-            System.out.println("le cas tt pile :"+RecupCasPile(rmi2));
-            if(RecupCasPile(rmi2)>=3 && count3<1){
-                Remisecompteur(rmi2);
+            System.out.println("le cas tt pile :"+RecupCasPile(rmi2,nump));
+            if(RecupCasPile(rmi2,nump)>=3 && count3<1){
+                Remisecompteur(rmi2,nump);
                 System.out.println("Jai rerempli apres un tt pile");
-                ReRemplirJoueur(pseu, rmi2);
-                AfficherDesJoueur(rmi2, pseu);
-                ChangeCasPile(rmi2, RecupCasPile(rmi2)+1);
-                ClearttAnnonces(rmi2);
+                ReRemplirJoueur(pseu, rmi2,nump);
+                AfficherDesJoueur(rmi2, pseu,nump);
+                ChangeCasPile(rmi2, RecupCasPile(rmi2,nump)+1,nump);
+                ClearttAnnonces(rmi2,nump);
                 numpass=RecuPassage(rmi2, pseu);
                 count3++;
+                //&& count3<1
             }
-            System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2));
-            if(RecupCasMenteur(rmi2)==2+go2){
-                System.out.println("je remet a zero le cas menteur");
-                ChangeCasMenteur(rmi2, 0);
-            }
- 
-            System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2));
-            if(RecupCasPile(rmi2)==3+go2){
-                ChangeCasPile(rmi2, 0);
-                System.out.println("je remet a zero le cas tt pile");
-            }
-            ordre=AQuiDeJouer(numpass, rmi2);
+   
+            ordre=AQuiDeJouer(pseu, rmi2,nump);
         }
         System.out.println("\n A votre tour");
         Thread.sleep(3000);
-        AfficherAnnonce(rmi2);
+        AfficherAnnonce(rmi2,nump);
         choix=FaireChoix(rmi2);
-        ChangeCasPile(rmi2, 0);
-        ChangeCasMenteur(rmi2, 0);
+        ChangeCasPile(rmi2, 0,nump);
+        ChangeCasMenteur(rmi2, 0,nump);
         SwitchCase(rmi2, choix);
     }
     
@@ -512,44 +556,73 @@ public class RMIClient {
                 do{
                     nbd=SurenchereDé(rmi2);
                     fd=SurenchereFaceDé(rmi2);  
-                }while(Recupenbdélastann(rmi2)>=nbd && Recupevaldélastann(rmi2)>=fd);
-                nbj=NbJoueurPresent(rmi2);
-                repere=RecupRepere(rmi2);
-                if(RecupRepere(rmi2)==nbj){
-                    EnvoiEnchere(rmi2, nbd, fd, pseu);
-                    Remisecompteur(rmi2);
+                }while(Recupenbdélastann(rmi2,nump)>=nbd && Recupevaldélastann(rmi2,nump)>=fd);
+                nbj=NbJoueurPresent(rmi2,nump);
+                repere=RecupRepere(rmi2,nump);
+                if(RecupRepere(rmi2,nump)==nbj){
+                    EnvoiEnchere(rmi2, nbd, fd, pseu,nump);
+                    Remisecompteur(rmi2,nump);
                     Tour(rmi2);
                 }
                 else{
-                    EnvoiEnchere(rmi2, nbd, fd, pseu);
-                    setCompteur(rmi2);
+                    EnvoiEnchere(rmi2, nbd, fd, pseu,nump);
+                    setCompteur(rmi2,nump);
                     Tour(rmi2);
                 }
                 break;
                 
             case 2:
                 Menteur();
-                AfficherDesPartie(rmi2);
-                ResultatCompterDes(pseu, rmi2);
-                ChangeCasMenteur(rmi2, 2);
-                ClearArrayworld(rmi2);
-                ChangeIndice(0, rmi2);
+                AfficherDesPartie(rmi2,nump);
+                ResultatCompterDes(pseu, rmi2,nump);
+                ChangeCasMenteur(rmi2, 2,nump);
+                count2=0;
+                ClearArrayworld(rmi2,nump);
+                ChangeIndice(0, rmi2,nump);
                 Tour(rmi2);
                 break;
 
             case 3:
                 ToutPile();
-                AfficherDesPartie(rmi2);
-                ResultatCompterDesTtPile(pseu, rmi2);
-                ChangeCasPile(rmi2, 3);
-                ClearArrayworld(rmi2);
-                ChangeIndice(0, rmi2);
+                AfficherDesPartie(rmi2,nump);
+                ResultatCompterDesTtPile(pseu, rmi2,nump);
+                ChangeCasPile(rmi2, 3,nump);
+                count3=0;
+                ClearArrayworld(rmi2,nump);
+                ChangeIndice(0, rmi2,nump);
                 Tour(rmi2);
                 break;
         }
         Tour(rmi2);
     }
-        
+    
+    public Integer ChoixPartie(){
+        int choixpartie=0;
+        choixpartie=0;
+        do{
+            System.out.println("taper 1 pour creer une nouvelle partie ou 2 pour rejoindre une partie en cour :");        
+            try{
+            choixpartie = (int) Integer.parseInt(scanch.next());
+            }catch(NumberFormatException e){
+                System.out.println("Vous devez entrer des chiffres.");
+            }
+        }while(choixpartie!=1 && choixpartie!=2);
+        return choixpartie;
+    }
+    
+    public Integer Quellepartie(Integer s){
+        int choixquellepartie=0;
+        do{
+            System.out.println("Choisissez le numéro de la partie que vous désirez rejoindre:");
+            try{
+            choixquellepartie = (int) Integer.parseInt(scanch.next());
+            }catch(NumberFormatException e){
+                System.out.println("Vous devez entrer des chiffres.");
+            }
+        }while(choixquellepartie>s);
+        return choixquellepartie;
+    }
+    
     public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
         RMI rmi2=client.connectServer();
@@ -561,7 +634,8 @@ public class RMIClient {
         taille=3;
         while(taille!=0){
             client.Tour(rmi2);
-        }    
+        }
+       
     }
     
 }

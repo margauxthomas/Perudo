@@ -13,15 +13,17 @@ public class Joueur {
     private ArrayList<Dés> dd;
     private ArrayList<String> valeurdes=new ArrayList<>();
     private ArrayList<Annonce> ann= new ArrayList<>();
+    private Integer nump;
     ArrayList<User> users= new ArrayList<>();
     ArrayList<Couleur> col= new ArrayList<>();
     HashMap<String, String> h = new HashMap<>();
     
-    public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage) {
+    public Joueur(Couleur pions, User dude,ArrayList<Dés> dd, Integer passage, Integer nump) {
         this.pions = pions;
         this.dude = dude;
         this.passage = passage;
         this.dd = dd;
+        this.nump=nump;
     }
       
     public ArrayList<Dés> RemplirDes(){
@@ -136,10 +138,18 @@ public class Joueur {
         this.passage = passage;
     }
 
+    public Integer getNump() {
+        return nump;
+    }
+
+    public void setNump(Integer nump) {
+        this.nump = nump;
+    }
+
     private static Vector classes = new Vector();
      
-    public static Joueur getInstanceJ(Couleur pions, User dude, ArrayList<Dés> dd, Integer passage){  
-        Joueur tmp = new Joueur(pions, dude, dd, passage);
+    public static Joueur getInstanceJ(Couleur pions, User dude, ArrayList<Dés> dd, Integer passage, Integer nump){  
+        Joueur tmp = new Joueur(pions, dude, dd, passage, nump);
         if (classes.contains(tmp)) {
             Enumeration enume = classes.elements();
             while (enume.hasMoreElements()) {
