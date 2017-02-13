@@ -134,6 +134,22 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return ap;
     }
     
+    public ArrayList<String> AfficherMembre(Integer nump) throws RemoteException{
+        ArrayList <String> pseudos= new ArrayList <>();
+        ArrayList <Joueur> jj= new ArrayList <>();
+        String pseupseu=null;
+        for(Partie P:ttpartie){
+            if(P.getPid().equals(nump)){
+                jj=P.getAj();
+                for(Joueur J:jj){
+                    pseupseu=J.getDude().getPseudo();
+                    pseudos.add(pseupseu);
+                } 
+            }
+        }
+        return pseudos;
+    }
+    
     public Integer RecupNumPart(String attri1)throws RemoteException{
         Integer numerop=0;    
         for(Partie P:ttpartie){
@@ -804,6 +820,15 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                     }
                 }
         }
+    }
+    
+    int pointeur=0;
+    public void ChangePointe() throws RemoteException{
+        pointeur=1;
+    }
+    
+    public Integer RecupPointe() throws RemoteException{
+        return pointeur;
     }
 
     public static void main(String args[]){

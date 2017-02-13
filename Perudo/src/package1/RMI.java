@@ -64,5 +64,7 @@ public interface RMI extends Remote{
     public ArrayList<Integer> AfficherLesParties()throws RemoteException;
     public void CreerJoueurRejPart(String pseu, String col, Integer nump) throws RemoteException;
     public Integer RecupNumPart(String attri1)throws RemoteException;
-
+    public void ChangePointe() throws RemoteException;
+    public Integer RecupPointe() throws RemoteException;
+    public ArrayList<String> AfficherMembre(Integer nump) throws RemoteException;
 }
