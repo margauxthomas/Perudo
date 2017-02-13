@@ -30,6 +30,7 @@ public class Annonce implements Serializable{
     private static Vector classes = new Vector();
     public static Annonce getInstanceA(Integer nbdé, Integer valDé){
 =======
+
      
     private static Vector classes = new Vector();
     public static Annonce getInstanceA(Integer nbdé, Integer valDé){
@@ -86,3 +87,24 @@ public class Annonce implements Serializable{
     }
 
 }
+=======
+            
+        Annonce tmp = new Annonce(nbdé, valDé);
+        if (classes.contains(tmp)) {
+            Enumeration enume = classes.elements();
+            while (enume.hasMoreElements()) {
+                Annonce element = (Annonce) enume.nextElement();
+                if (element.equals(tmp)) {
+                    return element;
+                }
+            }
+        }
+        else {
+            classes.add(tmp);
+            return tmp;
+        }
+        return null;
+    }
+
+}
+
