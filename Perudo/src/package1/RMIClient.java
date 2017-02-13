@@ -404,13 +404,27 @@ public class RMIClient {
 
         return indice;
     }
+    public void ChangePointe(RMI rmi) throws RemoteException{
+       rmi.ChangePointe();
+    }
+    
+    public Integer RecupPointe(RMI rmi) throws RemoteException{
+        int pointeur;
+        pointeur=rmi.RecupPointe();
+        return pointeur;
+    }
     
     public Integer AfficherLesParties(RMI rmi)throws RemoteException{
         int sizeprch=0;
         ArrayList<Integer> partie = new ArrayList<>();
+        ArrayList<String> membre = new ArrayList<>();
         partie=rmi.AfficherLesParties();
         for(Integer I: partie){
             System.out.println("Numero de la partie :"+I);
+            membre=rmi.AfficherMembre(I);
+            for(String S:membre){
+                System.out.println("Membre de la partie :"+S);
+            }
         }
         sizeprch=partie.size();
         return sizeprch;
@@ -445,7 +459,8 @@ public class RMIClient {
         int sizep;
         sizep=AfficherLesParties(rmi2);
         int chp=0;
-        chp=ChoixPartie();
+        chp=ChoixPartie(rmi2);
+        ChangePointe(rmi2);
         if(chp==1){
             CreationJoueur(rmi2, pseu, col);
         }else if(chp==2){
@@ -596,17 +611,28 @@ public class RMIClient {
         Tour(rmi2);
     }
     
-    public Integer ChoixPartie(){
+    public Integer ChoixPartie(RMI rmi2) throws RemoteException{
         int choixpartie=0;
         choixpartie=0;
-        do{
-            System.out.println("taper 1 pour creer une nouvelle partie ou 2 pour rejoindre une partie en cour :");        
-            try{
-            choixpartie = (int) Integer.parseInt(scanch.next());
-            }catch(NumberFormatException e){
-                System.out.println("Vous devez entrer des chiffres.");
-            }
-        }while(choixpartie!=1 && choixpartie!=2);
+        if(RecupPointe(rmi2)==0){
+            do{
+                System.out.println("creer une nouvelle partie taper 1");        
+                try{
+                    choixpartie = (int) Integer.parseInt(scanch.next());
+                }catch(NumberFormatException e){
+                    System.out.println("Vous devez entrer des chiffres.");
+                }
+            }while(choixpartie!=1);
+        }else{
+            do{
+                System.out.println("taper 1 pour creer une nouvelle partie ou 2 pour rejoindre une partie en cour :");        
+                try{
+                choixpartie = (int) Integer.parseInt(scanch.next());
+                }catch(NumberFormatException e){
+                    System.out.println("Vous devez entrer des chiffres.");
+                }
+            }while(choixpartie!=1 && choixpartie!=2);
+        }
         return choixpartie;
     }
     
