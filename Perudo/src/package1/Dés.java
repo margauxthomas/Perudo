@@ -10,56 +10,52 @@ import java.util.Random;
 import java.util.Vector;
 import java.io.Serializable;
 
-/**
- *
- * @author stri
- */
-public class Dés implements Serializable
-{
-   private String valeur;
+public class Dés implements Serializable{
+   
+    private String valeur;
 
-   public Dés (String valeur){
+    public Dés (String valeur){
        this.valeur=valeur;
-   }
+    }
    
-   public void setValeur(String v){
+    public void setValeur(String v){
        this.valeur=v;
-   }
-   public String getVal(){
+    }
+    
+    public String getVal(){
        return valeur;
-   }
+    }
    
-   public String getValeur() {
+    public String getValeur() {
         Random rand = new Random();
         int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;
         if(nombreAleatoire==1){
             valeur="perudo";   
         }
         else{
-        valeur=Integer.toString(nombreAleatoire);
+            valeur=Integer.toString(nombreAleatoire);
         }
         return valeur;
     }
     
-    
     private static Vector classes = new Vector();
-    public static Dés getInstanceD(String v){
-            
-		Dés tmp = new Dés(v);
-		if (classes.contains(tmp)) {
-			Enumeration enume = classes.elements();
-			while (enume.hasMoreElements()) {
-				Dés element = (Dés) enume.nextElement();
-				if (element.equals(tmp)) {
-					return element;
-				}
-			}
-		}
-		else {
-			classes.add(tmp);
-			return tmp;
-		}
-                    return null;
-	}
+
+    public static Dés getInstanceD(String v){            
+        Dés tmp = new Dés(v);
+        if (classes.contains(tmp)) {
+            Enumeration enume = classes.elements();
+            while (enume.hasMoreElements()) {
+                Dés element = (Dés) enume.nextElement();
+                if (element.equals(tmp)) {
+                    return element;
+                }
+            }
+        }
+        else {
+            classes.add(tmp);
+            return tmp;
+        }
+        return null;
+    }
    
 }

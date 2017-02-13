@@ -9,99 +9,148 @@ import java.util.Vector;
 import java.util.Enumeration;
 import java.util.HashSet;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+public class Partie{ 
+    
+    private Integer pid;
+    private ArrayList<Joueur> aj = new ArrayList<>();
+    private Integer passage;
+    private Integer compteur;
+    private Integer cas2;
+    private Integer cas3;
+    private Integer indice;
+    private Boolean resultat;
+    private ArrayList<String> valdeworld = new ArrayList<>();
+    private ArrayList<Annonce> ttlesann = new ArrayList<>();
+   
+    public void addjoueur(Joueur j){
+       this.aj.add(j);
+    }
 
-/**
- *
- * @author stri
- */
-public class Partie{
-   
-    private String nom;
-    private String desc;
+    public void adddes(String val){
+       this.valdeworld.add(val);
+    }
     
-    ArrayList<Joueur> partie= new ArrayList<>();
-   
-    public void addjoueur(Joueur j)
-    {
-       partie.add(j);
-     }
+    public void addAnn(Annonce a){
+        this.ttlesann.add(a);
+    }
+    public ArrayList<String> getValdeworld() {
+        return valdeworld;
+    }
+
+    public void setValdeworld(ArrayList<String> valdeworld) {
+        this.valdeworld = valdeworld;
+    }
+
+    public ArrayList<Annonce> getTtlesann() {
+        return ttlesann;
+    }
+
+    public void setTtlesann(ArrayList<Annonce> ttlesann) {
+        this.ttlesann = ttlesann;
+    }
+    public void cleartttlesann(){
+        this.ttlesann.clear();
+    }
     
-    ArrayList<Dés> des= new ArrayList<>();
-   
-    public void addDés(Dés d)
-    {
-       des.add(d);
-     }
-    //HashSet<String> hset = new HashSet<String>();
-    //HashMap<String,HashSet<String>> partie=new HashMap<>();
     
     private static Vector classes = new Vector();
-    /*
-        public void RemplirPartie(ArrayList<Joueur> jj)
-    {
-      
-     for(Joueur J : jj){
-          User utmp=J.getDude();
-               //hset.clear();
-               
-            for(int i = 0; i <= 6; i++){
-             //   Dés d= new Dés();
-            
-            //Dés d1 = d.getInstanceD();
-             //hset.add(d1.getValeur());
-            //for(Dés D :des){
-            //partie.put(utmp.getPseudo(), hset);
-              //  }
-              //hset.clear();
-              //HashSet<String> hset = new HashSet<String>();
-    }
-    }
-    */
-    public Partie(String n, String d)  {
-        super();
-        this.nom=n;
-         this.desc=d;
-    }
 
-    public String getNom() {
-        return nom;
+    public Partie(Integer pid, ArrayList<Joueur> aj, Integer passage, Integer compteur, Boolean resultat, Integer cas2, Integer cas3, Integer indice, ArrayList<String> valdesworld, ArrayList<Annonce> ttlesann){
+        this.pid=pid;
+        this.aj=aj;
+        this.passage=passage;
+        this.compteur=compteur;
+        this.resultat=resultat;
+        this.cas2=cas2;
+        this.cas3=cas3;
+        this.indice=indice;
+        this.valdeworld=valdeworld;
+        this.ttlesann=ttlesann;
     }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     
-    public static Partie getInstanceP(String attribut1, String attribut2) {
-            
-		Partie tmp = new Partie(attribut1, attribut2);
-		if (classes.contains(tmp)) {
-			Enumeration enume = classes.elements();
-			while (enume.hasMoreElements()) {
-				Partie element = (Partie) enume.nextElement();
-				if (element.equals(tmp)) {
-					return element;
-				}
-			}
-		}
-		else {
-			classes.add(tmp);
-			return tmp;
-		}
-                    return null;
-	}
+    
+/*
+    public static Partie getInstanceP(String attribut1, String attribut2) {            
+	Partie tmp = new Partie(attribut1, attribut2);
+	if (classes.contains(tmp)) {
+            Enumeration enume = classes.elements();
+            while (enume.hasMoreElements()) {
+                Partie element = (Partie) enume.nextElement();
+                if (element.equals(tmp)) {
+                    return element;
+                }
+            }
+        }
+        else {
+            classes.add(tmp);
+            return tmp;
+        }
+        return null;
+    }
+*/
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public ArrayList<Joueur> getAj() {
+        return aj;
+    }
+
+    public void setAj(ArrayList<Joueur> aj) {
+        this.aj = aj;
+    }
+
+    public Integer getPassage() {
+        return passage;
+    }
+
+    public void setPassage(Integer passage) {
+        this.passage = passage;
+    }
+
+    public Integer getCompteur() {
+        return compteur;
+    }
+
+    public void setCompteur(Integer compteur) {
+        this.compteur = compteur;
+    }
+
+    public Integer getCas2() {
+        return cas2;
+    }
+
+    public void setCas2(Integer cas2) {
+        this.cas2 = cas2;
+    }
+
+    public Integer getCas3() {
+        return cas3;
+    }
+
+    public void setCas3(Integer cas3) {
+        this.cas3 = cas3;
+    }
+
+    public Integer getIndice() {
+        return indice;
+    }
+
+    public void setIndice(Integer indice) {
+        this.indice = indice;
+    }
+
+    public Boolean getResultat() {
+        return resultat;
+    }
+
+    public void setResultat(Boolean resultat) {
+        this.resultat = resultat;
+    }
  
 }
