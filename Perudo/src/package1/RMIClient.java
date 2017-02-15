@@ -74,7 +74,7 @@ public class RMIClient {
         }
     }
      
-        //Début du jeu, enregistrement des joueurs 
+    //Début du jeu, enregistrement des joueurs 
     public ArrayList<String> getPseudo(RMI rmi) throws RemoteException {
         pseudo=rmi.getUser();
         return pseudo;
@@ -343,11 +343,7 @@ public class RMIClient {
         repere=rmi.RecupRepere(nump);
         return repere;
     }
-    /*
-    public void ChangeRepere(RMI rmi, Integer rp,Integer nump)throws RemoteException{
-        rmi.ChangeRepere(rp, nump);
-    }
-    */
+    
     public Integer RecupCasMenteur(RMI rmi, Integer nump) throws RemoteException{
         int cas2=0;
         cas2=rmi.RecupCasMenteur(nump);
@@ -404,6 +400,7 @@ public class RMIClient {
 
         return indice;
     }
+    
     public void ChangePointe(RMI rmi) throws RemoteException{
        rmi.ChangePointe();
     }
@@ -441,6 +438,7 @@ public class RMIClient {
         return nump;
     }
     
+    //enregistrement des joueurs, on lance que si deux joueurs sont present dans la partie 
     public void LancementPartie(RMI rmi2) throws RemoteException, InterruptedException{      
 
         pseudo2=getPseudo(rmi2);
@@ -480,10 +478,12 @@ public class RMIClient {
             Thread.sleep(4000);
             go=NbJoueurPresent(rmi2, nump);
         }
-
         numpass=AttribuerOrdre(pseu,rmi2, nump);
     }
 
+    //déroulement de la partie par systeme de tour qui recommence a l'action tt pile ou menteur
+    //cela implique une redistribution des des et un reordonnecement des ordres de passage des joueurs
+    //on remet a zero les annonces et les compteurs / reperes
     public void Tour(RMI rmi2) throws RemoteException, InterruptedException{
         count2=0;
         count3=0;
@@ -510,8 +510,7 @@ public class RMIClient {
            
             System.out.println("\n Attendez votre tour");
             Thread.sleep(6000);   
-            //System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump));
-            
+            //System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump)); 
             //System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2,nump));
             if(RecupCasMenteur(rmi2,nump)==2+(go2) && count2<1 ){
                 System.out.println("Voici vos nouveau dés ");
@@ -554,7 +553,6 @@ public class RMIClient {
                 ClearttAnnonces(rmi2,nump);
                 numpass=RecuPassage(rmi2, pseu);
                 count3++;
-                //&& count3<1
             }
    
             ordre=AQuiDeJouer(pseu, rmi2,nump);
@@ -568,6 +566,7 @@ public class RMIClient {
         SwitchCase(rmi2, choix);
     }
     
+    //Action en fonction de choix du joueur
     public void SwitchCase(RMI rmi2, Integer choix2) throws RemoteException, InterruptedException{            
         switch(choix2)
         {
@@ -619,6 +618,7 @@ public class RMIClient {
         Tour(rmi2);
     }
     
+    //creation ou jonction a une partie existante
     public Integer ChoixPartie(RMI rmi2) throws RemoteException{
         int choixpartie=0;
         choixpartie=0;
@@ -644,6 +644,7 @@ public class RMIClient {
         return choixpartie;
     }
     
+    //choix de la partie a rejoindre
     public Integer Quellepartie(Integer s){
         int choixquellepartie=0;
         do{

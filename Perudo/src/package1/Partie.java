@@ -10,17 +10,17 @@ import java.util.Enumeration;
 import java.util.HashSet;
 
 public class Partie{ 
-    
-    private Integer pid;
-    private ArrayList<Joueur> aj = new ArrayList<>();
-    private Integer passage;
-    private Integer compteur;
-    private Integer cas2;
-    private Integer cas3;
-    private Integer indice;
-    private Boolean resultat;
-    private ArrayList<String> valdeworld = new ArrayList<>();
-    private ArrayList<Annonce> ttlesann = new ArrayList<>();
+    //constructeur, une partie est compose de
+    private Integer pid;//numero d'identification de la partie
+    private ArrayList<Joueur> aj = new ArrayList<>();//Une liste de joueur(objet)
+    private Integer passage;//un numero de passage a attribué au joueur
+    private Integer compteur;//un jeton pour l'odre de passage 
+    private Integer cas2;//Indique si le cas menteur est annonce
+    private Integer cas3;//Indique si le cas tt pile est annonce
+    private Integer indice;//Indique le debut d'un tour
+    private Boolean resultat;//resultat de la comparaison apres menteur ou tt pile 
+    private ArrayList<String> valdeworld = new ArrayList<>();//Les valeurs des des en jeu
+    private ArrayList<Annonce> ttlesann = new ArrayList<>();//les annonces des joueurs
    
     public void addjoueur(Joueur j){
        this.aj.add(j);
@@ -52,7 +52,6 @@ public class Partie{
         this.ttlesann.clear();
     }
     
-    
     private static Vector classes = new Vector();
 
     public Partie(Integer pid, ArrayList<Joueur> aj, Integer passage, Integer compteur, Boolean resultat, Integer cas2, Integer cas3, Integer indice, ArrayList<String> valdesworld, ArrayList<Annonce> ttlesann){
@@ -67,27 +66,6 @@ public class Partie{
         this.valdeworld=valdeworld;
         this.ttlesann=ttlesann;
     }
-    
-    
-/*
-    public static Partie getInstanceP(String attribut1, String attribut2) {            
-	Partie tmp = new Partie(attribut1, attribut2);
-	if (classes.contains(tmp)) {
-            Enumeration enume = classes.elements();
-            while (enume.hasMoreElements()) {
-                Partie element = (Partie) enume.nextElement();
-                if (element.equals(tmp)) {
-                    return element;
-                }
-            }
-        }
-        else {
-            classes.add(tmp);
-            return tmp;
-        }
-        return null;
-    }
-*/
 
     public Integer getPid() {
         return pid;

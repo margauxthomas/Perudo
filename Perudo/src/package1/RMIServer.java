@@ -27,17 +27,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<Joueur> joueurspa= new ArrayList<>();
     ArrayList<Joueur> joueursann= new ArrayList<>();
     ArrayList<String> valeurdesj = new ArrayList<>();
-    //ArrayList<String> valdesworld = new ArrayList<>();
-    //ArrayList<Annonce> ttlesann = new ArrayList<>();
     ArrayList<Dés> ddre = new ArrayList<>();
     ArrayList<Partie> ttpartie = new ArrayList<>();
   
-    
-    
-    //Integer passage=1;
-    //Integer numpass=1;
-    //Integer compteur=1;
-    //Boolean resultat;
     Integer pid=0;
     
     //methodes serveurs
@@ -46,17 +38,20 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         super();
     }
     
+    //Test
     public String getData(String text) throws RemoteException {
        text = "Hi "+text;
        return text;
     }
     
+    //Enregistrement du pseudo
     public String setPseudo(String pseu) throws RemoteException {
         pseu="Bienvenue dans le jeu du Perudo "+pseu;
  
         return pseu;
     }
     
+    //Enregistrement de la couleur
     public String setCouleur(String col) throws RemoteException {
         col=". Vous jouez maintenant avec les "+col+" vous disposez de 5 dés au départ, ne les perdez pas, bonne chance !";
         
@@ -70,7 +65,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public ArrayList<String> getCouleurs(){
         return flag;
     }
-     
+    
+    //Creation du joueur si il cree une nouvelle partie
     public void CreerJoueur(String pseu, String col) throws RemoteException{
         pseudo.add(pseu);
         flag.add(col);
@@ -78,14 +74,15 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         Couleur c = new Couleur(col);
         users.add(u);
         cols.add(c);
-        
+        //on utilise les objets couleur et user enregistrés
         ArrayList<Dés> tmp = new ArrayList<>();
         tmp.clear();
-        Joueur j = new Joueur(c,u, tmp,0,0);
-        CreerPartie(j);
-        joueurs.add(j); 
+        Joueur j = new Joueur(c,u, tmp,0,0); //creation d'un objet joueur
+        CreerPartie(j);//apel a la creation d'une partie
+        joueurs.add(j); //ajout du joueur a la liste des joueurs du serveur
     }
     
+    //Creation du joueur si il rejoint une partie
     public void CreerJoueurRejPart(String pseu, String col, Integer nump) throws RemoteException{
         pseudo.add(pseu);
         flag.add(col);
@@ -98,7 +95,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         tmp.clear();
         Joueur j = new Joueur(c,u, tmp,0,nump);
         joueurs.add(j); 
-        for(Partie P:ttpartie){
+        for(Partie P:ttpartie){//ajout a la partie existant selon une recherche sur la list de partie du serveur
             if(P.getPid().equals(nump)){
                 System.out.println("Jajoute un joueru a l'arraylist de la partie");
                 P.addjoueur(j);
@@ -108,6 +105,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
   
     public void CreerPartie(Joueur j)throws RemoteException{
         pid++;
+        //composant temporaire du constructeur de la partie
         Integer passage=1;
         Integer compteur=1;
         Boolean resultat=false;
@@ -118,12 +116,13 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         ArrayList<Annonce> tmp3= new ArrayList<>();
         ArrayList<Joueur> tmp = new ArrayList<>();
         Partie p = new Partie(pid, tmp, passage, compteur, resultat, cas2, cas3, indice, tmp2, tmp3);
-        p.addjoueur(j);
+        p.addjoueur(j);//ajout du joueur dans la partie 
         System.out.println("le numero de passage enregistrtré"+p.getPassage());
-        j.setNump(pid);
-        ttpartie.add(p);
+        j.setNump(pid);//on attribue le numéro de partie au joueur 
+        ttpartie.add(p);//je l'ajoute a la liste de parties du serveur
     }
     
+    //Retourne la liste des parties en cour (numéro d'identification)
     public ArrayList<Integer> AfficherLesParties()throws RemoteException{
         ArrayList <Integer> ap= new ArrayList <>();
         ap.clear();
@@ -134,6 +133,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return ap;
     }
     
+    //Retourne les membres d'une partie (pseudo)
     public ArrayList<String> AfficherMembre(Integer nump) throws RemoteException{
         ArrayList <String> pseudos= new ArrayList <>();
         ArrayList <Joueur> jj= new ArrayList <>();
@@ -150,6 +150,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return pseudos;
     }
     
+    //Retourne le numéro de la partie du joueur 
     public Integer RecupNumPart(String attri1)throws RemoteException{
         Integer numerop=0;    
         for(Partie P:ttpartie){
@@ -163,7 +164,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     return numerop;    
     }
-   
+    
+    //retourne le nombre de joueur présent dans la partie
     public Integer CompteJoueur(Integer nump){
         int element=0;
         for(Partie P:ttpartie){
@@ -173,7 +175,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     return element;
     }
-        
+    
+    //Retourne les des du joueur (affichage seulement)
     public ArrayList<String> AfficherDesJoueur(String attri1, Integer nump)throws RemoteException{
         ArrayList <String> a1= new ArrayList <>();
         a1.clear();
@@ -182,8 +185,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             if(P.getPid().equals(nump)){
                 for(Joueur J:P.getAj()){
                     if(J.getDude().getPseudo().equals(attri1)){
-                    System.out.println("dans afficher joueur"+J.getDude().getPseudo());
-                    a1=J.DonnerValeur();  
+                        System.out.println("dans afficher joueur"+J.getDude().getPseudo());
+                        a1=J.DonnerValeur();  
                     }
                 }
             }
@@ -193,6 +196,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return a1;
     }
     
+    //Première attribution des des selon un choix aléatoire et du nombre souhaite 
     public ArrayList<Dés> RemplirDesJoueur(String attri1, Integer nump)throws RemoteException{
         ArrayList <Dés> a = new ArrayList<>(); 
         a.clear();
@@ -219,6 +223,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             
     }
     
+    //Reattribution des des au long de la partie 
     public ArrayList <Dés> ReRemplirJoueur(String attri1, Integer nump) throws RemoteException{
         ArrayList<Dés> a2 = new ArrayList<>();
         a2.clear();
@@ -240,7 +245,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         
         return a2;
     }
-        
+    
+    //Reset des des du tour precedent
     public void ClearArrayworld(Integer nump)throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
@@ -249,6 +255,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }    
     }
     
+    //Premiere attribution de l'ordre de passage d'un joueur
     public Integer SetOrdre(String attri1, Integer nump)throws RemoteException{
         int jeton=0;
         //System.out.println("premier passageeeeeee"+passage);
@@ -261,7 +268,6 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 for(Joueur J:joueurs){
                     if(J.getDude().getPseudo().equals(attri1)){
                         jeton=P.getPassage();    
-                        //passage=P.getPassage();
                         J.setPassage(jeton);
                         numero=J.getPassage();
                         System.out.println(J.getPassage());
@@ -275,6 +281,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return numero;
     }
     
+    //Effacement du numéro de passage des joueurs de la partie 
     public void ReSetpassage(Integer nump)throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
@@ -283,6 +290,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     }
     
+    //On rerecupere et retourne le numéro de passage 
     public Integer ReSetOrdre(String attri1, Integer nump)throws RemoteException{
         Integer numero=0;
         Integer passage=0;
@@ -301,14 +309,13 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return numero;
     }
     
-    
+    //Définition du droit a jouer se l'ordre de passsage 
     public Boolean RetrouverOrdreJoueur(String attri1, Integer nump)throws RemoteException{
         Boolean ordre=true;
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
                 for(Joueur J:joueurs){
-                    if(J.getDude().getPseudo().equals(attri1)){
-                            
+                    if(J.getDude().getPseudo().equals(attri1)){                            
                         System.out.println("numero de passage "+J.getPassage());
                         System.out.println("jeton :"+P.getCompteur());
                         if(Objects.equals(J.getPassage(), P.getCompteur())){
@@ -324,6 +331,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     
      //methode affichant les des de tt les joueurs 
     
+    //Affiche les des de tout le monde dans la partie
     public ArrayList<String> AfficherToutDes(Integer nump){
         ArrayList<String> valdesworld = new ArrayList<>();
         for(Partie P:ttpartie){
@@ -337,9 +345,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return valdesworld;
     }
     
+    //Apres un menteur on compte le nombre de des et on renvoie le resultat
     public boolean OnCompte(String attri1, Integer nump) throws RemoteException{
         Boolean resultat=true;
-        RecupererLastJoueur(attri1, nump);
+        RecupererLastJoueur(attri1, nump); //pour cela il faut connaitre le joueur precedent
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
                 resultat=P.getResultat();
@@ -348,24 +357,19 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return resultat;
     }
     
+    //Meme chose mais apres une annonce d'un tout pile
     public boolean OnCompteTtPile(String attri1, Integer nump) throws RemoteException{
         Boolean resultat=true;
         RecupererLastJoueurTtPile(attri1, nump);
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
-                resultat=P.getResultat();
+                resultat=P.getResultat();//propre a une partie
             }
         }
         return resultat;
     }
-    /*
-    public void AfficherNumPassage(){
-        for(Joueur J:joueurs){
-            System.out.println(J.getPassage());
-        }
-    }
-    */
     
+    //on cherche le joueur precedent pour son annonce et l'application du resultat le cas echeant
     public void RecupererLastJoueur(String attri1, Integer nump) throws RemoteException{
         int numj=0;
         String pseulj=null;
@@ -389,9 +393,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 }
             }
         }
-                
-        RecupererAnnonce(pseulj, nump);
-        TraitementResultat(pseulj,attri1, nump);
+        RecupererAnnonce(pseulj, nump); //recherche de son annonce qui appel a la comparaison
+        TraitementResultat(pseulj,attri1, nump);//application du resultat sur le joueur en cour ou precedent
     }
     
     public void RecupererLastJoueurTtPile(String attri1, Integer nump) throws RemoteException{
@@ -421,7 +424,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         RecupererAnnonceTtPile(pseulj, nump);
         TraitementResultatTtPile(attri1, nump);
     }
-     
+    
+    //en fonction du resultat calculé precedement on va enlever des des a tel ou tel joueur
     public void TraitementResultat(String pseulj,String pseujec, Integer nump) throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
@@ -451,7 +455,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         }
     }
-     
+    
+    //on prend l'annonce et on va l'envoyee pour comparaison
     public void RecupererAnnonce(String attri1, Integer nump ){
         int nb=0;
         int val=0;
@@ -481,11 +486,12 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
-                P.setResultat(ComparaisonTtPile(nb,val, nump));
+                P.setResultat(ComparaisonTtPile(nb,val, nump)); //on enregistre le resultat sur la partie
             }
         }
     }
 
+    //Menteur vrai ou faux par rapport a tout les des en cour dans la partie, 
     public Boolean Comparaison(Integer nb, Integer val, Integer nump){
         String v =Integer.toString(val);
         int c=0;
@@ -541,6 +547,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return resultat;
     }
     
+    //retire un des a un joueur precise
     public void EnleverDes(String attri1, Integer nump)throws RemoteException{
         System.out.println("je suis dans enlever des");
         System.out.println("en parametere : "+attri1);
@@ -554,24 +561,22 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
             }
         }
         
-        //for(int i=0;i<rang;i++){
-            int tmp=0;
-            for(Partie P:ttpartie){
-                if(P.getPid().equals(nump)){
-                    for(Joueur J:P.getAj()){
-                        System.out.println("tmp : "+tmp);
-                        if(J.getPassage()<rang){
-                            tmp= J.getPassage();
-                            System.out.println("celui qui a le numero changé"+J.getDude().getPseudo());
-                            System.out.println("numero de passage de leleement i"+tmp);
-                            J.setPassage(tmp+1);
-                            tmp=tmp+1;
-                            System.out.println("attroibution de ce numero de passage : "+tmp);
-                        }
+        int tmp=0;
+        for(Partie P:ttpartie){
+            if(P.getPid().equals(nump)){
+                for(Joueur J:P.getAj()){
+                    System.out.println("tmp : "+tmp);
+                    if(J.getPassage()<rang){
+                        tmp= J.getPassage();
+                        System.out.println("celui qui a le numero changé"+J.getDude().getPseudo());
+                        System.out.println("numero de passage de leleement i"+tmp);
+                        J.setPassage(tmp+1);
+                        tmp=tmp+1;
+                        System.out.println("attroibution de ce numero de passage : "+tmp);
                     }
                 }
             }
-        //}
+        }
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
                // System.out.println("jenleve des des");
@@ -581,6 +586,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     }
     
+    //remise a zero d'un compteur qui sert de jeton au droit de parole des joueurs
     public void ResetCompteur(Integer nump) throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
@@ -589,6 +595,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     }
     
+    //changement de la valeur de se compteur propre a une partie
     public void SetCompteur(Integer nump)throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
@@ -597,39 +604,37 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
     }
    
+    //on ajoute un des a un joueur
     public void AjouterDes(String attri1, Integer nump)throws RemoteException{
         int rang=0;
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
                 J.AjouterDes();
                 rang=J.getPassage();
-                //J.setPassage(1);
             }
         }
-        //for(int i=0;i<rang;i++){
-            int tmp=0;
-            for(Partie P:ttpartie){
-                if(P.getPid().equals(nump)){
-                    for(Joueur J:P.getAj()){
-                       if(J.getPassage()<rang){
-                            tmp= J.getPassage();
-                            System.out.println("numero de passage de leleement i"+tmp);
-                            J.setPassage(tmp+1);
-                            tmp=tmp+1;
-                            System.out.println("attroibution de ce numero de passage : "+tmp);
-                        }
+        int tmp=0;
+        for(Partie P:ttpartie){
+            if(P.getPid().equals(nump)){
+                for(Joueur J:P.getAj()){
+                   if(J.getPassage()<rang){
+                        tmp= J.getPassage();
+                        System.out.println("numero de passage de leleement i"+tmp);
+                        J.setPassage(tmp+1);
+                        tmp=tmp+1;
+                        System.out.println("attroibution de ce numero de passage : "+tmp);
                     }
                 }
             }
-       // }
+        }
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
-               // J.AjouterDes();
-               J.setPassage(1);
+            J.setPassage(1);
             }
         }
     }
     
+    //in recupere et enregistre l'annonce du joueur 
     public String RecuperationAnn(int nombreDé, int faceduDé, String attri1, Integer nump) throws RemoteException {
         Annonce a = new Annonce(nombreDé,faceduDé);
         a=Annonce.getInstanceA(nombreDé, faceduDé);
@@ -642,7 +647,6 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         for(Joueur J: joueurs){
             if(J.getDude().getPseudo().equals(attri1)){
                 J.setVal(a);
-                //joueursann.clear();
                 joueursann.add(J);
             }
         }
@@ -654,10 +658,10 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         for(Joueur J:joueursann){
             System.out.println(J.getVal().getAnnValDé());
             System.out.println(J.getVal().getDé());
-            
         }
     }
-    
+
+    //Renvoie toute les annonces apres un tt pile ou un menteur 
     public ArrayList<Annonce> AfficherTouteAnnonces(Integer nump) throws RemoteException{
         ArrayList<Annonce> ttlesann = new ArrayList<>();
         ttlesann.clear();
@@ -671,24 +675,25 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         return ttlesann;
     }
-  
+
+    //on affiche les joueurs de la partie 
     public HashMap<String, String> AfficherJoueur(Integer nump){
         HashMap<String, String> h1 = new HashMap<>(); 
         for(Partie P:ttpartie){
-                if(P.getPid().equals(nump)){
-                    for(Joueur J:P.getAj()){
-                        Couleur ctmp=J.getPions();
-                        User utmp=J.getDude();
-                        h1.put(utmp.getPseudo(), ctmp.getCouleur());
-                    }
-                    Set cles = h1.keySet();
-                    Iterator it = cles.iterator();
-                    while (it.hasNext()){
-                        Object cle = it.next(); 
-                        Object valeur = h1.get(cle); 
-                        System.out.println(cle+ " "+valeur);
-                    }
+            if(P.getPid().equals(nump)){
+                for(Joueur J:P.getAj()){
+                    Couleur ctmp=J.getPions();
+                    User utmp=J.getDude();
+                    h1.put(utmp.getPseudo(), ctmp.getCouleur());
                 }
+                Set cles = h1.keySet();
+                Iterator it = cles.iterator();
+                while (it.hasNext()){
+                    Object cle = it.next(); 
+                    Object valeur = h1.get(cle); 
+                    System.out.println(cle+ " "+valeur);
+                }
+            }
         }
         return h1; 
     }
@@ -713,7 +718,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return users;
     }
     
-    //int indice=0;
+    //différent repere pour le bon deroulement de la partie
     public void ChangeIndice(Integer in, Integer nump) throws RemoteException{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){       
@@ -731,8 +736,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         return indice;
     }
-
-    //int repere=1;
+ 
     public Integer RecupRepere(Integer nump) throws RemoteException{
         int compteur=0;
         for(Partie P:ttpartie){
@@ -742,14 +746,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         }
         return compteur;
     }
-    /*
-    public void ChangeRepere(Integer rp) throws RemoteException{
-        repere=rp;
-        System.out.println("repere "+repere);
-    }
-    */
     
-    //int cas2=0;
     public Integer RecupCasMenteur(Integer nump) throws RemoteException{
         int cas2=0;
         for(Partie P:ttpartie){
@@ -767,10 +764,8 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
                 System.out.println("cas menteur"+P.getCas2());
             }
         }        
-        //cas2=cm; 
     }
     
-    //int cas3=0;
     public Integer RecupCasPile(Integer nump) throws RemoteException{
         int cas3=0;
         for(Partie P:ttpartie){
@@ -785,7 +780,6 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         for(Partie P:ttpartie){
             if(P.getPid().equals(nump)){
                 P.setCas3(ctp);        
-        //cas3=ctp;
                 System.out.println("cas tt pile"+P.getCas3());
             }
         }
@@ -793,9 +787,9 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     
     public void ClearttAnnonces(Integer nump) throws RemoteException{
         for(Partie P:ttpartie){
-           if(P.getPid().equals(nump)){
+            if(P.getPid().equals(nump)){
                 P.cleartttlesann();
-           }
+            }
         }
     }
     
@@ -810,18 +804,6 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return path;
     }
     
-    public void Supprimerjoueur(String attri1, Integer nump) throws RemoteException{
-        for(Partie P:ttpartie){
-                if(P.getPid().equals(nump)){
-                    for(Joueur J:P.getAj()){
-                        if(J.getDude().getPseudo().equals(attri1)){
-                        P.getAj().remove(J);
-                        }
-                    }
-                }
-        }
-    }
-    
     int pointeur=0;
     public void ChangePointe() throws RemoteException{
         pointeur=1;
@@ -830,7 +812,20 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     public Integer RecupPointe() throws RemoteException{
         return pointeur;
     }
-
+    
+    //joueur elimine
+    public void Supprimerjoueur(String attri1, Integer nump) throws RemoteException{
+        for(Partie P:ttpartie){
+            if(P.getPid().equals(nump)){
+                for(Joueur J:P.getAj()){
+                    if(J.getDude().getPseudo().equals(attri1)){
+                        P.getAj().remove(J);
+                    }
+                }
+            }
+        }
+    }
+    
     public static void main(String args[]){
         try{
             Registry reg = LocateRegistry.createRegistry(1099);

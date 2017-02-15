@@ -47,7 +47,6 @@ public interface RMI extends Remote{
     public void ResetCompteur(Integer nump) throws RemoteException;
     public ArrayList <Dés> ReRemplirJoueur(String attri1, Integer nump) throws RemoteException;
     public Integer RecupRepere(Integer nump) throws RemoteException;
-    //public void ChangeRepere(Integer rp) throws RemoteException;
     public Integer ReSetOrdre(String attri1, Integer nump)throws RemoteException;
     public Integer RecupCasMenteur(Integer nump) throws RemoteException;
     public void ChangeCasmenteur(Integer cm, Integer nump) throws RemoteException;
@@ -67,4 +66,5 @@ public interface RMI extends Remote{
     public void ChangePointe() throws RemoteException;
     public Integer RecupPointe() throws RemoteException;
     public ArrayList<String> AfficherMembre(Integer nump) throws RemoteException;
+    
 }
