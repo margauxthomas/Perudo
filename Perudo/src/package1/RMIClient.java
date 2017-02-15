@@ -510,19 +510,19 @@ public class RMIClient {
            
             System.out.println("\n Attendez votre tour");
             Thread.sleep(1000);   
-            System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump));
+            //System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump));
             
-            System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2,nump));
+            //System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2,nump));
             if(RecupCasMenteur(rmi2,nump)==2+(go2)){
-                System.out.println("je remet a zero le cas menteur");
+                //System.out.println("je remet a zero le cas menteur");
                 ChangeCasMenteur(rmi2, 0,nump);
                 numpass=RecuPassage(rmi2, pseu);
             }
  
-            System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2,nump));
+            //System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2,nump));
             if(RecupCasPile(rmi2,nump)==3+(go2)){
                 ChangeCasPile(rmi2, 0,nump);
-                System.out.println("je remet a zero le cas tt pile");
+                //System.out.println("je remet a zero le cas tt pile");
                 numpass=RecuPassage(rmi2, pseu);
             }
             
@@ -536,10 +536,10 @@ public class RMIClient {
                 numpass=RecuPassage(rmi2, pseu);
                 count2++;
             }
-            System.out.println("le cas tt pile :"+RecupCasPile(rmi2,nump));
+            //System.out.println("le cas tt pile :"+RecupCasPile(rmi2,nump));
             if(RecupCasPile(rmi2,nump)>=3 && count3<1){
                 Remisecompteur(rmi2,nump);
-                System.out.println("Jai rerempli apres un tt pile");
+                //System.out.println("Jai rerempli apres un tt pile");
                 ReRemplirJoueur(pseu, rmi2,nump);
                 AfficherDesJoueur(rmi2, pseu,nump);
                 ChangeCasPile(rmi2, RecupCasPile(rmi2,nump)+1,nump);
