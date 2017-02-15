@@ -493,7 +493,7 @@ public class RMIClient {
             System.out.println("Felicitation vous avez gagné");
             AfficherJoueur(rmi2, nump);
         }
-        Thread.sleep(2000);
+        Thread.sleep(5000);
         int choix=0;
         while(AfficherDesJoueur(rmi2, pseu, nump)==0){
             System.out.println("you loose");
@@ -509,24 +509,32 @@ public class RMIClient {
         while(!ordre){
            
             System.out.println("\n Attendez votre tour");
-            Thread.sleep(1000);   
+            Thread.sleep(6000);   
             //System.out.println("le cas menteur :"+RecupCasMenteur(rmi2, nump));
             
             //System.out.println("cas menteur avant la remise a zero :"+RecupCasMenteur(rmi2,nump));
-            if(RecupCasMenteur(rmi2,nump)==2+(go2)){
+            if(RecupCasMenteur(rmi2,nump)==2+(go2) && count2<1 ){
+                System.out.println("Voici vos nouveau dés ");
+                ReRemplirJoueur(pseu, rmi2,nump);
+                AfficherDesJoueur(rmi2, pseu,nump);
                 //System.out.println("je remet a zero le cas menteur");
                 ChangeCasMenteur(rmi2, 0,nump);
                 numpass=RecuPassage(rmi2, pseu);
+                count2++;
             }
  
             //System.out.println("cas tt pile avant la remise a zero :"+RecupCasPile(rmi2,nump));
-            if(RecupCasPile(rmi2,nump)==3+(go2)){
+            if(RecupCasPile(rmi2,nump)==3+(go2) && count3<1){
+                System.out.println("Voici vos nouveau des apres tt pile");
+                ReRemplirJoueur(pseu, rmi2,nump);
+                AfficherDesJoueur(rmi2, pseu,nump);
                 ChangeCasPile(rmi2, 0,nump);
                 //System.out.println("je remet a zero le cas tt pile");
                 numpass=RecuPassage(rmi2, pseu);
+                count3++;
             }
             
-            if(RecupCasMenteur(rmi2,nump)>=2 && count<1){
+            if(RecupCasMenteur(rmi2,nump)>=2 && count2<1){
                 Remisecompteur(rmi2, nump);
                 System.out.println("Voici vos nouveau dés");
                 ReRemplirJoueur(pseu, rmi2,nump);
@@ -539,7 +547,7 @@ public class RMIClient {
             //System.out.println("le cas tt pile :"+RecupCasPile(rmi2,nump));
             if(RecupCasPile(rmi2,nump)>=3 && count3<1){
                 Remisecompteur(rmi2,nump);
-                //System.out.println("Jai rerempli apres un tt pile");
+                System.out.println("Voici vos nouveau des apres tt pile");
                 ReRemplirJoueur(pseu, rmi2,nump);
                 AfficherDesJoueur(rmi2, pseu,nump);
                 ChangeCasPile(rmi2, RecupCasPile(rmi2,nump)+1,nump);
