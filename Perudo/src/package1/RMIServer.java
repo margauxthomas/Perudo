@@ -29,6 +29,7 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
     ArrayList<String> valeurdesj = new ArrayList<>();
     ArrayList<Dés> ddre = new ArrayList<>();
     ArrayList<Partie> ttpartie = new ArrayList<>();
+    ArrayList<String> names= new ArrayList<>();
   
     Integer pid=0;
     
@@ -66,8 +67,12 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         return flag;
     }
     
+    public ArrayList<String> getServ(){
+        return names;
+    }
+    
     //Creation du joueur si il cree une nouvelle partie
-    public void CreerJoueur(String pseu, String col) throws RemoteException{
+    public void CreerJoueur(String pseu, String col, Integer chh, Registry rege, String nomserv) throws RemoteException{
         pseudo.add(pseu);
         flag.add(col);
         User u = new User(pseu);
@@ -78,6 +83,11 @@ public class RMIServer extends UnicastRemoteObject implements RMI{
         ArrayList<Dés> tmp = new ArrayList<>();
         tmp.clear();
         Joueur j = new Joueur(c,u, tmp,0,0); //creation d'un objet joueur
+        
+        if(chh==1){
+            rege.rebind(nomserv, new RMIServer());
+            names.add(nomserv);
+        }
         CreerPartie(j);//apel a la creation d'une partie
         joueurs.add(j); //ajout du joueur a la liste des joueurs du serveur
     }

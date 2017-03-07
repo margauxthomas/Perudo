@@ -3,6 +3,7 @@ package package1;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +25,8 @@ public interface RMI extends Remote{
     public String getData(String text) throws RemoteException;
     public String setPseudo(String pseu) throws RemoteException;
     public String setCouleur(String col) throws RemoteException;
-    public void CreerJoueur(String pseu, String col) throws RemoteException;
+    public ArrayList<String> getServ() throws RemoteException;
+    public void CreerJoueur(String pseu, String col, Integer chh, Registry rege, String nomserv) throws RemoteException;
     public String RecuperationAnn(int nombreDé, int faceduDé, String attri1, Integer nump) throws RemoteException; 
     public ArrayList<Couleur> AfficherCouleur() throws RemoteException;
     public ArrayList<User> AfficherUser() throws RemoteException;

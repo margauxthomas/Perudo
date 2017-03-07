@@ -19,6 +19,7 @@ public class RMIClient {
     private static Vector classes = new Vector();
     public ArrayList<String> pseudo = new ArrayList<>();
     public ArrayList<String> flag = new ArrayList<>();
+    public ArrayList<String> ns = new ArrayList<>();
     public static ArrayList<String> flag2 = new ArrayList<>();
     public static ArrayList<String> pseudo2 = new ArrayList<>();
        
@@ -43,6 +44,9 @@ public class RMIClient {
     int count2=0;
     int count3=0;
     int nump=0;
+    String adresseserveur="127.0.0.1";
+    Registry rege;
+    
    
     public static RMIClient getInstance(){        
 	RMIClient tmp = new RMIClient();
@@ -64,7 +68,8 @@ public class RMIClient {
         
     public RMI connectServer() {
         try{
-            Registry reg = LocateRegistry.getRegistry("127.0.0.1",1099);
+            Registry reg = LocateRegistry.getRegistry(adresseserveur,1099);
+            rege=reg;
             RMI rmi = (RMI) reg.lookup("server");
             System.out.println("Connected to Server");
             return rmi;
@@ -83,6 +88,11 @@ public class RMIClient {
     public ArrayList<String> getCool(RMI rmi) throws RemoteException {
         flag=rmi.getCouleurs();
         return flag;
+    }
+    
+    public ArrayList<String> getServ(RMI rmi) throws RemoteException {
+        ns=rmi.getServ();
+        return ns;
     }
     
     public String saisiePseudo(RMI rmi, ArrayList<String> u) throws RemoteException{
@@ -110,10 +120,11 @@ public class RMIClient {
         }
     }
            
-    public void CreationJoueur(RMI rmi, String pseu, String col) throws RemoteException{
+    public void CreationJoueur(RMI rmi, String pseu, String col, Integer chh, Registry rege, String nomserv) throws RemoteException{
         System.out.println("c'est parti !");
-        rmi.CreerJoueur(pseu, col);
+        rmi.CreerJoueur(pseu, col, chh, rege, nomserv);
     }
+    
         
         //methode affichage des joueurss
     public void AfficherJoueur(RMI rmi, Integer nump) throws RemoteException{
@@ -460,7 +471,13 @@ public class RMIClient {
         chp=ChoixPartie(rmi2);
         ChangePointe(rmi2);
         if(chp==1){
-            CreationJoueur(rmi2, pseu, col);
+            int chh=0;
+            chh=Hebergement();
+            String nomserv = null;
+            if(chh==1){
+                nomserv=Choixnomserv(rmi2);
+            }
+            CreationJoueur(rmi2, pseu, col, chh,rege, nomserv);
         }else if(chp==2){
             int chqp=0;
             chqp=Quellepartie(sizep);
@@ -657,6 +674,37 @@ public class RMIClient {
         }while(choixquellepartie>s);
         return choixquellepartie;
     }
+    
+     public Integer Hebergement() {
+        int choixheberg=0;
+        choixheberg=0;
+            do{
+                System.out.println("Tapez 1 pour herberger la partie ou deux pour rester sur le serveur principale ");        
+                try{
+                    choixheberg = (int) Integer.parseInt(scanch.next());
+                }catch(NumberFormatException e){
+                    System.out.println("Vous devez entrer des chiffres.");
+                }
+            }while(choixheberg!=1 && choixheberg!=2);
+            
+        return choixheberg;
+     }
+     
+     public String Choixnomserv(RMI rmi2) throws RemoteException{
+        Scanner sc2 = new Scanner(System.in);
+        ns=getServ(rmi2);
+        for(String S:ns){
+            System.out.println("nom de serveur deja utilisé :"+S);
+        }
+        String nomserv=null;
+        do{
+            System.out.println("Choisissez un nom de serveur");
+            nomserv = sc2.nextLine();  
+        }while(ns.contains(nomserv));
+        
+        return nomserv;
+     }
+     
     
     public static void main(String args[]) throws RemoteException, InterruptedException{
         RMIClient client = new RMIClient();
